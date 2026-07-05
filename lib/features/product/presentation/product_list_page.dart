@@ -22,20 +22,34 @@ class ProductListPage extends BaseStatelessWidget {
   Widget initBuild(BuildContext context) {
     final controller = Get.put(ProductController(), permanent: true);
     final args = Get.arguments;
-    final categoryId = Get.parameters['categoryId'] ??
-        (args is CategoryModel ? args.id : args is String ? args : 'cat1');
-    final categoryName = args is CategoryModel
-        ? args.name
-        : (categoryId != 'cat1' ? categoryId : StringConst.featuredProducts);
+    dynamic loadArg = args;
+    String title = StringConst.featuredProducts;
+    if (args is Map && args['filter'] != null) {
+      loadArg = args;
+      title = switch (args['filter']) {
+        'popular' => StringConst.popularProducts,
+        'new' => StringConst.newArrivals,
+        _ => StringConst.featuredProducts,
+      };
+    } else {
+      final categoryId = Get.parameters['categoryId'] ??
+          (args is CategoryModel ? args.id : args is String ? args : '');
+      loadArg = categoryId;
+      if (args is CategoryModel) {
+        title = args.name;
+      } else if (categoryId.isNotEmpty) {
+        title = categoryId;
+      }
+    }
 
     if (controller.products.isEmpty && !controller.isLoading) {
-      controller.loadProductsByCategory(categoryId);
+      controller.loadProductsByCategory(loadArg);
     }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          categoryName,
+          title,
           style: AppTextStyle.navTitle.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
@@ -68,7 +82,7 @@ class ProductListPage extends BaseStatelessWidget {
             subtitle: StringConst.noResults,
             icon: Icons.inventory_2_outlined,
             action: GradientButton(
-              onTap: () => controller.loadProductsByCategory(categoryId),
+              onTap: () => controller.loadProductsByCategory(loadArg),
               child: Text(
                 StringConst.retry,
                 style: AppTextStyle.buttonText.copyWith(

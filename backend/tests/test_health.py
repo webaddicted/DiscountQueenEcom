@@ -7,10 +7,20 @@ from app.main import app
 client = TestClient(app)
 
 
+def _data(response) -> object:
+    body = response.json()
+    assert "success" in body
+    assert "message" in body
+    assert "data" in body
+    return body["data"]
+
+
 def test_health_root() -> None:
     response = client.get("/health")
     assert response.status_code == 200
-    data = response.json()
+    body = response.json()
+    assert body["success"] is True
+    data = body["data"]
     assert data["status"] == "UP"
     assert data["service"] == "discount-queen-backend"
 
@@ -18,7 +28,8 @@ def test_health_root() -> None:
 def test_health_api_v1() -> None:
     response = client.get("/api/v1/health")
     assert response.status_code == 200
-    assert response.json()["status"] == "UP"
+    assert response.json()["success"] is True
+    assert _data(response)["status"] == "UP"
 
 
 def test_auth_login_stub() -> None:
@@ -27,4 +38,15 @@ def test_auth_login_stub() -> None:
         json={"email": "test@example.com", "password": "secret"},
     )
     assert response.status_code == 200
-    assert response.json()["success"] is True
+    body = response.json()
+    assert body["success"] is True
+    assert body["data"] is not None
+
+
+def test_envelope_failure_on_missing_user_header() -> None:
+    response = client.get("/api/v1/cart")
+    assert response.status_code == 401
+    body = response.json()
+    assert body["success"] is False
+    assert body["data"] == {}
+    assert body["message"]

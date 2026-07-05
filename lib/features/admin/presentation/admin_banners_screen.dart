@@ -137,7 +137,7 @@ class _AdminBannersScreenState extends BaseState<AdminBannersScreen> {
       sortOrder: int.tryParse(order.text.trim()) ?? 0,
       isActive: active,
     );
-    await _repo.saveBanner(b);
+    await _repo.saveBanner(b, existingId: existing?.id);
     showSuccess('Banner saved', title: 'Saved');
     _load();
   }

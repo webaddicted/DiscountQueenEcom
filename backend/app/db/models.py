@@ -5,7 +5,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import Dict, List, Optional
 
-from sqlalchemy import Boolean, Date, DateTime, Integer, Numeric, String, Text, func
+from sqlalchemy import Boolean, Date, DateTime, ForeignKey, Integer, Numeric, String, Text, func
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
@@ -97,7 +97,9 @@ class EcomProductImage(Base):
     __tablename__ = "ecom_product_images"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    product_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_products.id"), nullable=False
+    )
     image_url: Mapped[str] = mapped_column(Text)
     alt_text: Mapped[Optional[str]] = mapped_column(String(255))
     sort_order: Mapped[int] = mapped_column(Integer, default=0)
@@ -110,7 +112,9 @@ class EcomProductVariant(Base):
     __tablename__ = "ecom_product_variants"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    product_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_products.id"), nullable=False
+    )
     size: Mapped[str] = mapped_column(String(30), default="")
     color: Mapped[str] = mapped_column(String(50), default="")
     stock_qty: Mapped[int] = mapped_column(Integer, default=0)
@@ -124,7 +128,9 @@ class EcomProductSpec(Base):
     __tablename__ = "ecom_product_specifications"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    product_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_products.id"), nullable=False
+    )
     spec_key: Mapped[str] = mapped_column(String(100))
     spec_value: Mapped[str] = mapped_column(Text)
     sort_order: Mapped[int] = mapped_column(Integer, default=0)
@@ -185,7 +191,9 @@ class EcomCartItem(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
-    product_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    product_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_products.id"), nullable=False
+    )
     variant_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True))
     quantity: Mapped[int] = mapped_column(Integer, default=1)
     selected_size: Mapped[str] = mapped_column(String(30), default="")
@@ -199,7 +207,9 @@ class EcomWishlistItem(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
-    product_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    product_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_products.id"), nullable=False
+    )
     created_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
@@ -234,7 +244,9 @@ class EcomOrderItem(Base):
     __tablename__ = "ecom_order_items"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    order_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    order_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_orders.id"), nullable=False
+    )
     product_id: Mapped[Optional[uuid.UUID]] = mapped_column(UUID(as_uuid=True))
     product_name: Mapped[str] = mapped_column(String(255))
     product_image: Mapped[Optional[str]] = mapped_column(Text)
@@ -252,7 +264,9 @@ class EcomOrderDeliveryAddress(Base):
     __tablename__ = "ecom_order_delivery_addresses"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    order_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), unique=True)
+    order_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_orders.id"), unique=True, nullable=False
+    )
     name: Mapped[Optional[str]] = mapped_column(String(150))
     phone: Mapped[Optional[str]] = mapped_column(String(20))
     address_line_1: Mapped[Optional[str]] = mapped_column(Text)
@@ -270,7 +284,9 @@ class EcomOrderTracking(Base):
     __tablename__ = "ecom_order_tracking_steps"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    order_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    order_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_orders.id"), nullable=False
+    )
     title: Mapped[str] = mapped_column(String(100))
     description: Mapped[Optional[str]] = mapped_column(Text)
     event_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
@@ -301,7 +317,9 @@ class EcomReview(Base):
     __tablename__ = "ecom_reviews"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    product_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+    product_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("ecom_products.id"), nullable=False
+    )
     user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
     rating: Mapped[Decimal] = mapped_column(Numeric(2, 1))
     comment: Mapped[Optional[str]] = mapped_column(Text)

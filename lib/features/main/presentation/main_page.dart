@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:portfolio/features/cart/controller/cart_controller.dart';
-import 'package:portfolio/features/home/controller/home_controller.dart';
-import 'package:portfolio/features/home/presentation/home_page.dart';
 import 'package:portfolio/features/cart/presentation/cart_page.dart';
-import 'package:portfolio/features/wishlist/controller/wishlist_controller.dart';
+import 'package:portfolio/features/home/presentation/home_page.dart';
 import 'package:portfolio/features/wishlist/presentation/wishlist_page.dart';
-import 'package:portfolio/features/profile/controller/profile_controller.dart';
 import 'package:portfolio/features/profile/presentation/profile_page.dart';
 import 'package:portfolio/features/main/controller/main_controller.dart';
 import 'package:portfolio/features/main/presentation/widgets/categories_tab.dart';
@@ -19,6 +16,7 @@ import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/main_shell_app_bar.dart';
+import 'package:portfolio/global/utils/main_tab_obx.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
 
 class MainPage extends BaseStatelessWidget {
@@ -29,13 +27,6 @@ class MainPage extends BaseStatelessWidget {
     final controller = Get.isRegistered<MainController>()
         ? Get.find<MainController>()
         : Get.put(MainController(), permanent: true);
-    Get.put(HomeController());
-    if (!Get.isRegistered<WishlistController>()) {
-      Get.put(WishlistController(), permanent: true);
-    }
-    if (!Get.isRegistered<ProfileController>()) {
-      Get.put(ProfileController());
-    }
 
     final pages = <Widget>[
       const HomePage(),
@@ -97,7 +88,10 @@ class MainPage extends BaseStatelessWidget {
 
   Widget _buildWebTopNav(MainController controller) {
     return Obx(() {
-      final cartController = Get.find<CartController>();
+      trackMainShellObx();
+      final cartCount = Get.isRegistered<CartController>()
+          ? Get.find<CartController>().totalItems
+          : 0;
       final selected = controller.currentIndex.value;
       return Container(
         height: 64,
@@ -202,7 +196,7 @@ class MainPage extends BaseStatelessWidget {
                                 minWidth: 40, minHeight: 40),
                             padding: EdgeInsets.zero,
                           ),
-                          if (cartController.totalItems > 0)
+                          if (cartCount > 0)
                             Positioned(
                               right: 2,
                               top: 2,
@@ -213,7 +207,7 @@ class MainPage extends BaseStatelessWidget {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Text(
-                                  '${cartController.totalItems}',
+                                  '$cartCount',
                                   style: AppTextStyle.overline.copyWith(
                                     color: ColorConst.white,
                                     fontSize: 10,
@@ -272,7 +266,9 @@ class MainPage extends BaseStatelessWidget {
 
   Widget _buildBottomNav(MainController controller) {
     return Obx(() {
-      final cartController = Get.find<CartController>();
+      final cartCount = Get.isRegistered<CartController>()
+          ? Get.find<CartController>().totalItems
+          : 0;
       return Container(
         decoration: BoxDecoration(
           color: ColorConst.white,
@@ -309,9 +305,9 @@ class MainPage extends BaseStatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Badge(
-                isLabelVisible: cartController.totalItems > 0,
+                isLabelVisible: cartCount > 0,
                 label: Text(
-                  '${cartController.totalItems}',
+                  '$cartCount',
                   style: AppTextStyle.overline.copyWith(
                     color: ColorConst.white,
                     fontSize: 10,
@@ -321,9 +317,9 @@ class MainPage extends BaseStatelessWidget {
                 child: const Icon(Icons.shopping_cart_outlined),
               ),
               activeIcon: Badge(
-                isLabelVisible: cartController.totalItems > 0,
+                isLabelVisible: cartCount > 0,
                 label: Text(
-                  '${cartController.totalItems}',
+                  '$cartCount',
                   style: AppTextStyle.overline.copyWith(
                     color: ColorConst.white,
                     fontSize: 10,
@@ -398,12 +394,15 @@ class _MobileMainShellState extends State<_MobileMainShell> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Obx(() {
-          final cartController = Get.find<CartController>();
+          trackMainShellObx();
+          final cartCount = Get.isRegistered<CartController>()
+              ? Get.find<CartController>().totalItems
+              : 0;
           return MainShellAppBar(
             onMenuTap: widget.controller.openMobileDrawer,
             onNotificationTap: () => Get.toNamed(RoutersConst.notifications),
             onCartTap: () => widget.controller.navigateToTab(2),
-            cartCount: cartController.totalItems,
+            cartCount: cartCount,
           );
         }),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:portfolio/features/address/controller/address_controller.dart';
+import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
@@ -18,6 +19,9 @@ class AddressListPage extends BaseStatelessWidget {
   @override
   Widget initBuild(BuildContext context) {
     final controller = Get.put(AddressController());
+    if (SPManager.isLoggedIn()) {
+      controller.loadAddresses();
+    }
     return Scaffold(
       appBar: const AppBarWidget(
         title: StringConst.addressTitle,

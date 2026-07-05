@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:portfolio/features/home/controller/home_controller.dart';
 import 'package:portfolio/features/main/controller/main_controller.dart';
 import 'package:portfolio/features/home/presentation/widgets/banner_slider.dart';
-import 'package:portfolio/features/home/presentation/widgets/category_section.dart';
 import 'package:portfolio/features/home/presentation/widgets/product_card.dart';
 import 'package:portfolio/features/home/presentation/widgets/section_header.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
@@ -12,6 +11,7 @@ import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
+import 'package:portfolio/global/utils/main_tab_obx.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
@@ -23,14 +23,17 @@ class HomePage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.put(HomeController());
-
     return Scaffold(
       backgroundColor: ColorConst.white,
       body: SafeArea(
         top: !ResponsiveLayout.isMobile(context),
         child: Obx(() {
-          if (controller.isLoadingRx.value) {
+          trackMainShellObx();
+          if (!Get.isRegistered<HomeController>()) {
+            return _buildLoadingState();
+          }
+          final controller = Get.find<HomeController>();
+          if (controller.isLoadingRx.value && controller.banners.isEmpty) {
             return _buildLoadingState();
           }
           if (controller.isErrorRx.value) {
@@ -63,15 +66,10 @@ class HomePage extends BaseStatelessWidget {
         children: [
           _buildHeroBanner(controller),
 
-          // Categories on white
+          // Browse categories (loaded on Categories tab only)
           _buildWebColoredSection(
             color: ColorConst.white,
-            child: CategorySection(
-              categories: controller.categories,
-              onViewAll: controller.onViewAllCategories,
-              onCategoryTap: controller.onCategoryTap,
-              isWeb: true,
-            ),
+            child: _HomeCategoriesPrompt(onTap: controller.onViewAllCategories),
           ),
 
           // Promo banners on light green
@@ -606,12 +604,7 @@ class HomePage extends BaseStatelessWidget {
         const SliverToBoxAdapter(
             child: SizedBox(height: DesignTokens.spacing12)),
         SliverToBoxAdapter(
-          child: CategorySection(
-            categories: controller.categories,
-            onViewAll: controller.onViewAllCategories,
-            onCategoryTap: controller.onCategoryTap,
-            useGrid: true,
-          ),
+          child: _HomeCategoriesPrompt(onTap: controller.onViewAllCategories),
         ),
         const SliverToBoxAdapter(
             child: SizedBox(height: DesignTokens.spacing12)),
@@ -856,6 +849,44 @@ class HomePage extends BaseStatelessWidget {
         child: Text(
           StringConst.retry,
           style: AppTextStyle.buttonText.copyWith(color: ColorConst.white),
+        ),
+      ),
+    );
+  }
+}
+
+class _HomeCategoriesPrompt extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _HomeCategoriesPrompt({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: DesignTokens.spacing8),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(DesignTokens.spacing8),
+          decoration: BoxDecoration(
+            color: ColorConst.colorFFF3F4F6,
+            borderRadius: BorderRadius.circular(DesignTokens.radius12),
+          ),
+          child: Row(
+            children: [
+              const Icon(Icons.category_outlined,
+                  color: ColorConst.primaryColor),
+              const SizedBox(width: DesignTokens.spacing8),
+              Expanded(
+                child: Text(
+                  StringConst.categoriesTitle,
+                  style: AppTextStyle.titleMedium,
+                ),
+              ),
+              const Icon(Icons.chevron_right,
+                  color: ColorConst.colorFF9CA3AF),
+            ],
+          ),
         ),
       ),
     );

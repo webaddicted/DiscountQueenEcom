@@ -8,6 +8,7 @@ import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
+import 'package:portfolio/global/utils/main_tab_obx.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
@@ -21,7 +22,6 @@ class CartPage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.put(CartController(), permanent: true);
     final couponController = TextEditingController();
     if (kDebugMode) {
       couponController.text = 'WELCOME10';
@@ -29,6 +29,31 @@ class CartPage extends BaseStatelessWidget {
 
     final isMobile = ResponsiveLayout.isMobile(context);
 
+    return Obx(() {
+      trackMainShellObx();
+      if (!Get.isRegistered<CartController>()) {
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(color: ColorConst.primaryColor),
+          ),
+        );
+      }
+      final controller = Get.find<CartController>();
+      return _buildCartScaffold(
+        context,
+        controller,
+        couponController,
+        isMobile,
+      );
+    });
+  }
+
+  Widget _buildCartScaffold(
+    BuildContext context,
+    CartController controller,
+    TextEditingController couponController,
+    bool isMobile,
+  ) {
     return Scaffold(
       appBar: isMobile
           ? null

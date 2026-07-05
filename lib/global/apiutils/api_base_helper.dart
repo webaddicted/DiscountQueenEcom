@@ -5,6 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:portfolio/global/constant/api_const.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
+import 'package:portfolio/global/utils/json_utils.dart';
+import 'package:portfolio/global/apiutils/dio_platform_adapter.dart'
+    if (dart.library.html) 'package:portfolio/global/apiutils/dio_platform_adapter_web.dart';
 
 class ApiResponseCode {
   static const int success = 200;
@@ -28,11 +31,19 @@ class ApiBaseHelper {
       headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
     ));
 
+    configureDioAdapter(_dio);
+
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         final token = SPManager.getAccessToken();
         if (token.isNotEmpty) options.headers['Authorization'] = 'Bearer $token';
+        final userId = SPManager.getUserId();
+        if (userId.isNotEmpty) options.headers['X-User-Id'] = userId;
         handler.next(options);
+      },
+      onResponse: (response, handler) {
+        response.data = JsonUtils.normalize(response.data);
+        handler.next(response);
       },
       onError: (error, handler) {
         if (error.response?.statusCode == 401) {
@@ -167,9 +178,13 @@ class ApiBaseHelper {
   }
 
   Future<bool> _isInternetAvailable() async {
+    if (kIsWeb) return true;
     final result = await Connectivity().checkConnectivity();
     return !result.contains(ConnectivityResult.none);
   }
 }
 
-final apiHelper = ApiBaseHelper(ApiConstant.baseUrl);
+ApiBaseHelper? _apiHelperInstance;
+
+ApiBaseHelper get apiHelper =>
+    _apiHelperInstance ??= ApiBaseHelper(ApiConstant.baseUrl);

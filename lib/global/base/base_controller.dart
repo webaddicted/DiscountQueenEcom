@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:portfolio/global/utils/snackbar_utils.dart';
 
 abstract class BaseController extends GetxController {
   final _isLoading = false.obs;
@@ -59,6 +60,15 @@ abstract class BaseController extends GetxController {
     _exception.value = null;
   }
 
+  String _exceptionMessage(Object e, {String? fallback}) {
+    if (e is Exception) {
+      final text = e.toString();
+      if (text.startsWith('Exception: ')) return text.substring(11);
+      return text;
+    }
+    return fallback ?? e.toString();
+  }
+
   Future<T?> executeWithLoading<T>(Future<T> Function() action,
       {String? errorMessage, bool showError = true}) async {
     try {
@@ -68,8 +78,10 @@ abstract class BaseController extends GetxController {
       return result;
     } catch (e) {
       if (showError) {
-        setError(errorMessage ?? e.toString(),
-            e is Exception ? e : Exception(e.toString()));
+        setError(
+          errorMessage ?? _exceptionMessage(e),
+          e is Exception ? e : Exception(e.toString()),
+        );
       } else {
         hideLoading();
       }
@@ -78,11 +90,15 @@ abstract class BaseController extends GetxController {
   }
 
   Future<T?> executeSilently<T>(Future<T> Function() action,
-      {Function(Exception)? onError}) async {
+      {Function(Exception)? onError, bool showErrorMessage = false}) async {
     try {
       return await action();
     } catch (e) {
-      onError?.call(e is Exception ? e : Exception(e.toString()));
+      final exception = e is Exception ? e : Exception(e.toString());
+      onError?.call(exception);
+      if (showErrorMessage) {
+        showError(_exceptionMessage(e));
+      }
       return null;
     }
   }
@@ -105,7 +121,10 @@ abstract class BaseController extends GetxController {
         if (attempts < maxRetries) await Future.delayed(retryDelay);
       }
     }
-    setError(errorMessage ?? lastException.toString(), lastException);
+    setError(
+      errorMessage ?? _exceptionMessage(lastException ?? 'Request failed'),
+      lastException,
+    );
     return null;
   }
 

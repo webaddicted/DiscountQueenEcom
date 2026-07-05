@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:portfolio/features/orders/controller/order_controller.dart';
+import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
@@ -18,6 +19,9 @@ class OrdersPage extends BaseStatelessWidget {
   @override
   Widget initBuild(BuildContext context) {
     final controller = Get.put(OrderController());
+    if (SPManager.isLoggedIn()) {
+      controller.loadOrders();
+    }
     return Scaffold(
       appBar: const AppBarWidget(
         title: StringConst.ordersTitle,

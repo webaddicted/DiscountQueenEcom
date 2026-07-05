@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
+import 'package:portfolio/features/profile/data/user_repository.dart';
 import 'package:portfolio/global/base/base_controller.dart';
 import 'package:portfolio/features/address/domain/address_model.dart';
 
 class AddressController extends BaseController {
+  final _userRepo = Get.find<UserRepository>();
+
   final addresses = <AddressModel>[].obs;
 
   final nameController = TextEditingController();
@@ -20,9 +23,7 @@ class AddressController extends BaseController {
   final isDefault = false.obs;
 
   @override
-  void onControllerInit() {
-    loadAddresses();
-  }
+  void onControllerInit() {}
 
   @override
   void onControllerClose() {
@@ -36,33 +37,41 @@ class AddressController extends BaseController {
     landmarkController.dispose();
   }
 
-  void loadAddresses() {
-    addresses.value = _getDummyAddresses();
+  Future<void> loadAddresses() async {
+    await executeWithLoading(() async {
+      addresses.value = await _userRepo.getAddresses();
+    });
   }
 
-  void addAddress(AddressModel address) {
-    addresses.add(address);
-    _clearForm();
+  Future<void> addAddress(AddressModel address) async {
+    await executeWithLoading(() async {
+      final saved = await _userRepo.addAddress(address);
+      addresses.add(saved);
+      _clearForm();
+    });
   }
 
-  void updateAddress(AddressModel address) {
-    final idx = addresses.indexWhere((a) => a.id == address.id);
-    if (idx >= 0) {
-      addresses[idx] = address;
-    }
-    _clearForm();
+  Future<void> updateAddress(AddressModel address) async {
+    await executeWithLoading(() async {
+      final saved = await _userRepo.updateAddress(address);
+      final idx = addresses.indexWhere((a) => a.id == address.id);
+      if (idx >= 0) addresses[idx] = saved;
+      _clearForm();
+    });
   }
 
-  void deleteAddress(String id) {
-    addresses.removeWhere((a) => a.id == id);
+  Future<void> deleteAddress(String id) async {
+    await executeWithLoading(() async {
+      await _userRepo.deleteAddress(id);
+      addresses.removeWhere((a) => a.id == id);
+    });
   }
 
-  void setDefault(String id) {
-    for (var i = 0; i < addresses.length; i++) {
-      addresses[i] = addresses[i].copyWith(
-        isDefault: addresses[i].id == id,
-      );
-    }
+  Future<void> setDefault(String id) async {
+    final addr = addresses.firstWhereOrNull((a) => a.id == id);
+    if (addr == null) return;
+    await updateAddress(addr.copyWith(isDefault: true));
+    await loadAddresses();
   }
 
   void _clearForm() {
@@ -120,36 +129,5 @@ class AddressController extends BaseController {
     }
     selectedType.value = selectedType.value.isEmpty ? 'home' : selectedType.value;
     isDefault.value = true;
-  }
-
-  List<AddressModel> _getDummyAddresses() {
-    return [
-      AddressModel(
-        id: '1',
-        name: 'John Doe',
-        phone: '+919876543210',
-        addressLine1: '123, Green Valley Apartments',
-        addressLine2: 'Block B, 4th Floor',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        pincode: '400001',
-        landmark: 'Near City Mall',
-        type: 'home',
-        isDefault: true,
-      ),
-      AddressModel(
-        id: '2',
-        name: 'John Doe',
-        phone: '+919876543210',
-        addressLine1: '456, Tech Park',
-        addressLine2: 'Tower C, 10th Floor',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        pincode: '400051',
-        landmark: 'Near Metro Station',
-        type: 'office',
-        isDefault: false,
-      ),
-    ];
   }
 }

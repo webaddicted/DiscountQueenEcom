@@ -19,11 +19,17 @@ requires_db = pytest.mark.skipif(
 def test_list_banners() -> None:
     response = client.get("/api/v1/banners")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    body = response.json()
+    assert body["success"] is True
+    assert isinstance(body["data"], dict)
+    assert isinstance(body["data"]["items"], list)
 
 
 @requires_db
 def test_list_categories() -> None:
     response = client.get("/api/v1/categories")
     assert response.status_code == 200
-    assert isinstance(response.json(), list)
+    body = response.json()
+    assert body["success"] is True
+    assert isinstance(body["data"], dict)
+    assert isinstance(body["data"]["items"], list)

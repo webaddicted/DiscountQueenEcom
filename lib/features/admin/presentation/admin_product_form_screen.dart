@@ -184,7 +184,7 @@ class _AdminProductFormScreenState extends BaseState<AdminProductFormScreen> {
         isNewArrival: _newArrival,
         inStock: stock > 0,
       );
-      await repo.saveProduct(p);
+      await repo.saveProduct(p, existingId: _productId);
       showSuccess('Product saved', title: 'Saved');
       Get.back();
     } finally {

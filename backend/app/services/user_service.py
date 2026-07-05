@@ -61,6 +61,21 @@ class UserService:
         self.db.commit()
         return self.profile_out(user_id)
 
+    def register_profile(
+        self,
+        user_id: UUID,
+        *,
+        name: str,
+        email: str,
+        phone: str | None = None,
+    ) -> ProfileOut:
+        p = self.get_or_create_profile(user_id, email=email, name=name)
+        if phone:
+            p.phone = phone
+        self.db.commit()
+        self.db.refresh(p)
+        return self.profile_out(user_id, email=email)
+
     def list_addresses(self, user_id: UUID) -> list[AddressOut]:
         rows = self.db.scalars(
             select(EcomAddress).where(EcomAddress.user_id == user_id).order_by(EcomAddress.is_default.desc())

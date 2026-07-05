@@ -8,6 +8,7 @@ import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
+import 'package:portfolio/global/utils/main_tab_obx.dart';
 import 'package:portfolio/global/widgets/app_bar_widget.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
@@ -20,8 +21,17 @@ class WishlistPage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.put(WishlistController());
-    return Scaffold(
+    return Obx(() {
+      trackMainShellObx();
+      if (!Get.isRegistered<WishlistController>()) {
+        return Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(color: ColorConst.primaryColor),
+          ),
+        );
+      }
+      final controller = Get.find<WishlistController>();
+      return Scaffold(
       appBar: ResponsiveLayout.isMobile(context)
           ? null
           : const AppBarWidget(
@@ -56,6 +66,7 @@ class WishlistPage extends BaseStatelessWidget {
         );
       }),
     );
+    });
   }
 }
 

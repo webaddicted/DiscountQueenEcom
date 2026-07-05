@@ -216,6 +216,7 @@ class AuthRegisterIn(CamelModel):
     email: str
     password: str
     phone: str | None = None
+    user_id: UUID | None = None
 
 
 class MessageOut(CamelModel):

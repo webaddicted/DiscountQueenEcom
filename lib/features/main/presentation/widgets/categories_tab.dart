@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:portfolio/features/home/controller/home_controller.dart';
+import 'package:portfolio/features/main/controller/categories_controller.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
+import 'package:portfolio/global/utils/main_tab_obx.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
+import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
 import 'package:portfolio/features/home/domain/category_model.dart';
@@ -17,10 +19,8 @@ class CategoriesTab extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.find<HomeController>();
     final w = MediaQuery.of(context).size.width;
     final cols = w >= 1200 ? 6 : w >= 900 ? 5 : w >= 600 ? 4 : 3;
-
     final isMobile = ResponsiveLayout.isMobile(context);
 
     return Scaffold(
@@ -39,69 +39,90 @@ class CategoriesTab extends BaseStatelessWidget {
               backgroundColor: ColorConst.white,
               elevation: 0,
             ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: DesignTokens.spacing8,
-            ),
-            child: GestureDetector(
-              onTap: () => Get.toNamed(RoutersConst.search),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: DesignTokens.spacing12,
-                  vertical: DesignTokens.spacing8,
-                ),
-                decoration: BoxDecoration(
-                  color: ColorConst.colorFFF3F4F6,
-                  borderRadius:
-                      BorderRadius.circular(DesignTokens.radius12),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.search,
-                        size: 20, color: ColorConst.colorFF9CA3AF),
-                    const SizedBox(width: DesignTokens.spacing8),
-                    Text(
-                      StringConst.searchProducts,
-                      style: AppTextStyle.bodyMedium
-                          .copyWith(color: ColorConst.colorFF9CA3AF),
-                    ),
-                  ],
+      body: Obx(() {
+        trackMainShellObx();
+        if (!Get.isRegistered<CategoriesController>()) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final controller = Get.find<CategoriesController>();
+        if (controller.isLoadingRx.value && controller.categories.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: DesignTokens.spacing8,
+              ),
+              child: GestureDetector(
+                onTap: () => Get.toNamed(RoutersConst.search),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: DesignTokens.spacing12,
+                    vertical: DesignTokens.spacing8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ColorConst.colorFFF3F4F6,
+                    borderRadius:
+                        BorderRadius.circular(DesignTokens.radius12),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.search,
+                          size: 20, color: ColorConst.colorFF9CA3AF),
+                      const SizedBox(width: DesignTokens.spacing8),
+                      Text(
+                        StringConst.searchProducts,
+                        style: AppTextStyle.bodyMedium
+                            .copyWith(color: ColorConst.colorFF9CA3AF),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: DesignTokens.spacing8),
-          Expanded(
-            child: Obx(() {
-              if (controller.categories.isEmpty) {
-                return const EmptyWidget(
-                  message: StringConst.noDataFound,
-                  icon: Icons.category_outlined,
-                );
-              }
-              return GridView.builder(
-                padding: const EdgeInsets.all(DesignTokens.spacing8),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: cols,
-                  childAspectRatio: 0.85,
-                  crossAxisSpacing: DesignTokens.spacing8,
-                  mainAxisSpacing: DesignTokens.spacing8,
-                ),
-                itemCount: controller.categories.length,
-                itemBuilder: (context, index) {
-                  return _CategoryGridItem(
-                    category: controller.categories[index],
-                    onTap: () => controller
-                        .onCategoryTap(controller.categories[index]),
-                  );
-                },
-              );
-            }),
-          ),
-        ],
-      ),
+            const SizedBox(height: DesignTokens.spacing8),
+            Expanded(
+              child: controller.categories.isEmpty
+                  ? EmptyWidget(
+                      message: controller.isErrorRx.value
+                          ? controller.errorMessageRx.value
+                          : StringConst.noDataFound,
+                      icon: Icons.category_outlined,
+                      action: controller.isErrorRx.value
+                          ? GradientButton(
+                              onTap: () =>
+                                  controller.loadCategories(force: true),
+                              child: Text(
+                                StringConst.retry,
+                                style: AppTextStyle.buttonText
+                                    .copyWith(color: ColorConst.white),
+                              ),
+                            )
+                          : null,
+                    )
+                  : GridView.builder(
+                      padding:
+                          const EdgeInsets.all(DesignTokens.spacing8),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: cols,
+                        childAspectRatio: 0.85,
+                        crossAxisSpacing: DesignTokens.spacing8,
+                        mainAxisSpacing: DesignTokens.spacing8,
+                      ),
+                      itemCount: controller.categories.length,
+                      itemBuilder: (context, index) {
+                        return _CategoryGridItem(
+                          category: controller.categories[index],
+                          onTap: () => controller
+                              .onCategoryTap(controller.categories[index]),
+                        );
+                      },
+                    ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

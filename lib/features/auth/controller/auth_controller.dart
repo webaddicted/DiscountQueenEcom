@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:portfolio/features/auth/data/auth_repository.dart';
 import 'package:portfolio/global/base/base_controller.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
@@ -8,12 +9,9 @@ import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/global/utils/permission_utils.dart';
 import 'package:portfolio/global/utils/validation_utils.dart';
 
-bool _inferAdminFromEmail(String email) {
-  final e = email.trim().toLowerCase();
-  return e.startsWith('admin@');
-}
-
 class AuthController extends BaseController {
+  final _authRepo = Get.find<AuthRepository>();
+
   bool get isLoggedIn => SPManager.isLoggedIn();
 
   bool get isAdmin => SPManager.isUserAdmin();
@@ -60,7 +58,7 @@ class AuthController extends BaseController {
       nameController.text = 'Debug User';
     }
     if (emailController.text.trim().isEmpty) {
-      emailController.text = 'admin@kdebug.com';
+      emailController.text = 'aisha@example.com';
     }
     if (phoneController.text.trim().isEmpty) {
       phoneController.text = '9876543210';
@@ -81,13 +79,9 @@ class AuthController extends BaseController {
     if (!hasPermission) return;
 
     final success = await executeWithLoading(() async {
-      await Future.delayed(const Duration(milliseconds: 800));
-      final email = emailController.text.trim();
-      await SPManager.saveLoginDetails(
-        userId: 'user_${DateTime.now().millisecondsSinceEpoch}',
-        name: 'User',
-        email: email,
-        isAdmin: _inferAdminFromEmail(email),
+      await _authRepo.login(
+        email: emailController.text.trim(),
+        password: passwordController.text,
       );
       return true;
     });
@@ -111,13 +105,11 @@ class AuthController extends BaseController {
     if (!hasPermission) return;
 
     final success = await executeWithLoading(() async {
-      await Future.delayed(const Duration(milliseconds: 800));
-      final email = emailController.text.trim();
-      await SPManager.saveLoginDetails(
-        userId: 'user_${DateTime.now().millisecondsSinceEpoch}',
+      await _authRepo.register(
         name: nameController.text.trim(),
-        email: email,
-        isAdmin: _inferAdminFromEmail(email),
+        email: emailController.text.trim(),
+        password: passwordController.text,
+        phone: phoneController.text.trim(),
       );
       return true;
     });
@@ -152,7 +144,6 @@ class AuthController extends BaseController {
       return;
     }
     await executeWithLoading(() async {
-      await Future.delayed(const Duration(milliseconds: 500));
       Get.snackbar(
         StringConst.resetPassword,
         'Reset link sent to ${emailController.text.trim()}',

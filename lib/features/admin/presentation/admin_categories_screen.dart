@@ -107,7 +107,7 @@ class _AdminCategoriesScreenState extends BaseState<AdminCategoriesScreen> {
       sortOrder: so,
       isActive: active,
     );
-    await _repo.saveCategory(c);
+    await _repo.saveCategory(c, existingId: existing?.id);
     showSuccess('Category saved', title: 'Saved');
     _load();
   }

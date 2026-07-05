@@ -1,36 +1,15 @@
 import 'package:get/get.dart';
+import 'package:portfolio/features/cart/data/cart_repository.dart';
 import 'package:portfolio/global/base/base_controller.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
+import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/features/cart/domain/cart_model.dart';
 import 'package:portfolio/features/product/domain/product_model.dart';
 
 class CartController extends BaseController {
-  final cart = CartModel(
-    items: [
-      CartItemModel(
-        id: 'ci1',
-        productId: 'p1',
-        productName: 'Organic Cotton Baby Onesie',
-        productImage: 'https://picsum.photos/400/400?random=1',
-        price: 899,
-        mrp: 1299,
-        quantity: 2,
-        selectedSize: '0-3M',
-        selectedColor: 'Red',
-      ),
-      CartItemModel(
-        id: 'ci2',
-        productId: 'p2',
-        productName: 'Baby Feeding Bottle Set',
-        productImage: 'https://picsum.photos/400/400?random=4',
-        price: 599,
-        mrp: 799,
-        quantity: 1,
-        selectedSize: '',
-        selectedColor: '',
-      ),
-    ],
-  ).obs;
+  final _cartRepo = Get.find<CartRepository>();
+
+  final cart = CartModel().obs;
 
   int get totalItems => cart.value.totalItems;
   double get subtotal => cart.value.subtotal;
@@ -43,89 +22,67 @@ class CartController extends BaseController {
   double get totalSavings => cart.value.totalSavings;
   bool get isEmpty => cart.value.isEmpty;
 
-  void addToCart(
+  @override
+  void onControllerInit() {}
+
+  Future<void> refreshCart() async {
+    if (!SPManager.isLoggedIn()) return;
+    await executeSilently(() async {
+      cart.value = await _cartRepo.getCart();
+    });
+  }
+
+  Future<void> addToCart(
     ProductModel product, {
     int qty = 1,
     String size = '',
     String color = '',
-  }) {
-    final existingIndex = cart.value.items.indexWhere(
-      (i) =>
-          i.productId == product.id &&
-          i.selectedSize == size &&
-          i.selectedColor == color,
-    );
-    if (existingIndex >= 0) {
-      final item = cart.value.items[existingIndex];
-      updateQuantity(item.id, item.quantity + qty);
+  }) async {
+    if (!SPManager.isLoggedIn()) {
+      Get.snackbar('Login required', 'Please login to add items to cart');
       return;
     }
-    final newItem = CartItemModel(
-      id: 'ci_${DateTime.now().millisecondsSinceEpoch}',
-      productId: product.id,
-      productName: product.name,
-      productImage: product.displayImage,
-      price: product.price,
-      mrp: product.mrp,
-      quantity: qty,
-      selectedSize: size,
-      selectedColor: color,
-    );
-    cart.value = CartModel(
-      items: [...cart.value.items, newItem],
-      couponCode: cart.value.couponCode,
-      couponDiscount: cart.value.couponDiscount,
-    );
+    await executeSilently(() async {
+      cart.value = await _cartRepo.addToCart(
+        productId: product.id,
+        quantity: qty,
+        selectedSize: size,
+        selectedColor: color,
+      );
+    }, showErrorMessage: true);
   }
 
-  void removeFromCart(String itemId) {
-    cart.value = CartModel(
-      items: cart.value.items.where((i) => i.id != itemId).toList(),
-      couponCode: cart.value.couponCode,
-      couponDiscount: cart.value.couponDiscount,
-    );
+  Future<void> removeFromCart(String itemId) async {
+    await executeSilently(() async {
+      cart.value = await _cartRepo.removeFromCart(itemId);
+    }, showErrorMessage: true);
   }
 
-  void updateQuantity(String itemId, int qty) {
+  Future<void> updateQuantity(String itemId, int qty) async {
     if (qty < 1) {
-      removeFromCart(itemId);
+      await removeFromCart(itemId);
       return;
     }
-    cart.value = CartModel(
-      items: cart.value.items.map((i) {
-        if (i.id == itemId) return i.copyWith(quantity: qty);
-        return i;
-      }).toList(),
-      couponCode: cart.value.couponCode,
-      couponDiscount: cart.value.couponDiscount,
-    );
+    await executeSilently(() async {
+      cart.value = await _cartRepo.updateCartItem(itemId, qty);
+    }, showErrorMessage: true);
   }
 
-  void clearCart() {
-    cart.value = CartModel(items: []);
+  Future<void> clearCart() async {
+    await executeSilently(() async {
+      cart.value = await _cartRepo.clearCart();
+    }, showErrorMessage: true);
   }
 
-  void applyCoupon(String code) {
-    if (code.toUpperCase() == 'SAVE10') {
-      cart.value = CartModel(
-        items: cart.value.items,
-        couponCode: code,
-        couponDiscount: cart.value.subtotal * 0.1,
-      );
-    } else {
-      cart.value = CartModel(
-        items: cart.value.items,
-        couponCode: '',
-        couponDiscount: 0,
-      );
-    }
+  Future<void> applyCoupon(String code) async {
+    await executeSilently(() async {
+      cart.value = await _cartRepo.applyCoupon(code);
+    }, showErrorMessage: true);
   }
 
-  void removeCoupon() {
-    cart.value = CartModel(
-      items: cart.value.items,
-      couponCode: '',
-      couponDiscount: 0,
-    );
+  Future<void> removeCoupon() async {
+    await executeSilently(() async {
+      cart.value = await _cartRepo.removeCoupon();
+    }, showErrorMessage: true);
   }
 }
