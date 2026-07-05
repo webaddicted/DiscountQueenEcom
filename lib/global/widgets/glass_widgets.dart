@@ -32,13 +32,13 @@ class GlassContainer extends StatelessWidget {
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: backgroundColor ?? Colors.white.withOpacity(0.1),
+            color: backgroundColor ?? Colors.white.withValues(alpha: 0.1),
             gradient: gradientColors != null
                 ? LinearGradient(colors: gradientColors!)
                 : null,
             borderRadius: BorderRadius.circular(borderRadius),
             border: border ??
-                Border.all(color: Colors.white.withOpacity(0.2)),
+                Border.all(color: Colors.white.withValues(alpha: 0.2)),
           ),
           child: child,
         ),
@@ -193,7 +193,7 @@ class InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: backgroundColor ?? Colors.white.withOpacity(0.1),
+        color: backgroundColor ?? Colors.white.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
@@ -229,7 +229,7 @@ class BottomGradientContainer extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: gradientColors ??
-              [Colors.transparent, Colors.black.withOpacity(0.8)],
+              [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
         ),
       ),
       child: child,

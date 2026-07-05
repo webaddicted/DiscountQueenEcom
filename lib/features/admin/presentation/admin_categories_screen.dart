@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateful_widget.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/utils/dialog_utils.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
-import 'package:portfolio/model/category_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
 
-class AdminCategoriesScreen extends StatefulWidget {
+class AdminCategoriesScreen extends BaseStatefulWidget {
   const AdminCategoriesScreen({super.key});
 
   @override
-  State<AdminCategoriesScreen> createState() => _AdminCategoriesScreenState();
+  BaseState<AdminCategoriesScreen> createState() => _AdminCategoriesScreenState();
 }
 
-class _AdminCategoriesScreenState extends State<AdminCategoriesScreen> {
+class _AdminCategoriesScreenState extends BaseState<AdminCategoriesScreen> {
   final _repo = Get.find<AdminRepository>();
   List<CategoryModel> _list = [];
   var _loading = true;
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _load();
   }
 
@@ -127,7 +127,7 @@ class _AdminCategoriesScreenState extends State<AdminCategoriesScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminAccessGate(
       title: 'Categories',
       child: Scaffold(
@@ -150,7 +150,7 @@ class _AdminCategoriesScreenState extends State<AdminCategoriesScreen> {
             : ListView.separated(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
                 itemCount: _list.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, i) {
                   final c = _list[i];
                   return AdminTheme.card(

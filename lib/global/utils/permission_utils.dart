@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/utils/app_utils.dart';
 
 enum PermissionType {
@@ -327,12 +328,11 @@ class PermissionHelper {
   static void _showSettingsDialog(PermissionType? type, {String? customMessage}) {
     Get.dialog(
       AlertDialog(
-        title: const Text('Permission Required',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        title: Text('Permission Required', style: AppTextStyle.titleMedium),
         content: Text(
           customMessage ??
               'Please enable ${type?.name ?? ''} permission from Settings to use this feature.',
-          style: const TextStyle(fontSize: 14),
+          style: AppTextStyle.bodyMedium,
         ),
         actions: [
           TextButton(
@@ -376,12 +376,11 @@ class PermissionHelper {
           Icon(Icons.shield_outlined, size: 48, color: Get.theme.primaryColor),
           const SizedBox(height: 8),
           Text(info.title,
-              style:
-                  const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              style: AppTextStyle.headlineSmall,
               textAlign: TextAlign.center),
           const SizedBox(height: 8),
           Text(info.subtitle,
-              style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+              style: AppTextStyle.bodyMedium.copyWith(color: Colors.grey.shade600),
               textAlign: TextAlign.center),
           const SizedBox(height: 8),
           SizedBox(

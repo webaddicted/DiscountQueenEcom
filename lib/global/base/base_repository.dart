@@ -135,6 +135,8 @@ abstract class BaseRepository {
         case DioExceptionType.badCertificate: return 'Security certificate error.';
         case DioExceptionType.badResponse:
           return 'Error ${e.response?.statusCode ?? ''}: ${e.response?.statusMessage ?? 'Request failed'}';
+        case DioExceptionType.transformTimeout:
+          return 'Response processing timeout. Please try again.';
         case DioExceptionType.unknown:
           if (e.message?.contains('SocketException') == true) return 'No internet connection.';
           return 'Something went wrong. Please try again.';

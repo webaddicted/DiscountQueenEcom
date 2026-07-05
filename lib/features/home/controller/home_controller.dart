@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
-import 'package:portfolio/model/banner_model.dart';
-import 'package:portfolio/model/category_model.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/home/domain/banner_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class HomeController extends BaseController {
   final RxList<BannerModel> banners = <BannerModel>[].obs;

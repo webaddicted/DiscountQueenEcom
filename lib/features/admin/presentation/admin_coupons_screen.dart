@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateful_widget.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
-import 'package:portfolio/model/coupon_model.dart';
+import 'package:portfolio/features/admin/domain/coupon_model.dart';
 
-class AdminCouponsScreen extends StatefulWidget {
+class AdminCouponsScreen extends BaseStatefulWidget {
   const AdminCouponsScreen({super.key});
 
   @override
-  State<AdminCouponsScreen> createState() => _AdminCouponsScreenState();
+  BaseState<AdminCouponsScreen> createState() => _AdminCouponsScreenState();
 }
 
-class _AdminCouponsScreenState extends State<AdminCouponsScreen> {
+class _AdminCouponsScreenState extends BaseState<AdminCouponsScreen> {
   final _repo = Get.find<AdminRepository>();
   List<CouponModel> _list = [];
   var _loading = true;
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _load();
   }
 
@@ -38,7 +38,7 @@ class _AdminCouponsScreenState extends State<AdminCouponsScreen> {
   Future<void> _openForm([CouponModel? existing]) async {
     final code = TextEditingController(text: existing?.code ?? '');
     final pct = TextEditingController(text: '${existing?.discountPercent ?? 10}');
-    final max = TextEditingController(text: '${existing?.maxDiscount.toStringAsFixed(0) ?? '500'}');
+    final max = TextEditingController(text: existing?.maxDiscount.toStringAsFixed(0) ?? '500');
     var expiry = existing?.expiry ?? DateTime.now().add(const Duration(days: 30));
     var active = existing?.active ?? true;
     if (existing == null && kDebugMode) {
@@ -76,9 +76,9 @@ class _AdminCouponsScreenState extends State<AdminCouponsScreen> {
                   TextField(
                     controller: max,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Max discount (${AppConstant.currency})',
-                      border: const OutlineInputBorder(),
+                      border: OutlineInputBorder(),
                     ),
                   ),
                   ListTile(
@@ -144,7 +144,7 @@ class _AdminCouponsScreenState extends State<AdminCouponsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminAccessGate(
       title: 'Coupons',
       child: Scaffold(
@@ -167,7 +167,7 @@ class _AdminCouponsScreenState extends State<AdminCouponsScreen> {
             : ListView.separated(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
                 itemCount: _list.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, i) {
                   final c = _list[i];
                   return AdminTheme.card(

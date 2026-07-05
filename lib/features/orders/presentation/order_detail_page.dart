@@ -11,7 +11,7 @@ import 'package:portfolio/global/utils/dialog_utils.dart';
 import 'package:portfolio/global/widgets/app_bar_widget.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/order_model.dart';
+import 'package:portfolio/features/orders/domain/order_model.dart';
 
 class OrderDetailPage extends BaseStatelessWidget {
   const OrderDetailPage({super.key});
@@ -23,7 +23,7 @@ class OrderDetailPage extends BaseStatelessWidget {
     if (orderId != null) controller.loadOrderDetail(orderId);
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.orderDetails,
         showBack: true,
       ),
@@ -368,7 +368,7 @@ class _AddressCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.location_on_outlined,
+              const Icon(Icons.location_on_outlined,
                   size: 20, color: ColorConst.primaryColor),
               const SizedBox(width: DesignTokens.spacing8),
               Text(

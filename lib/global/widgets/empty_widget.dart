@@ -62,7 +62,7 @@ class NoDataPlaceholder extends StatelessWidget {
           ? TextButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: Text(StringConst.retry))
+              label: const Text(StringConst.retry))
           : null,
     );
   }
@@ -83,7 +83,7 @@ class ErrorStateWidget extends StatelessWidget {
           ? ElevatedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: Text(StringConst.retry))
+              label: const Text(StringConst.retry))
           : null,
     );
   }
@@ -104,7 +104,7 @@ class NoInternetWidget extends StatelessWidget {
           ? ElevatedButton.icon(
               onPressed: onRetry,
               icon: const Icon(Icons.refresh),
-              label: Text(StringConst.retry))
+              label: const Text(StringConst.retry))
           : null,
     );
   }

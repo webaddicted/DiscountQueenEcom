@@ -33,7 +33,7 @@ class EditProfilePage extends BaseStatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.editProfileTitle,
         showBack: true,
       ),
@@ -60,7 +60,7 @@ class EditProfilePage extends BaseStatelessWidget {
                           shape: BoxShape.circle,
                           boxShadow: DesignTokens.shadowSmall,
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.camera_alt,
                           size: 20,
                           color: ColorConst.white,

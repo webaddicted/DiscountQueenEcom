@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
-import 'package:portfolio/model/user_model.dart';
+import 'package:portfolio/features/auth/domain/user_model.dart';
 
 class ProfileController extends BaseController {
   final user = Rx<UserModel?>(null);

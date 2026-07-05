@@ -9,7 +9,7 @@ import 'package:portfolio/global/utils/web_url_helper.dart';
 class MainController extends BaseController {
   final currentIndex = 0.obs;
   final isWebSideMenuOpen = false.obs;
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _drawerCallbacks = <VoidCallback>{};
 
   final _titles = [
     StringConst.homeTitle,
@@ -61,7 +61,43 @@ class MainController extends BaseController {
     isWebSideMenuOpen.value = !isWebSideMenuOpen.value;
   }
 
+  void bindDrawer(VoidCallback openDrawer) {
+    _drawerCallbacks.add(openDrawer);
+  }
+
+  void unbindDrawer(VoidCallback openDrawer) {
+    _drawerCallbacks.remove(openDrawer);
+  }
+
   void openMobileDrawer() {
-    scaffoldKey.currentState?.openDrawer();
+    if (_drawerCallbacks.isEmpty) return;
+    _drawerCallbacks.last();
+  }
+
+  /// Switch bottom tab without stacking another [MainPage] (avoids duplicate GlobalKey).
+  void navigateToTab(int index) {
+    if (index < 0 || index >= RoutersConst.tabRoutes.length) return;
+    final target = RoutersConst.tabRoutes[index];
+
+    if (Get.isRegistered<MainController>()) {
+      final onTabShell = RoutersConst.tabRoutes.contains(Get.currentRoute) ||
+          Get.currentRoute == RoutersConst.main;
+      if (!onTabShell) {
+        Get.until((route) {
+          final name = route.settings.name;
+          return name != null &&
+              (RoutersConst.tabRoutes.contains(name) || name == RoutersConst.main);
+        });
+      }
+      if (currentIndex.value != index) {
+        currentIndex.value = index;
+      }
+      if (kIsWeb) {
+        WebUrlHelper.replaceUrl(target);
+      }
+      return;
+    }
+
+    Get.offAllNamed(target);
   }
 }

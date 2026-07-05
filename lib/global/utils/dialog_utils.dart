@@ -60,7 +60,7 @@ void showPermissionDialog({
 
 void showLoadingDialog({String message = 'Loading...'}) {
   Get.dialog(
-    PopScope(
+    const PopScope(
       canPop: false,
       child: Center(child: CircularProgressIndicator()),
     ),

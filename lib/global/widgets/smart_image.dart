@@ -128,9 +128,9 @@ class SmartImage extends StatelessWidget {
         color: color,
         colorBlendMode: colorBlendMode,
         fadeInDuration: const Duration(milliseconds: 300),
-        placeholder: (_, __) =>
+        placeholder: (_, _) =>
             placeholder ?? _defaultPlaceholder(),
-        errorWidget: (_, __, ___) =>
+        errorWidget: (_, _, _) =>
             errorWidget ?? _defaultError(),
       );
     } else if (_isFile) {
@@ -141,7 +141,7 @@ class SmartImage extends StatelessWidget {
         fit: fit,
         color: color,
         colorBlendMode: colorBlendMode,
-        errorBuilder: (_, __, ___) =>
+        errorBuilder: (_, _, _) =>
             errorWidget ?? _defaultError(),
       );
     } else {
@@ -152,7 +152,7 @@ class SmartImage extends StatelessWidget {
         fit: fit,
         color: color,
         colorBlendMode: colorBlendMode,
-        errorBuilder: (_, __, ___) =>
+        errorBuilder: (_, _, _) =>
             errorWidget ?? _defaultError(),
       );
     }

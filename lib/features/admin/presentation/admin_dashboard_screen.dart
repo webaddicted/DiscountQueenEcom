@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 
-class AdminDashboardScreen extends StatelessWidget {
+class AdminDashboardScreen extends BaseStatelessWidget {
   const AdminDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     final repo = Get.find<AdminRepository>();
     final cs = Theme.of(context).colorScheme;
 
@@ -92,7 +93,7 @@ class AdminDashboardScreen extends StatelessWidget {
   }
 }
 
-class _StatCard extends StatelessWidget {
+class _StatCard extends BaseStatelessWidget {
   const _StatCard({
     required this.label,
     required this.value,
@@ -108,7 +109,7 @@ class _StatCard extends StatelessWidget {
   final Color iconColor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return Container(
       decoration: AdminTheme.cardDecoration(context),
       child: Padding(

@@ -9,7 +9,7 @@ import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/app_bar_widget.dart';
 import 'package:portfolio/global/widgets/custom_text_field.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
-import 'package:portfolio/model/address_model.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
 
 class AddAddressPage extends BaseStatelessWidget {
   const AddAddressPage({super.key});
@@ -19,7 +19,7 @@ class AddAddressPage extends BaseStatelessWidget {
     final controller = Get.put(AddressController());
     controller.applyDebugDefaultsIfNeeded();
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.addNewAddress,
         showBack: true,
       ),
@@ -172,7 +172,7 @@ class _TypeChip extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: isSelected
-              ? ColorConst.primaryColor.withOpacity(0.2)
+              ? ColorConst.primaryColor.withValues(alpha: 0.2)
               : Colors.grey.shade200,
           borderRadius: BorderRadius.circular(DesignTokens.radius8),
           border: isSelected

@@ -14,7 +14,7 @@ class ColorUtils {
   }
 
   static Color withOpacity(Color color, double opacity) =>
-      color.withOpacity(opacity);
+      color.withValues(alpha: opacity);
 
   static Color fromHex(String hex) {
     hex = hex.replaceAll('#', '').replaceAll('0x', '');
@@ -24,7 +24,7 @@ class ColorUtils {
 
   static String toHex(Color color, {bool withHash = true}) {
     final hex =
-        color.value.toRadixString(16).padLeft(8, '0').toUpperCase();
+        color.toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase();
     return withHash ? '#$hex' : hex;
   }
 }

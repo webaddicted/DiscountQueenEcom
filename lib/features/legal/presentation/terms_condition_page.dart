@@ -11,7 +11,7 @@ class TermsConditionPage extends BaseStatelessWidget {
   @override
   Widget initBuild(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.termsTitle,
         showBack: true,
       ),

@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
-import 'package:portfolio/model/cart_model.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/cart/domain/cart_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class CartController extends BaseController {
   final cart = CartModel(

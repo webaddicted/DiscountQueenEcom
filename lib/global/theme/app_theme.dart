@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/global/constant/color_const.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 
 class DesignTokens {
   DesignTokens._();
@@ -37,19 +38,19 @@ class DesignTokens {
   // Shadows
   static List<BoxShadow> get shadowSmall => [
         BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 2)),
       ];
   static List<BoxShadow> get shadowMedium => [
         BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 16,
             offset: const Offset(0, 4)),
       ];
   static List<BoxShadow> get shadowLarge => [
         BoxShadow(
-            color: Colors.black.withOpacity(0.12),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 24,
             offset: const Offset(0, 8)),
       ];
@@ -82,6 +83,26 @@ class DesignTokens {
   );
 }
 
+TextTheme _buildAppTextTheme() {
+  return TextTheme(
+    displayLarge: AppTextStyle.displayLarge,
+    displayMedium: AppTextStyle.displayMedium,
+    displaySmall: AppTextStyle.displaySmall,
+    headlineLarge: AppTextStyle.headlineLarge,
+    headlineMedium: AppTextStyle.headlineMedium,
+    headlineSmall: AppTextStyle.headlineSmall,
+    titleLarge: AppTextStyle.titleLarge,
+    titleMedium: AppTextStyle.titleMedium,
+    titleSmall: AppTextStyle.titleSmall,
+    bodyLarge: AppTextStyle.bodyLarge,
+    bodyMedium: AppTextStyle.bodyMedium,
+    bodySmall: AppTextStyle.bodySmall,
+    labelLarge: AppTextStyle.labelLarge,
+    labelMedium: AppTextStyle.labelMedium,
+    labelSmall: AppTextStyle.labelSmall,
+  );
+}
+
 ThemeData lightThemeData(BuildContext context) {
   return ThemeData(
     useMaterial3: true,
@@ -90,7 +111,8 @@ ThemeData lightThemeData(BuildContext context) {
     scaffoldBackgroundColor: LightColors.scaffoldBgColor,
     canvasColor: Colors.white,
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    colorScheme: ColorScheme.light(
+    textTheme: _buildAppTextTheme(),
+    colorScheme: const ColorScheme.light(
       primary: ColorConst.primaryColor,
       secondary: ColorConst.secondaryColor,
       surface: ColorConst.colorFFFFFFFF,
@@ -101,10 +123,9 @@ ThemeData lightThemeData(BuildContext context) {
       centerTitle: true,
       backgroundColor: Colors.transparent,
       foregroundColor: ColorConst.colorFF000000,
-      titleTextStyle: TextStyle(
-          color: ColorConst.colorFF000000,
-          fontSize: 18,
-          fontWeight: FontWeight.w600),
+      titleTextStyle: AppTextStyle.titleMedium.copyWith(
+        color: ColorConst.colorFF000000,
+      ),
       iconTheme: const IconThemeData(color: ColorConst.colorFF000000),
     ),
     cardTheme: CardThemeData(
@@ -112,7 +133,7 @@ ThemeData lightThemeData(BuildContext context) {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(DesignTokens.radius16)),
       color: ColorConst.colorFFFFFFFF,
-      shadowColor: Colors.black.withOpacity(0.08),
+      shadowColor: Colors.black.withValues(alpha: 0.08),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -124,28 +145,25 @@ ThemeData lightThemeData(BuildContext context) {
         padding: const EdgeInsets.symmetric(
             horizontal: DesignTokens.spacing24,
             vertical: DesignTokens.spacing16),
-        textStyle:
-            const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: AppTextStyle.buttonText,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: ColorConst.primaryColor,
-        side: BorderSide(color: ColorConst.primaryColor, width: 1.5),
+        side: const BorderSide(color: ColorConst.primaryColor, width: 1.5),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(DesignTokens.radius12)),
         padding: const EdgeInsets.symmetric(
             horizontal: DesignTokens.spacing24,
             vertical: DesignTokens.spacing16),
-        textStyle:
-            const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: AppTextStyle.buttonText,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: ColorConst.primaryColor,
-        textStyle:
-            const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: AppTextStyle.buttonText,
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -163,17 +181,19 @@ ThemeData lightThemeData(BuildContext context) {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
-        borderSide: BorderSide(color: ColorConst.primaryColor, width: 2),
+        borderSide: const BorderSide(color: ColorConst.primaryColor, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
         borderSide: BorderSide(color: Colors.red.shade400),
       ),
-      hintStyle: TextStyle(color: Colors.grey.shade500, fontSize: 16),
+      hintStyle: AppTextStyle.inputHint.copyWith(color: Colors.grey.shade500),
     ),
     tabBarTheme: TabBarThemeData(
       labelColor: Colors.black,
       unselectedLabelColor: Colors.grey,
+      labelStyle: AppTextStyle.labelLarge,
+      unselectedLabelStyle: AppTextStyle.labelMedium,
       indicatorSize: TabBarIndicatorSize.tab,
       indicator: UnderlineTabIndicator(
         borderSide: BorderSide(width: 2, color: ColorConst.primaryColor),
@@ -192,7 +212,8 @@ ThemeData darkThemeData(BuildContext context) {
     scaffoldBackgroundColor: DarkColors.scaffoldBgColor,
     canvasColor: DarkColors.sheetBgColor,
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    colorScheme: ColorScheme.dark(
+    textTheme: _buildAppTextTheme(),
+    colorScheme: const ColorScheme.dark(
       primary: ColorConst.primaryColor,
       secondary: ColorConst.secondaryColor,
       surface: DarkColors.sheetBgColor,
@@ -203,10 +224,9 @@ ThemeData darkThemeData(BuildContext context) {
       centerTitle: true,
       backgroundColor: Colors.transparent,
       foregroundColor: ColorConst.colorFFFFFFFF,
-      titleTextStyle: TextStyle(
-          color: ColorConst.colorFFFFFFFF,
-          fontSize: 18,
-          fontWeight: FontWeight.w600),
+      titleTextStyle: AppTextStyle.titleMedium.copyWith(
+        color: ColorConst.colorFFFFFFFF,
+      ),
       iconTheme: const IconThemeData(color: ColorConst.colorFFFFFFFF),
     ),
     cardTheme: CardThemeData(
@@ -214,7 +234,7 @@ ThemeData darkThemeData(BuildContext context) {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(DesignTokens.radius16)),
       color: DarkColors.sheetBgColor,
-      shadowColor: Colors.black.withOpacity(0.3),
+      shadowColor: Colors.black.withValues(alpha: 0.3),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -226,28 +246,25 @@ ThemeData darkThemeData(BuildContext context) {
         padding: const EdgeInsets.symmetric(
             horizontal: DesignTokens.spacing24,
             vertical: DesignTokens.spacing16),
-        textStyle:
-            const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: AppTextStyle.buttonText,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: ColorConst.primaryColor,
-        side: BorderSide(color: ColorConst.primaryColor, width: 1.5),
+        side: const BorderSide(color: ColorConst.primaryColor, width: 1.5),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(DesignTokens.radius12)),
         padding: const EdgeInsets.symmetric(
             horizontal: DesignTokens.spacing24,
             vertical: DesignTokens.spacing16),
-        textStyle:
-            const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: AppTextStyle.buttonText,
       ),
     ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         foregroundColor: ColorConst.primaryColor,
-        textStyle:
-            const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        textStyle: AppTextStyle.buttonText,
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -265,18 +282,20 @@ ThemeData darkThemeData(BuildContext context) {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
-        borderSide: BorderSide(color: ColorConst.primaryColor, width: 2),
+        borderSide: const BorderSide(color: ColorConst.primaryColor, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
         borderSide: BorderSide(color: Colors.red.shade400),
       ),
-      hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 16),
+      hintStyle: AppTextStyle.inputHint.copyWith(color: Colors.grey.shade400),
     ),
     tabBarTheme: TabBarThemeData(
       indicatorColor: Colors.white,
       labelColor: Colors.white,
       unselectedLabelColor: Colors.grey.shade400,
+      labelStyle: AppTextStyle.labelLarge,
+      unselectedLabelStyle: AppTextStyle.labelMedium,
     ),
     dividerTheme:
         DividerThemeData(color: Colors.grey.shade800, thickness: 1),

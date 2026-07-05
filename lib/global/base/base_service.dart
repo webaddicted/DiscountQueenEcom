@@ -18,7 +18,7 @@ abstract class BaseService extends GetxService {
   void onServiceClose() {}
   @protected
   void onInitError(Exception e) {
-    printError('${runtimeType.toString()}', 'initialization failed: $e');
+    printError(runtimeType.toString(), 'initialization failed: $e');
   }
 
   @override
@@ -68,11 +68,11 @@ abstract class BaseService extends GetxService {
   }
 
   void logDebug(String message) {
-    if (kDebugMode) printLog('${runtimeType.toString()}', message);
+    if (kDebugMode) printLog(runtimeType.toString(), message);
   }
 
   void logError(String message, [Object? error]) {
-    printError('${runtimeType.toString()}', '$message ${error ?? ''}');
+    printError(runtimeType.toString(), '$message ${error ?? ''}');
   }
 }
 

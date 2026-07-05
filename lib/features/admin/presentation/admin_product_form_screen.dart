@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateful_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
-import 'package:portfolio/model/category_model.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
-class AdminProductFormScreen extends StatefulWidget {
+class AdminProductFormScreen extends BaseStatefulWidget {
   const AdminProductFormScreen({super.key});
 
   @override
-  State<AdminProductFormScreen> createState() => _AdminProductFormScreenState();
+  BaseState<AdminProductFormScreen> createState() => _AdminProductFormScreenState();
 }
 
-class _AdminProductFormScreenState extends State<AdminProductFormScreen> {
+class _AdminProductFormScreenState extends BaseState<AdminProductFormScreen> {
   final _name = TextEditingController();
   final _desc = TextEditingController();
   final _shortDesc = TextEditingController();
@@ -43,8 +44,7 @@ class _AdminProductFormScreenState extends State<AdminProductFormScreen> {
   var _newArrival = false;
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _productId = Get.arguments as String?;
     _bootstrap();
   }
@@ -63,8 +63,8 @@ class _AdminProductFormScreenState extends State<AdminProductFormScreen> {
         _name.text = p.name;
         _desc.text = p.description;
         _shortDesc.text = p.shortDescription;
-        _price.text = '${p.price.toStringAsFixed(0)}';
-        _mrp.text = '${p.mrp.toStringAsFixed(0)}';
+        _price.text = p.price.toStringAsFixed(0);
+        _mrp.text = p.mrp.toStringAsFixed(0);
         _discount.text = '${p.discountPercent}';
         _stock.text = '${p.stockQty}';
         _images.text = p.images.join(', ');
@@ -193,7 +193,7 @@ class _AdminProductFormScreenState extends State<AdminProductFormScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminAccessGate(
       title: 'Product',
       child: Scaffold(

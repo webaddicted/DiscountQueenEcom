@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/global/constant/color_const.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -28,7 +29,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: useGradientTitle ? _buildGradientTitle() : Text(title),
+      title: useGradientTitle ? _buildGradientTitle() : Text(title, style: AppTextStyle.titleMedium),
       centerTitle: centerTitle,
       backgroundColor: backgroundColor ?? Colors.transparent,
       elevation: 0,
@@ -53,10 +54,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         colors: [ColorConst.primaryColor, ColorConst.secondaryColor],
       ).createShader(bounds),
       child: Text(title,
-          style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w600)),
+          style: AppTextStyle.titleMedium.copyWith(color: Colors.white)),
     );
   }
 
@@ -100,14 +98,10 @@ class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
               colors: [ColorConst.primaryColor, ColorConst.accentColor],
             ).createShader(bounds),
             child: Text(title,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600)),
+                style: AppTextStyle.titleMedium.copyWith(color: Colors.white)),
           ),
           if (subtitle != null)
-            Text(subtitle!,
-                style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+            Text(subtitle!, style: AppTextStyle.bodySmall.copyWith(color: Colors.grey.shade600)),
         ],
       ),
       actions: actions,

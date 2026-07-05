@@ -20,7 +20,7 @@ class SplashPage extends BaseStatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -46,13 +46,13 @@ class SplashPage extends BaseStatelessWidget {
                       child: child,
                     );
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.child_care,
                     size: 80,
                     color: ColorConst.white,
                   ),
                 ),
-                SizedBox(height: DesignTokens.spacing16),
+                const SizedBox(height: DesignTokens.spacing16),
                 TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: 1),
                   duration: const Duration(milliseconds: 600),
@@ -64,7 +64,7 @@ class SplashPage extends BaseStatelessWidget {
                     );
                   },
                   child: ShaderMask(
-                    shaderCallback: (bounds) => LinearGradient(
+                    shaderCallback: (bounds) => const LinearGradient(
                       colors: [
                         ColorConst.white,
                         ColorConst.colorFF22D3EE,
@@ -81,7 +81,7 @@ class SplashPage extends BaseStatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: DesignTokens.spacing8),
+                const SizedBox(height: DesignTokens.spacing8),
                 TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: 1),
                   duration: const Duration(milliseconds: 800),

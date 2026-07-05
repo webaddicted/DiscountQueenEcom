@@ -1,11 +1,10 @@
+import 'package:portfolio/global/base/base_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
 
-class ThemeController extends GetxController {
-  static ThemeController get to => Get.find();
-
+class ThemeController extends BaseController {
   bool isDarkMode = SPManager.getTheme();
   final isDark = false.obs;
 

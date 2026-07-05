@@ -10,7 +10,7 @@ import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/category_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
 
 class CategoriesTab extends BaseStatelessWidget {
   const CategoriesTab({super.key});

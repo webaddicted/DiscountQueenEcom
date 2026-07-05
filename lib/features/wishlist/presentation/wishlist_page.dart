@@ -5,7 +5,6 @@ import 'package:portfolio/features/wishlist/controller/wishlist_controller.dart'
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
-import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
@@ -14,7 +13,7 @@ import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class WishlistPage extends BaseStatelessWidget {
   const WishlistPage({super.key});
@@ -25,13 +24,13 @@ class WishlistPage extends BaseStatelessWidget {
     return Scaffold(
       appBar: ResponsiveLayout.isMobile(context)
           ? null
-          : AppBarWidget(
+          : const AppBarWidget(
               title: StringConst.wishlistTitle,
               showBack: !kIsWeb,
             ),
       body: Obx(() {
         if (controller.wishlistItems.isEmpty) {
-          return EmptyWidget(
+          return const EmptyWidget(
             message: StringConst.wishlistEmpty,
             subtitle: StringConst.wishlistEmptySubtitle,
             icon: Icons.favorite_border,
@@ -85,7 +84,7 @@ class _WishlistProductCard extends StatelessWidget {
           color: ColorConst.colorFFEF4444,
           borderRadius: BorderRadius.circular(DesignTokens.radius12),
         ),
-        child: Icon(
+        child: const Icon(
           Icons.delete_outline,
           color: ColorConst.white,
           size: 28,
@@ -130,7 +129,7 @@ class _WishlistProductCard extends StatelessWidget {
                           shape: BoxShape.circle,
                           boxShadow: DesignTokens.shadowSmall,
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.favorite,
                           size: 20,
                           color: ColorConst.colorFFEF4444,

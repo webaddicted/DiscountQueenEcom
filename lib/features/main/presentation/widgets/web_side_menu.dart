@@ -92,7 +92,7 @@ class WebSideMenu extends StatelessWidget {
       width: inDrawer ? double.infinity : 260,
       decoration: BoxDecoration(
         color: ColorConst.white,
-        border: Border(
+        border: const Border(
           right: BorderSide(color: ColorConst.colorFFE5E7EB),
         ),
         boxShadow: [

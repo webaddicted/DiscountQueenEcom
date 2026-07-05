@@ -4,7 +4,7 @@ import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/category_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
 import 'package:portfolio/features/home/presentation/widgets/section_header.dart';
 
 class CategorySection extends StatelessWidget {
@@ -99,7 +99,7 @@ class CategorySection extends StatelessWidget {
         padding:
             const EdgeInsets.symmetric(horizontal: DesignTokens.spacing8),
         itemCount: categories.length,
-        separatorBuilder: (_, __) => SizedBox(
+        separatorBuilder: (_, _) => SizedBox(
           width: isWeb ? DesignTokens.spacing16 : DesignTokens.spacing8,
         ),
         itemBuilder: (context, index) {

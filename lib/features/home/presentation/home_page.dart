@@ -123,18 +123,6 @@ class HomePage extends BaseStatelessWidget {
     );
   }
 
-  Widget _buildWebCenteredSection({required Widget child}) {
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1280),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: DesignTokens.spacing8),
-          child: child,
-        ),
-      ),
-    );
-  }
-
   Widget _buildWebColoredSection({
     required Color color,
     required Widget child,
@@ -280,7 +268,6 @@ class HomePage extends BaseStatelessWidget {
                   color: mainController.isWebSideMenuOpen.value
                       ? ColorConst.primaryColor
                       : ColorConst.white,
-                  fontSize: 14,
                 ),
               ),
             ],

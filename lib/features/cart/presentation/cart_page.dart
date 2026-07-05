@@ -14,7 +14,7 @@ import 'package:portfolio/global/widgets/responsive_layout.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
 import 'package:portfolio/global/widgets/custom_text_field.dart';
 import 'package:portfolio/features/cart/controller/cart_controller.dart';
-import 'package:portfolio/model/cart_model.dart';
+import 'package:portfolio/features/cart/domain/cart_model.dart';
 
 class CartPage extends BaseStatelessWidget {
   const CartPage({super.key});
@@ -70,10 +70,10 @@ class CartPage extends BaseStatelessWidget {
           children: [
             Expanded(
               child: ListView(
-                padding: EdgeInsets.all(DesignTokens.spacing8),
+                padding: const EdgeInsets.all(DesignTokens.spacing8),
                 children: [
                   _buildFreeDeliveryProgress(context, controller),
-                  SizedBox(height: DesignTokens.spacing8),
+                  const SizedBox(height: DesignTokens.spacing8),
                   ...controller.cart.value.items.map(
                     (item) => _CartItemTile(
                       item: item,
@@ -82,13 +82,13 @@ class CartPage extends BaseStatelessWidget {
                           controller.updateQuantity(item.id, qty),
                     ),
                   ),
-                  SizedBox(height: DesignTokens.spacing8),
+                  const SizedBox(height: DesignTokens.spacing8),
                   _buildCouponSection(
                     context,
                     controller,
                     couponController,
                   ),
-                  SizedBox(height: DesignTokens.spacing8),
+                  const SizedBox(height: DesignTokens.spacing8),
                   _buildPriceBreakdown(context, controller),
                 ],
               ),
@@ -103,14 +103,14 @@ class CartPage extends BaseStatelessWidget {
   Widget _buildFreeDeliveryProgress(
       BuildContext context, CartController controller) {
     final subtotal = controller.subtotal;
-    final threshold = AppConstant.freeDeliveryThreshold;
+    const threshold = AppConstant.freeDeliveryThreshold;
     if (subtotal >= threshold) return const SizedBox();
     final progress = (subtotal / threshold).clamp(0.0, 1.0);
 
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
-        color: ColorConst.colorFF10B981.withOpacity(0.1),
+        color: ColorConst.colorFF10B981.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(DesignTokens.radius8),
       ),
       child: Column(
@@ -134,7 +134,7 @@ class CartPage extends BaseStatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: DesignTokens.spacing4),
+          const SizedBox(height: DesignTokens.spacing4),
           ClipRRect(
             borderRadius: BorderRadius.circular(DesignTokens.radius4),
             child: LinearProgressIndicator(
@@ -156,7 +156,7 @@ class CartPage extends BaseStatelessWidget {
     return Obx(() {
       final hasCoupon = controller.cart.value.couponCode.isNotEmpty;
       return Container(
-        padding: EdgeInsets.all(DesignTokens.spacing8),
+        padding: const EdgeInsets.all(DesignTokens.spacing8),
         decoration: BoxDecoration(
           border: Border.all(color: ColorConst.colorFFE5E7EB),
           borderRadius: BorderRadius.circular(DesignTokens.radius8),
@@ -185,7 +185,7 @@ class CartPage extends BaseStatelessWidget {
                       hint: StringConst.couponCode,
                     ),
                   ),
-                  SizedBox(width: DesignTokens.spacing8),
+                  const SizedBox(width: DesignTokens.spacing8),
                   GradientButton(
                     onTap: () {
                       controller.applyCoupon(couponController.text.trim());
@@ -206,7 +206,7 @@ class CartPage extends BaseStatelessWidget {
   Widget _buildPriceBreakdown(
       BuildContext context, CartController controller) {
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
@@ -231,7 +231,7 @@ class CartPage extends BaseStatelessWidget {
                   '-${AppConstant.currency}${controller.cart.value.couponDiscount.toStringAsFixed(0)}',
               valueColor: ColorConst.colorFF059669,
             ),
-          Divider(color: ColorConst.colorFFE5E7EB),
+          const Divider(color: ColorConst.colorFFE5E7EB),
           _PriceRow(
             label: StringConst.total,
             value: '${AppConstant.currency}${controller.total.toStringAsFixed(0)}',
@@ -244,7 +244,7 @@ class CartPage extends BaseStatelessWidget {
 
   Widget _buildBottomBar(BuildContext context, CartController controller) {
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: DesignTokens.shadowMedium,
@@ -283,13 +283,13 @@ class _CartItemTile extends StatelessWidget {
       onDismissed: (_) => onRemove(),
       background: Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: DesignTokens.spacing16),
+        padding: const EdgeInsets.only(right: DesignTokens.spacing16),
         color: ColorConst.colorFFEF4444,
-        child: Icon(Icons.delete_outline, color: ColorConst.white, size: 28),
+        child: const Icon(Icons.delete_outline, color: ColorConst.white, size: 28),
       ),
       child: Container(
-        margin: EdgeInsets.only(bottom: DesignTokens.spacing8),
-        padding: EdgeInsets.all(DesignTokens.spacing8),
+        margin: const EdgeInsets.only(bottom: DesignTokens.spacing8),
+        padding: const EdgeInsets.all(DesignTokens.spacing8),
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
           borderRadius: BorderRadius.circular(DesignTokens.radius12),
@@ -304,7 +304,7 @@ class _CartItemTile extends StatelessWidget {
               height: 80,
               borderRadius: DesignTokens.radius8,
             ),
-            SizedBox(width: DesignTokens.spacing8),
+            const SizedBox(width: DesignTokens.spacing8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,7 +315,7 @@ class _CartItemTile extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: DesignTokens.spacing4),
+                  const SizedBox(height: DesignTokens.spacing4),
                   Text(
                     '${AppConstant.currency}${item.price.toInt()}',
                     style: AppTextStyle.labelMedium.copyWith(
@@ -325,7 +325,7 @@ class _CartItemTile extends StatelessWidget {
                   ),
                   if (item.selectedSize.isNotEmpty || item.selectedColor.isNotEmpty)
                     Padding(
-                      padding: EdgeInsets.only(top: DesignTokens.spacing4),
+                      padding: const EdgeInsets.only(top: DesignTokens.spacing4),
                       child: Text(
                         [
                           if (item.selectedSize.isNotEmpty)
@@ -338,7 +338,7 @@ class _CartItemTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                  SizedBox(height: DesignTokens.spacing8),
+                  const SizedBox(height: DesignTokens.spacing8),
                   Row(
                     children: [
                       Container(
@@ -351,14 +351,14 @@ class _CartItemTile extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.remove, size: 18),
+                              icon: const Icon(Icons.remove, size: 18),
                               onPressed: () =>
                                   onQuantityChanged(item.quantity - 1),
-                              padding: EdgeInsets.all(DesignTokens.spacing4),
+                              padding: const EdgeInsets.all(DesignTokens.spacing4),
                               constraints: const BoxConstraints(),
                             ),
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: DesignTokens.spacing8),
                               child: Text(
                                 '${item.quantity}',
@@ -366,10 +366,10 @@ class _CartItemTile extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              icon: Icon(Icons.add, size: 18),
+                              icon: const Icon(Icons.add, size: 18),
                               onPressed: () =>
                                   onQuantityChanged(item.quantity + 1),
-                              padding: EdgeInsets.all(DesignTokens.spacing4),
+                              padding: const EdgeInsets.all(DesignTokens.spacing4),
                               constraints: const BoxConstraints(),
                             ),
                           ],
@@ -377,7 +377,7 @@ class _CartItemTile extends StatelessWidget {
                       ),
                       const Spacer(),
                       IconButton(
-                        icon: Icon(Icons.delete_outline,
+                        icon: const Icon(Icons.delete_outline,
                             size: 20, color: ColorConst.colorFFEF4444),
                         onPressed: onRemove,
                       ),
@@ -409,7 +409,7 @@ class _PriceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: DesignTokens.spacing4),
+      padding: const EdgeInsets.symmetric(vertical: DesignTokens.spacing4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

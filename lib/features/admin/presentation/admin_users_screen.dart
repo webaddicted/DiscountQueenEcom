@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateful_widget.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
-import 'package:portfolio/model/user_model.dart';
+import 'package:portfolio/features/auth/domain/user_model.dart';
 
-class AdminUsersScreen extends StatefulWidget {
+class AdminUsersScreen extends BaseStatefulWidget {
   const AdminUsersScreen({super.key});
 
   @override
-  State<AdminUsersScreen> createState() => _AdminUsersScreenState();
+  BaseState<AdminUsersScreen> createState() => _AdminUsersScreenState();
 }
 
-class _AdminUsersScreenState extends State<AdminUsersScreen> {
+class _AdminUsersScreenState extends BaseState<AdminUsersScreen> {
   final _repo = Get.find<AdminRepository>();
   List<UserModel> _list = [];
   var _loading = true;
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _load();
   }
 
@@ -37,7 +37,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminAccessGate(
       title: 'Users',
       child: Scaffold(
@@ -56,7 +56,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
             : ListView.separated(
                 padding: const EdgeInsets.all(DesignTokens.spacing16),
                 itemCount: _list.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
                 itemBuilder: (context, i) {
                   final u = _list[i];
                   return _UserCard(
@@ -71,7 +71,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   }
 }
 
-class _UserCard extends StatefulWidget {
+class _UserCard extends BaseStatefulWidget {
   const _UserCard({
     required this.user,
     required this.onSaved,
@@ -83,18 +83,17 @@ class _UserCard extends StatefulWidget {
   final AdminRepository repo;
 
   @override
-  State<_UserCard> createState() => _UserCardState();
+  BaseState<_UserCard> createState() => _UserCardState();
 }
 
-class _UserCardState extends State<_UserCard> {
+class _UserCardState extends BaseState<_UserCard> {
   late bool _admin;
   late bool _blocked;
   late final TextEditingController _reason;
   var _saving = false;
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _admin = widget.user.isAdmin;
     _blocked = widget.user.isBlocked;
     _reason = TextEditingController(text: widget.user.blockReason ?? '');
@@ -131,7 +130,7 @@ class _UserCardState extends State<_UserCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminTheme.card(
       context: context,
       padding: const EdgeInsets.all(DesignTokens.spacing16),
@@ -144,7 +143,7 @@ class _UserCardState extends State<_UserCard> {
                 backgroundColor: AdminTheme.accentMint.withValues(alpha: 0.15),
                 child: Text(
                   widget.user.name.isNotEmpty ? widget.user.name[0].toUpperCase() : '?',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     color: AdminTheme.accentMint,
                   ),

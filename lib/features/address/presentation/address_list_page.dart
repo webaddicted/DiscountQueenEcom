@@ -10,7 +10,7 @@ import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/utils/dialog_utils.dart';
 import 'package:portfolio/global/widgets/app_bar_widget.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
-import 'package:portfolio/model/address_model.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
 
 class AddressListPage extends BaseStatelessWidget {
   const AddressListPage({super.key});
@@ -19,7 +19,7 @@ class AddressListPage extends BaseStatelessWidget {
   Widget initBuild(BuildContext context) {
     final controller = Get.put(AddressController());
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.addressTitle,
         showBack: true,
       ),
@@ -32,14 +32,14 @@ class AddressListPage extends BaseStatelessWidget {
             action: TextButton.icon(
               onPressed: () => Get.toNamed(RoutersConst.addAddress),
               icon: const Icon(Icons.add),
-              label: Text(StringConst.addNewAddress),
+              label: const Text(StringConst.addNewAddress),
             ),
           );
         }
         return ListView.separated(
           padding: const EdgeInsets.all(DesignTokens.spacing8),
           itemCount: controller.addresses.length,
-          separatorBuilder: (_, __) => const SizedBox(height: DesignTokens.spacing8),
+          separatorBuilder: (_, _) => const SizedBox(height: DesignTokens.spacing8),
           itemBuilder: (_, i) => _AddressCard(
             address: controller.addresses[i],
             onEdit: () {
@@ -64,7 +64,7 @@ class AddressListPage extends BaseStatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Get.toNamed(RoutersConst.addAddress),
         icon: const Icon(Icons.add),
-        label: Text(StringConst.addNewAddress),
+        label: const Text(StringConst.addNewAddress),
         backgroundColor: ColorConst.primaryColor,
       ),
     );
@@ -116,7 +116,7 @@ class _AddressCard extends StatelessWidget {
                     vertical: DesignTokens.spacing4,
                   ),
                   decoration: BoxDecoration(
-                    color: ColorConst.colorFF10B981.withOpacity(0.2),
+                    color: ColorConst.colorFF10B981.withValues(alpha: 0.2),
                     borderRadius:
                         BorderRadius.circular(DesignTokens.radiusCircular),
                   ),
@@ -145,7 +145,7 @@ class _AddressCard extends StatelessWidget {
           const SizedBox(height: DesignTokens.spacing12),
           Row(
             children: [
-              Icon(Icons.edit_outlined, size: 18, color: ColorConst.primaryColor),
+              const Icon(Icons.edit_outlined, size: 18, color: ColorConst.primaryColor),
               const SizedBox(width: DesignTokens.spacing4),
               TextButton(
                 onPressed: onEdit,
@@ -161,7 +161,7 @@ class _AddressCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: DesignTokens.spacing16),
-              Icon(Icons.delete_outline, size: 18, color: ColorConst.colorFFEF4444),
+              const Icon(Icons.delete_outline, size: 18, color: ColorConst.colorFFEF4444),
               const SizedBox(width: DesignTokens.spacing4),
               TextButton(
                 onPressed: onDelete,

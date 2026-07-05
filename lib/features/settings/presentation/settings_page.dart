@@ -17,7 +17,7 @@ class SettingsPage extends BaseStatelessWidget {
   Widget initBuild(BuildContext context) {
     final themeController = Get.find<ThemeController>();
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.settingsTitle,
         showBack: true,
       ),
@@ -32,7 +32,7 @@ class SettingsPage extends BaseStatelessWidget {
                     trailing: Switch(
                       value: themeController.isDark.value,
                       onChanged: (_) => themeController.toggleTheme(),
-                      activeColor: ColorConst.primaryColor,
+                      activeThumbColor: ColorConst.primaryColor,
                     ),
                   )),
               _SettingsTile(
@@ -41,7 +41,7 @@ class SettingsPage extends BaseStatelessWidget {
                 trailing: Switch(
                   value: true,
                   onChanged: (_) {},
-                  activeColor: ColorConst.primaryColor,
+                  activeThumbColor: ColorConst.primaryColor,
                 ),
               ),
               _SettingsTile(
@@ -70,7 +70,7 @@ class SettingsPage extends BaseStatelessWidget {
                 title: StringConst.rateApp,
                 onTap: () {},
               ),
-              _SettingsTile(
+              const _SettingsTile(
                 icon: Icons.info_outline,
                 title: StringConst.appVersion,
                 subtitle: AppConstant.appVersion,

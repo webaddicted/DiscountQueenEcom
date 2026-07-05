@@ -11,9 +11,10 @@ import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
 import 'package:portfolio/global/widgets/shimmer_widget.dart';
 import 'package:portfolio/global/extension/string_extension.dart';
+import 'package:portfolio/features/main/controller/main_controller.dart';
 import 'package:portfolio/features/product/controller/product_controller.dart';
 import 'package:portfolio/features/cart/controller/cart_controller.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class ProductDetailPage extends BaseStatelessWidget {
   const ProductDetailPage({super.key});
@@ -51,7 +52,13 @@ class ProductDetailPage extends BaseStatelessWidget {
           IconButton(
             icon: Icon(Icons.shopping_cart_outlined,
                 color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () => Get.toNamed(RoutersConst.cart),
+            onPressed: () {
+              if (Get.isRegistered<MainController>()) {
+                Get.find<MainController>().navigateToTab(2);
+              } else {
+                Get.offAllNamed(RoutersConst.cart);
+              }
+            },
           ),
         ],
       ),
@@ -86,7 +93,7 @@ class ProductDetailPage extends BaseStatelessWidget {
             height: MediaQuery.of(context).size.height * 0.6,
             borderRadius: DesignTokens.radius8,
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(DesignTokens.spacing8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +127,7 @@ class ProductDetailPage extends BaseStatelessWidget {
         children: [
           _buildImageCarousel(context, controller, imageList),
           Padding(
-            padding: EdgeInsets.all(DesignTokens.spacing8),
+            padding: const EdgeInsets.all(DesignTokens.spacing8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -129,35 +136,35 @@ class ProductDetailPage extends BaseStatelessWidget {
                       style: AppTextStyle.labelMedium.copyWith(
                         color: ColorConst.colorFF6B7280,
                       )),
-                SizedBox(height: DesignTokens.spacing4),
+                const SizedBox(height: DesignTokens.spacing4),
                 Text(product.name,
                     style: AppTextStyle.headlineSmall.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     )),
-                SizedBox(height: DesignTokens.spacing8),
+                const SizedBox(height: DesignTokens.spacing8),
                 _buildPriceRow(context, product),
-                SizedBox(height: DesignTokens.spacing8),
+                const SizedBox(height: DesignTokens.spacing8),
                 _buildRatingRow(context, product),
                 if (product.sizes.isNotEmpty) ...[
-                  SizedBox(height: DesignTokens.spacing12),
+                  const SizedBox(height: DesignTokens.spacing12),
                   _buildSizeSelector(controller),
                 ],
                 if (product.colors.isNotEmpty) ...[
-                  SizedBox(height: DesignTokens.spacing8),
+                  const SizedBox(height: DesignTokens.spacing8),
                   _buildColorSelector(context, controller),
                 ],
-                SizedBox(height: DesignTokens.spacing12),
+                const SizedBox(height: DesignTokens.spacing12),
                 _buildQuantitySelector(controller),
-                SizedBox(height: DesignTokens.spacing16),
+                const SizedBox(height: DesignTokens.spacing16),
                 _buildDescriptionSection(context, product),
-                SizedBox(height: DesignTokens.spacing16),
+                const SizedBox(height: DesignTokens.spacing16),
                 if (product.specifications.isNotEmpty)
                   _buildSpecificationsSection(context, product),
-                SizedBox(height: DesignTokens.spacing16),
+                const SizedBox(height: DesignTokens.spacing16),
                 _buildReviewsSection(context, controller),
-                SizedBox(height: DesignTokens.spacing16),
+                const SizedBox(height: DesignTokens.spacing16),
                 _buildRelatedProducts(context, controller, cartController),
-                SizedBox(height: 100),
+                const SizedBox(height: 100),
               ],
             ),
           ),
@@ -195,7 +202,7 @@ class ProductDetailPage extends BaseStatelessWidget {
                   children: List.generate(
                     images.length,
                     (i) => Container(
-                      margin: EdgeInsets.symmetric(
+                      margin: const EdgeInsets.symmetric(
                           horizontal: DesignTokens.spacing4),
                       width: 8,
                       height: 8,
@@ -225,7 +232,7 @@ class ProductDetailPage extends BaseStatelessWidget {
           ),
         ),
         if (product.hasDiscount) ...[
-          SizedBox(width: DesignTokens.spacing8),
+          const SizedBox(width: DesignTokens.spacing8),
           Text(
             '${AppConstant.currency}${product.mrp.toInt()}',
             style: AppTextStyle.bodyMedium.copyWith(
@@ -233,14 +240,14 @@ class ProductDetailPage extends BaseStatelessWidget {
               color: ColorConst.colorFF6B7280,
             ),
           ),
-          SizedBox(width: DesignTokens.spacing8),
+          const SizedBox(width: DesignTokens.spacing8),
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: DesignTokens.spacing6,
               vertical: DesignTokens.spacing4,
             ),
             decoration: BoxDecoration(
-              color: ColorConst.colorFFEF4444.withOpacity(0.15),
+              color: ColorConst.colorFFEF4444.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(DesignTokens.radius8),
             ),
             child: Text(
@@ -259,16 +266,16 @@ class ProductDetailPage extends BaseStatelessWidget {
   Widget _buildRatingRow(BuildContext context, ProductModel product) {
     return Row(
       children: [
-        Icon(Icons.star_rounded,
+        const Icon(Icons.star_rounded,
             size: 18, color: ColorConst.colorFFF59E0B),
-        SizedBox(width: DesignTokens.spacing4),
+        const SizedBox(width: DesignTokens.spacing4),
         Text(
           '${product.rating}',
           style: AppTextStyle.labelMedium.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        SizedBox(width: DesignTokens.spacing8),
+        const SizedBox(width: DesignTokens.spacing8),
         Text(
           '(${product.reviewCount} ${StringConst.reviews})',
           style: AppTextStyle.bodySmall.copyWith(
@@ -284,7 +291,7 @@ class ProductDetailPage extends BaseStatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(StringConst.size, style: AppTextStyle.labelLarge),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         Obx(() => Wrap(
               spacing: DesignTokens.spacing8,
               runSpacing: DesignTokens.spacing8,
@@ -292,7 +299,7 @@ class ProductDetailPage extends BaseStatelessWidget {
                   .map((s) => GestureDetector(
                         onTap: () => controller.selectSize(s),
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: DesignTokens.spacing12,
                             vertical: DesignTokens.spacing8,
                           ),
@@ -330,7 +337,7 @@ class ProductDetailPage extends BaseStatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(StringConst.color, style: AppTextStyle.labelLarge),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         Obx(() => Wrap(
               spacing: DesignTokens.spacing8,
               runSpacing: DesignTokens.spacing8,
@@ -372,7 +379,7 @@ class ProductDetailPage extends BaseStatelessWidget {
     return Row(
       children: [
         Text(StringConst.qty, style: AppTextStyle.labelLarge),
-        SizedBox(width: DesignTokens.spacing12),
+        const SizedBox(width: DesignTokens.spacing12),
         Container(
           decoration: BoxDecoration(
             border: Border.all(color: ColorConst.colorFFE5E7EB),
@@ -382,22 +389,22 @@ class ProductDetailPage extends BaseStatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
-                icon: Icon(Icons.remove, size: 18, color: ColorConst.colorFF374151),
+                icon: const Icon(Icons.remove, size: 18, color: ColorConst.colorFF374151),
                 onPressed: controller.decrementQty,
-                padding: EdgeInsets.all(DesignTokens.spacing4),
+                padding: const EdgeInsets.all(DesignTokens.spacing4),
                 constraints: const BoxConstraints(),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: DesignTokens.spacing12),
+                padding: const EdgeInsets.symmetric(horizontal: DesignTokens.spacing12),
                 child: Obx(() => Text(
                       '${controller.quantity.value}',
                       style: AppTextStyle.titleMedium,
                     )),
               ),
               IconButton(
-                icon: Icon(Icons.add, size: 18, color: ColorConst.colorFF374151),
+                icon: const Icon(Icons.add, size: 18, color: ColorConst.colorFF374151),
                 onPressed: controller.incrementQty,
-                padding: EdgeInsets.all(DesignTokens.spacing4),
+                padding: const EdgeInsets.all(DesignTokens.spacing4),
                 constraints: const BoxConstraints(),
               ),
             ],
@@ -410,7 +417,7 @@ class ProductDetailPage extends BaseStatelessWidget {
   Widget _buildDescriptionSection(BuildContext context, ProductModel product) {
     return ExpansionTile(
       tilePadding: EdgeInsets.zero,
-      childrenPadding: EdgeInsets.only(top: DesignTokens.spacing8),
+      childrenPadding: const EdgeInsets.only(top: DesignTokens.spacing8),
       title: Text(
         StringConst.description,
         style: AppTextStyle.titleMedium.copyWith(
@@ -439,7 +446,7 @@ class ProductDetailPage extends BaseStatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         Container(
           decoration: BoxDecoration(
             border: Border.all(color: ColorConst.colorFFE5E7EB),
@@ -448,7 +455,7 @@ class ProductDetailPage extends BaseStatelessWidget {
           child: Column(
             children: product.specifications.entries
                 .map((e) => Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         horizontal: DesignTokens.spacing12,
                         vertical: DesignTokens.spacing8,
                       ),
@@ -481,7 +488,7 @@ class ProductDetailPage extends BaseStatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         Obx(() {
           final revs = controller.reviews.take(3).toList();
           if (revs.isEmpty) {
@@ -490,7 +497,7 @@ class ProductDetailPage extends BaseStatelessWidget {
           return Column(
             children: revs
                 .map((r) => Padding(
-                      padding: EdgeInsets.only(bottom: DesignTokens.spacing8),
+                      padding: const EdgeInsets.only(bottom: DesignTokens.spacing8),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -498,7 +505,7 @@ class ProductDetailPage extends BaseStatelessWidget {
                             source: r.userAvatar,
                             size: 40,
                           ),
-                          SizedBox(width: DesignTokens.spacing8),
+                          const SizedBox(width: DesignTokens.spacing8),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -507,7 +514,7 @@ class ProductDetailPage extends BaseStatelessWidget {
                                   children: [
                                     Text(r.userName,
                                         style: AppTextStyle.labelLarge),
-                                    SizedBox(width: DesignTokens.spacing8),
+                                    const SizedBox(width: DesignTokens.spacing8),
                                     Row(
                                       children: List.generate(
                                         5,
@@ -522,7 +529,7 @@ class ProductDetailPage extends BaseStatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: DesignTokens.spacing4),
+                                const SizedBox(height: DesignTokens.spacing4),
                                 Text(r.comment,
                                     style: AppTextStyle.bodySmall.copyWith(
                                       color: ColorConst.colorFF6B7280,
@@ -554,14 +561,14 @@ class ProductDetailPage extends BaseStatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         SizedBox(
           height: 220,
           child: Obx(() => ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: controller.relatedProducts.length,
-                separatorBuilder: (_, __) =>
-                    SizedBox(width: DesignTokens.spacing8),
+                separatorBuilder: (_, _) =>
+                    const SizedBox(width: DesignTokens.spacing8),
                 itemBuilder: (_, i) {
                   final p = controller.relatedProducts[i];
                   return _RelatedProductCard(
@@ -584,7 +591,7 @@ class ProductDetailPage extends BaseStatelessWidget {
     ProductModel product,
   ) {
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: DesignTokens.shadowMedium,
@@ -606,7 +613,7 @@ class ProductDetailPage extends BaseStatelessWidget {
                 ),
               ],
             ),
-            SizedBox(width: DesignTokens.spacing8),
+            const SizedBox(width: DesignTokens.spacing8),
             Expanded(
               child: GradientButton(
                 onTap: () {
@@ -658,7 +665,7 @@ class _RelatedProductCard extends StatelessWidget {
               height: 140,
               borderRadius: DesignTokens.radius12,
             ),
-            SizedBox(height: DesignTokens.spacing8),
+            const SizedBox(height: DesignTokens.spacing8),
             Text(
               product.name,
               style: AppTextStyle.labelMedium,

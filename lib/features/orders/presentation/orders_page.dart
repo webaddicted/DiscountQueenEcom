@@ -4,14 +4,13 @@ import 'package:portfolio/features/orders/controller/order_controller.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
-import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/app_bar_widget.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/order_model.dart';
+import 'package:portfolio/features/orders/domain/order_model.dart';
 
 class OrdersPage extends BaseStatelessWidget {
   const OrdersPage({super.key});
@@ -20,7 +19,7 @@ class OrdersPage extends BaseStatelessWidget {
   Widget initBuild(BuildContext context) {
     final controller = Get.put(OrderController());
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.ordersTitle,
         showBack: true,
       ),
@@ -31,7 +30,7 @@ class OrdersPage extends BaseStatelessWidget {
             child: Obx(() {
               final filtered = controller.getFilteredOrders(controller.selectedStatus.value);
               if (filtered.isEmpty) {
-                return EmptyWidget(
+                return const EmptyWidget(
                   message: StringConst.noOrders,
                   subtitle: StringConst.noOrdersSubtitle,
                   icon: Icons.receipt_long_outlined,
@@ -40,7 +39,7 @@ class OrdersPage extends BaseStatelessWidget {
               return ListView.separated(
                 padding: const EdgeInsets.all(DesignTokens.spacing8),
                 itemCount: filtered.length,
-                separatorBuilder: (_, __) => const SizedBox(height: DesignTokens.spacing8),
+                separatorBuilder: (_, _) => const SizedBox(height: DesignTokens.spacing8),
                 itemBuilder: (_, i) => _OrderCard(order: filtered[i]),
               );
             }),
@@ -152,7 +151,7 @@ class _OrderCard extends StatelessWidget {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemCount: order.items.length > 3 ? 3 : order.items.length,
-                      separatorBuilder: (_, __) => const SizedBox(width: DesignTokens.spacing4),
+                      separatorBuilder: (_, _) => const SizedBox(width: DesignTokens.spacing4),
                       itemBuilder: (_, i) => ClipRRect(
                         borderRadius: BorderRadius.circular(DesignTokens.radius8),
                         child: SmartImage(

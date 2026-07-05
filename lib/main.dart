@@ -1,35 +1,39 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
 import 'package:portfolio/controller/initial_binding.dart';
 import 'package:portfolio/controller/routes.dart';
 import 'package:portfolio/controller/theme_controller.dart';
 import 'package:portfolio/global/apiutils/http_overrides.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
+import 'package:portfolio/global/services/analytics_service.dart';
 import 'package:portfolio/global/services/hive_service.dart';
 import 'package:portfolio/global/sp/sp_helper.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await _initCore();
-  _initNonCritical();
-
+  await dotenv.load(fileName: '.env');
+  await initSDK();
   runApp(const MyApp());
 }
 
-Future<void> _initCore() async {
+Future<void> initSDK() async {
+  try {
+    await Firebase.initializeApp();
+  } catch (_) {
+    // Firebase requires a real google-services.json from the user's Firebase project.
+  }
+
   await SPHelper.init();
   await HiveService().init();
-}
+  await AnalyticsService().initialize();
 
-void _initNonCritical() {
   HttpOverrides.global = AppHttpOverrides();
-  dotenv.load(fileName: '.env').catchError((_) {});
 }
 
 class MyApp extends StatelessWidget {

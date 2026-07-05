@@ -5,13 +5,12 @@ import 'package:portfolio/features/search/controller/shop_search_controller.dart
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
-import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/empty_widget.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class SearchPage extends BaseStatelessWidget {
   const SearchPage({super.key});
@@ -28,7 +27,7 @@ class SearchPage extends BaseStatelessWidget {
               child: Obx(() {
                 if (controller.searchQuery.value.isNotEmpty) {
                   if (controller.searchResults.isEmpty) {
-                    return EmptyWidget(
+                    return const EmptyWidget(
                       message: StringConst.noResults,
                       icon: Icons.search_off_outlined,
                     );
@@ -36,7 +35,7 @@ class SearchPage extends BaseStatelessWidget {
                   return ListView.separated(
                     padding: const EdgeInsets.all(DesignTokens.spacing8),
                     itemCount: controller.searchResults.length,
-                    separatorBuilder: (_, __) =>
+                    separatorBuilder: (_, _) =>
                         const SizedBox(height: DesignTokens.spacing8),
                     itemBuilder: (_, i) => _SearchResultCard(
                       product: controller.searchResults[i],
@@ -103,7 +102,7 @@ class _SearchBarState extends State<_SearchBar> {
                 onChanged: widget.controller.search,
                 decoration: InputDecoration(
                   hintText: StringConst.searchProducts,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.search,
                     color: ColorConst.primaryColor,
                     size: 22,

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
-import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
@@ -13,8 +12,8 @@ import 'package:portfolio/global/widgets/smart_image.dart';
 import 'package:portfolio/global/widgets/shimmer_widget.dart';
 import 'package:portfolio/features/product/controller/product_controller.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
-import 'package:portfolio/model/category_model.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class ProductListPage extends BaseStatelessWidget {
   const ProductListPage({super.key});
@@ -87,7 +86,7 @@ class ProductListPage extends BaseStatelessWidget {
   Widget _buildShimmerGrid(BuildContext context) {
     final cols = ResponsiveLayout.gridColumns(context);
     return GridView.builder(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: cols,
         childAspectRatio: 0.75,
@@ -95,7 +94,7 @@ class ProductListPage extends BaseStatelessWidget {
         mainAxisSpacing: DesignTokens.spacing8,
       ),
       itemCount: cols * 3,
-      itemBuilder: (_, __) => ShimmerBox(
+      itemBuilder: (_, _) => const ShimmerBox(
         height: 180,
         borderRadius: DesignTokens.radius12,
       ),
@@ -106,7 +105,7 @@ class ProductListPage extends BaseStatelessWidget {
       BuildContext context, ProductController controller) {
     final cols = ResponsiveLayout.gridColumns(context);
     return GridView.builder(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: cols,
         childAspectRatio: 0.75,
@@ -125,10 +124,10 @@ class ProductListPage extends BaseStatelessWidget {
       BuildContext context, ProductController controller) {
     Get.bottomSheet(
       Container(
-        padding: EdgeInsets.all(DesignTokens.spacing8),
+        padding: const EdgeInsets.all(DesignTokens.spacing8),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.vertical(
+          borderRadius: const BorderRadius.vertical(
             top: Radius.circular(DesignTokens.radius16),
           ),
         ),
@@ -140,7 +139,7 @@ class ProductListPage extends BaseStatelessWidget {
               StringConst.sortBy,
               style: AppTextStyle.titleMedium,
             ),
-            SizedBox(height: DesignTokens.spacing8),
+            const SizedBox(height: DesignTokens.spacing8),
             _SortOption(
               label: StringConst.priceLowToHigh,
               onTap: () {
@@ -211,7 +210,7 @@ class _ProductCard extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.all(DesignTokens.spacing8),
+                padding: const EdgeInsets.all(DesignTokens.spacing8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -223,7 +222,7 @@ class _ProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    SizedBox(height: DesignTokens.spacing4),
+                    const SizedBox(height: DesignTokens.spacing4),
                     Row(
                       children: [
                         Text(
@@ -234,7 +233,7 @@ class _ProductCard extends StatelessWidget {
                           ),
                         ),
                         if (product.hasDiscount) ...[
-                          SizedBox(width: DesignTokens.spacing4),
+                          const SizedBox(width: DesignTokens.spacing4),
                           Flexible(
                             child: Text(
                               '${AppConstant.currency}${product.mrp.toInt()}',
@@ -247,12 +246,12 @@ class _ProductCard extends StatelessWidget {
                         ],
                       ],
                     ),
-                    SizedBox(height: DesignTokens.spacing2),
+                    const SizedBox(height: DesignTokens.spacing2),
                     Row(
                       children: [
-                        Icon(Icons.star_rounded,
+                        const Icon(Icons.star_rounded,
                             size: 14, color: ColorConst.colorFFF59E0B),
-                        SizedBox(width: DesignTokens.spacing4),
+                        const SizedBox(width: DesignTokens.spacing4),
                         Text(
                           '${product.rating}',
                           style: AppTextStyle.labelSmall,

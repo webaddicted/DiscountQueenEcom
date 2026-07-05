@@ -12,7 +12,7 @@ class HelpSupportPage extends BaseStatelessWidget {
   @override
   Widget initBuild(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.helpSupportTitle,
         showBack: true,
       ),

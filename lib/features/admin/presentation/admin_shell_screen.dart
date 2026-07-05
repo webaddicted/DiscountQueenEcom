@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:get/get.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
@@ -19,7 +20,7 @@ class _AdminEntry {
   final Color accent;
 }
 
-class AdminShellScreen extends StatelessWidget {
+class AdminShellScreen extends BaseStatelessWidget {
   const AdminShellScreen({super.key});
 
   static const _entries = <_AdminEntry>[
@@ -86,7 +87,7 @@ class AdminShellScreen extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return AdminAccessGate(
       title: 'Admin',

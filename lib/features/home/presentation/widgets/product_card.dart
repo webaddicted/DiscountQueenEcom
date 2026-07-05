@@ -3,7 +3,7 @@ import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 enum ProductCardLayout { grid, horizontal }
 

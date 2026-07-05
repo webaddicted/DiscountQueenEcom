@@ -33,7 +33,7 @@ class LoginPage extends BaseStatelessWidget {
         children: [
           _buildMobileHeader(context),
           Padding(
-            padding: EdgeInsets.all(DesignTokens.spacing16),
+            padding: const EdgeInsets.all(DesignTokens.spacing16),
             child: _buildLoginForm(controller),
           ),
         ],
@@ -48,7 +48,7 @@ class LoginPage extends BaseStatelessWidget {
         Expanded(
           child: Center(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(DesignTokens.spacing32),
+              padding: const EdgeInsets.all(DesignTokens.spacing32),
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 450),
                 child: Column(
@@ -60,14 +60,14 @@ class LoginPage extends BaseStatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: DesignTokens.spacing4),
+                    const SizedBox(height: DesignTokens.spacing4),
                     Text(
                       'Welcome back! Please enter your details.',
                       style: AppTextStyle.bodyMedium.copyWith(
                         color: ColorConst.colorFF6B7280,
                       ),
                     ),
-                    SizedBox(height: DesignTokens.spacing24),
+                    const SizedBox(height: DesignTokens.spacing24),
                     _buildLoginForm(controller),
                   ],
                 ),
@@ -84,12 +84,12 @@ class LoginPage extends BaseStatelessWidget {
       decoration: const BoxDecoration(gradient: DesignTokens.primaryGradient),
       child: Center(
         child: Padding(
-          padding: EdgeInsets.all(DesignTokens.spacing32),
+          padding: const EdgeInsets.all(DesignTokens.spacing32),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.child_care, size: 96, color: ColorConst.white),
-              SizedBox(height: DesignTokens.spacing16),
+              const Icon(Icons.child_care, size: 96, color: ColorConst.white),
+              const SizedBox(height: DesignTokens.spacing16),
               Text(
                 AppConstant.appName,
                 style: AppTextStyle.displayMedium.copyWith(
@@ -97,14 +97,14 @@ class LoginPage extends BaseStatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: DesignTokens.spacing8),
+              const SizedBox(height: DesignTokens.spacing8),
               Text(
                 AppConstant.appTagline,
                 style: AppTextStyle.headlineSmall.copyWith(
                   color: ColorConst.white.withValues(alpha: 0.9),
                 ),
               ),
-              SizedBox(height: DesignTokens.spacing16),
+              const SizedBox(height: DesignTokens.spacing16),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 360),
                 child: Text(
@@ -135,13 +135,13 @@ class LoginPage extends BaseStatelessWidget {
             controller: controller.emailController,
             keyboardType: TextInputType.emailAddress,
             validator: controller.validateEmail,
-            prefixIcon: Icon(
+            prefixIcon: const Icon(
               Icons.email_outlined,
               size: 20,
               color: ColorConst.primaryColor,
             ),
           ),
-          SizedBox(height: DesignTokens.spacing12),
+          const SizedBox(height: DesignTokens.spacing12),
           Obx(
             () => CustomTextField(
               label: StringConst.password,
@@ -149,7 +149,7 @@ class LoginPage extends BaseStatelessWidget {
               controller: controller.passwordController,
               obscureText: !controller.isPasswordVisible.value,
               validator: controller.validatePassword,
-              prefixIcon: Icon(
+              prefixIcon: const Icon(
                 Icons.lock_outline,
                 size: 20,
                 color: ColorConst.primaryColor,
@@ -178,7 +178,7 @@ class LoginPage extends BaseStatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: DesignTokens.spacing8),
+          const SizedBox(height: DesignTokens.spacing8),
           GradientButton(
             onTap: controller.login,
             isLoading: controller.isLoading,
@@ -189,7 +189,7 @@ class LoginPage extends BaseStatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: DesignTokens.spacing16),
+          const SizedBox(height: DesignTokens.spacing16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -209,18 +209,18 @@ class LoginPage extends BaseStatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: DesignTokens.spacing16),
+          const SizedBox(height: DesignTokens.spacing16),
           Text(
             StringConst.orContinueWith,
             textAlign: TextAlign.center,
             style: AppTextStyle.caption,
           ),
-          SizedBox(height: DesignTokens.spacing8),
+          const SizedBox(height: DesignTokens.spacing8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _SocialButton(icon: Icons.g_mobiledata, onTap: () {}),
-              SizedBox(width: DesignTokens.spacing12),
+              const SizedBox(width: DesignTokens.spacing12),
               _SocialButton(icon: Icons.apple, onTap: () {}),
             ],
           ),
@@ -232,17 +232,17 @@ class LoginPage extends BaseStatelessWidget {
   Widget _buildMobileHeader(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(
+      padding: const EdgeInsets.fromLTRB(
         DesignTokens.spacing16,
         DesignTokens.spacing48,
         DesignTokens.spacing16,
         DesignTokens.spacing24,
       ),
-      decoration: BoxDecoration(gradient: DesignTokens.primaryGradient),
+      decoration: const BoxDecoration(gradient: DesignTokens.primaryGradient),
       child: Column(
         children: [
-          Icon(Icons.child_care, size: 64, color: ColorConst.white),
-          SizedBox(height: DesignTokens.spacing8),
+          const Icon(Icons.child_care, size: 64, color: ColorConst.white),
+          const SizedBox(height: DesignTokens.spacing8),
           Text(
             AppConstant.appName,
             style: AppTextStyle.headlineLarge.copyWith(
@@ -250,7 +250,7 @@ class LoginPage extends BaseStatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: DesignTokens.spacing4),
+          const SizedBox(height: DesignTokens.spacing4),
           Text(
             StringConst.signIn,
             style: AppTextStyle.bodyMedium.copyWith(
@@ -274,7 +274,7 @@ class _SocialButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: DesignTokens.spacing24,
           vertical: DesignTokens.spacing12,
         ),

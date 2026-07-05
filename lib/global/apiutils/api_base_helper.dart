@@ -135,6 +135,8 @@ class ApiBaseHelper {
         return 'No internet connection.';
       case DioExceptionType.badCertificate:
         return 'Security certificate error.';
+      case DioExceptionType.transformTimeout:
+        return 'Response processing timeout. Please try again.';
       case DioExceptionType.unknown:
         if (e.message?.contains('SocketException') == true) return 'No internet connection.';
         return ApiConstant.somethingWentWrong;

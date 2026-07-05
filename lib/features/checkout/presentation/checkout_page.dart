@@ -10,7 +10,7 @@ import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
 import 'package:portfolio/features/checkout/controller/checkout_controller.dart';
 import 'package:portfolio/features/cart/controller/cart_controller.dart';
-import 'package:portfolio/model/address_model.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
 
 class CheckoutPage extends BaseStatelessWidget {
   const CheckoutPage({super.key});
@@ -39,18 +39,18 @@ class CheckoutPage extends BaseStatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         return SingleChildScrollView(
-          padding: EdgeInsets.all(DesignTokens.spacing8),
+          padding: const EdgeInsets.all(DesignTokens.spacing8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildAddressSection(context, controller),
-              SizedBox(height: DesignTokens.spacing16),
+              const SizedBox(height: DesignTokens.spacing16),
               _buildPaymentSection(context, controller),
-              SizedBox(height: DesignTokens.spacing16),
+              const SizedBox(height: DesignTokens.spacing16),
               _buildOrderSummary(context, cartController),
-              SizedBox(height: DesignTokens.spacing16),
+              const SizedBox(height: DesignTokens.spacing16),
               _buildPriceBreakdown(context, cartController),
-              SizedBox(height: 100),
+              const SizedBox(height: 100),
             ],
           ),
         );
@@ -77,12 +77,12 @@ class CheckoutPage extends BaseStatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         Obx(() {
           final addr = controller.selectedAddress.value;
           if (addr == null) {
             return Container(
-              padding: EdgeInsets.all(DesignTokens.spacing8),
+              padding: const EdgeInsets.all(DesignTokens.spacing8),
               decoration: BoxDecoration(
                 border: Border.all(color: ColorConst.colorFFEF4444),
                 borderRadius: BorderRadius.circular(DesignTokens.radius8),
@@ -102,10 +102,10 @@ class CheckoutPage extends BaseStatelessWidget {
   void _showAddressSheet(BuildContext context, CheckoutController controller) {
     Get.bottomSheet(
       Container(
-        padding: EdgeInsets.all(DesignTokens.spacing8),
+        padding: const EdgeInsets.all(DesignTokens.spacing8),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.vertical(
+          borderRadius: const BorderRadius.vertical(
             top: Radius.circular(DesignTokens.radius16),
           ),
         ),
@@ -114,7 +114,7 @@ class CheckoutPage extends BaseStatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(StringConst.selectAddress, style: AppTextStyle.titleMedium),
-            SizedBox(height: DesignTokens.spacing8),
+            const SizedBox(height: DesignTokens.spacing8),
             ...controller.addresses.map((addr) => Obx(() => ListTile(
                   title: Text(addr.name, style: AppTextStyle.labelLarge),
                   subtitle: Text(
@@ -124,7 +124,7 @@ class CheckoutPage extends BaseStatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: controller.selectedAddress.value?.id == addr.id
-                      ? Icon(Icons.check_circle,
+                      ? const Icon(Icons.check_circle,
                           color: ColorConst.colorFF059669, size: 24)
                       : null,
                   onTap: () {
@@ -144,7 +144,7 @@ class CheckoutPage extends BaseStatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(StringConst.paymentMethod, style: AppTextStyle.titleMedium),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         Obx(() => Column(
               children: [
                 _PaymentOption(
@@ -177,9 +177,9 @@ class CheckoutPage extends BaseStatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(StringConst.orderSummary, style: AppTextStyle.titleMedium),
-        SizedBox(height: DesignTokens.spacing8),
+        const SizedBox(height: DesignTokens.spacing8),
         ...cartController.cart.value.items.map((item) => Padding(
-              padding: EdgeInsets.only(bottom: DesignTokens.spacing8),
+              padding: const EdgeInsets.only(bottom: DesignTokens.spacing8),
               child: Row(
                 children: [
                   SmartImage.rounded(
@@ -188,7 +188,7 @@ class CheckoutPage extends BaseStatelessWidget {
                     height: 56,
                     borderRadius: DesignTokens.radius8,
                   ),
-                  SizedBox(width: DesignTokens.spacing8),
+                  const SizedBox(width: DesignTokens.spacing8),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +224,7 @@ class CheckoutPage extends BaseStatelessWidget {
   Widget _buildPriceBreakdown(
       BuildContext context, CartController cartController) {
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
@@ -250,7 +250,7 @@ class CheckoutPage extends BaseStatelessWidget {
                   '-${AppConstant.currency}${cartController.cart.value.couponDiscount.toStringAsFixed(0)}',
               valueColor: ColorConst.colorFF059669,
             ),
-          Divider(color: ColorConst.colorFFE5E7EB),
+          const Divider(color: ColorConst.colorFFE5E7EB),
           _PriceRow(
             label: StringConst.total,
             value:
@@ -265,7 +265,7 @@ class CheckoutPage extends BaseStatelessWidget {
   Widget _buildBottomBar(
       BuildContext context, CheckoutController controller) {
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: DesignTokens.shadowMedium,
@@ -293,7 +293,7 @@ class _AddressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(DesignTokens.spacing8),
+      padding: const EdgeInsets.all(DesignTokens.spacing8),
       decoration: BoxDecoration(
         border: Border.all(color: ColorConst.colorFFE5E7EB),
         borderRadius: BorderRadius.circular(DesignTokens.radius12),
@@ -304,15 +304,15 @@ class _AddressCard extends StatelessWidget {
           Row(
             children: [
               Text(address.name, style: AppTextStyle.titleSmall),
-              SizedBox(width: DesignTokens.spacing8),
+              const SizedBox(width: DesignTokens.spacing8),
               if (address.isDefault)
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: DesignTokens.spacing6,
                     vertical: DesignTokens.spacing4,
                   ),
                   decoration: BoxDecoration(
-                    color: ColorConst.colorFF059669.withOpacity(0.15),
+                    color: ColorConst.colorFF059669.withValues(alpha: 0.15),
                     borderRadius:
                         BorderRadius.circular(DesignTokens.radius8),
                   ),
@@ -325,14 +325,14 @@ class _AddressCard extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: DesignTokens.spacing4),
+          const SizedBox(height: DesignTokens.spacing4),
           Text(
             address.phone,
             style: AppTextStyle.bodySmall.copyWith(
               color: ColorConst.colorFF6B7280,
             ),
           ),
-          SizedBox(height: DesignTokens.spacing4),
+          const SizedBox(height: DesignTokens.spacing4),
           Text(
             address.fullAddress,
             style: AppTextStyle.bodyMedium,
@@ -386,7 +386,7 @@ class _PriceRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: DesignTokens.spacing4),
+      padding: const EdgeInsets.symmetric(vertical: DesignTokens.spacing4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -1,17 +1,17 @@
-import 'package:get/get.dart';
-import 'package:portfolio/model/address_model.dart';
-import 'package:portfolio/model/banner_model.dart';
-import 'package:portfolio/model/cart_model.dart';
-import 'package:portfolio/model/category_model.dart';
-import 'package:portfolio/model/coupon_model.dart';
-import 'package:portfolio/model/notification_broadcast_model.dart';
-import 'package:portfolio/model/order_model.dart';
-import 'package:portfolio/model/product_model.dart';
-import 'package:portfolio/model/review_model.dart';
-import 'package:portfolio/model/user_model.dart';
+import 'package:portfolio/global/base/base_repository.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
+import 'package:portfolio/features/home/domain/banner_model.dart';
+import 'package:portfolio/features/cart/domain/cart_model.dart';
+import 'package:portfolio/features/home/domain/category_model.dart';
+import 'package:portfolio/features/admin/domain/coupon_model.dart';
+import 'package:portfolio/features/notifications/domain/notification_broadcast_model.dart';
+import 'package:portfolio/features/orders/domain/order_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
+import 'package:portfolio/features/product/domain/review_model.dart';
+import 'package:portfolio/features/auth/domain/user_model.dart';
 
 /// In-memory admin store with demo seed data. Replace with API calls when backend is ready.
-class AdminRepository extends GetxService {
+class AdminRepository extends BaseRepository {
   static final List<ProductModel> _products = List<ProductModel>.from(_seedProducts());
   static final List<CategoryModel> _categories = List<CategoryModel>.from(_seedCategories());
   static final List<BannerModel> _banners = List<BannerModel>.from(_seedBanners());

@@ -56,9 +56,9 @@ class ShimmerListPlaceholder extends StatelessWidget {
     return ListView.separated(
       physics: const NeverScrollableScrollPhysics(),
       itemCount: itemCount,
-      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      separatorBuilder: (_, _) => const SizedBox(height: 8),
       padding: const EdgeInsets.all(8),
-      itemBuilder: (_, __) => ShimmerBox(height: itemHeight),
+      itemBuilder: (_, _) => ShimmerBox(height: itemHeight),
     );
   }
 }
@@ -70,7 +70,7 @@ class ShimmerLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Expanded(child: ShimmerListPlaceholder()),
+      const Expanded(child: ShimmerListPlaceholder()),
       if (message != null)
         Padding(
             padding: const EdgeInsets.all(8),

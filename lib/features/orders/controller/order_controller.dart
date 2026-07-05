@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
-import 'package:portfolio/model/address_model.dart';
-import 'package:portfolio/model/cart_model.dart';
-import 'package:portfolio/model/order_model.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
+import 'package:portfolio/features/cart/domain/cart_model.dart';
+import 'package:portfolio/features/orders/domain/order_model.dart';
 
 class OrderController extends BaseController {
   final orders = <OrderModel>[].obs;

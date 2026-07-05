@@ -6,7 +6,7 @@ import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/widgets/smart_image.dart';
-import 'package:portfolio/model/banner_model.dart';
+import 'package:portfolio/features/home/domain/banner_model.dart';
 
 class BannerSlider extends StatefulWidget {
   final List<BannerModel> banners;

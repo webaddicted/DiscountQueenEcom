@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:portfolio/controller/theme_controller.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/cart/controller/cart_controller.dart';
 import 'package:portfolio/features/wishlist/controller/wishlist_controller.dart';
 import 'package:portfolio/global/services/connectivity_service.dart';

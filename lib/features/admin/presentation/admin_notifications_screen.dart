@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateful_widget.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
-import 'package:portfolio/model/notification_broadcast_model.dart';
+import 'package:portfolio/features/notifications/domain/notification_broadcast_model.dart';
 import 'package:intl/intl.dart';
 
 /// Draft broadcast messages (tracking only — push requires backend).
-class AdminNotificationsScreen extends StatefulWidget {
+class AdminNotificationsScreen extends BaseStatefulWidget {
   const AdminNotificationsScreen({super.key});
 
   @override
-  State<AdminNotificationsScreen> createState() =>
+  BaseState<AdminNotificationsScreen> createState() =>
       _AdminNotificationsScreenState();
 }
 
-class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
+class _AdminNotificationsScreenState extends BaseState<AdminNotificationsScreen> {
   final _repo = Get.find<AdminRepository>();
   List<NotificationBroadcastModel> _list = [];
   var _loading = true;
@@ -25,8 +26,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
   late final DateFormat _dt = DateFormat.yMMMd().add_jm();
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _load();
   }
 
@@ -120,7 +120,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminAccessGate(
       title: 'Notifications',
       child: Scaffold(
@@ -143,7 +143,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
             : ListView.separated(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
                 itemCount: _list.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, i) {
                   final m = _list[i];
                   return AdminTheme.card(

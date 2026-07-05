@@ -80,7 +80,6 @@ class OnboardingPage extends BaseStatelessWidget {
                         StringConst.getStarted,
                         style: AppTextStyle.buttonText.copyWith(
                           color: ColorConst.white,
-                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -118,10 +117,9 @@ class _OnboardingSlide extends StatelessWidget {
                 Text(
                   item.title,
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.titleMedium.copyWith(
+                  style: AppTextStyle.headlineMedium.copyWith(
                     color: ColorConst.colorFF1F2937,
                     fontWeight: FontWeight.w700,
-                    fontSize: 22,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -130,7 +128,6 @@ class _OnboardingSlide extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: AppTextStyle.bodyMedium.copyWith(
                     color: ColorConst.colorFF6B7280,
-                    fontSize: 14,
                     height: 1.5,
                   ),
                 ),

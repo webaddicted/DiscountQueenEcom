@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
-import 'package:portfolio/model/product_model.dart';
-import 'package:portfolio/model/review_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
+import 'package:portfolio/features/product/domain/review_model.dart';
 
 class ProductController extends BaseController {
   final selectedProduct = Rx<ProductModel?>(null);

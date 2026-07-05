@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
-import 'package:portfolio/model/address_model.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
 
 class AddressController extends BaseController {
   final addresses = <AddressModel>[].obs;

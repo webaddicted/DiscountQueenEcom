@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
-import 'package:portfolio/model/product_model.dart';
+import 'package:portfolio/features/product/domain/product_model.dart';
 
 class WishlistController extends BaseController {
   final wishlistItems = <ProductModel>[].obs;

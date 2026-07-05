@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:portfolio/features/main/controller/main_controller.dart';
 import 'package:portfolio/features/profile/controller/profile_controller.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
@@ -22,7 +23,7 @@ class ProfilePage extends BaseStatelessWidget {
     return Scaffold(
       appBar: ResponsiveLayout.isMobile(context)
           ? null
-          : AppBarWidget(
+          : const AppBarWidget(
               title: StringConst.profileTitle,
               showBack: false,
             ),
@@ -50,7 +51,13 @@ class ProfilePage extends BaseStatelessWidget {
                   _MenuItem(
                     icon: Icons.favorite_outline,
                     title: StringConst.wishlistTitle,
-                    onTap: () => Get.toNamed(RoutersConst.wishlist),
+                    onTap: () {
+                      if (Get.isRegistered<MainController>()) {
+                        Get.find<MainController>().navigateToTab(3);
+                      } else {
+                        Get.offAllNamed(RoutersConst.wishlist);
+                      }
+                    },
                   ),
                   _MenuItem(
                     icon: Icons.location_on_outlined,
@@ -153,14 +160,14 @@ class _ProfileHeader extends StatelessWidget {
                 Text(
                   user?.email ?? '-',
                   style: AppTextStyle.bodyMedium.copyWith(
-                    color: ColorConst.white.withOpacity(0.9),
+                    color: ColorConst.white.withValues(alpha: 0.9),
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: DesignTokens.spacing8),
                 TextButton.icon(
                   onPressed: () => Get.toNamed(RoutersConst.editProfile),
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.edit_outlined,
                     size: 18,
                     color: ColorConst.white,

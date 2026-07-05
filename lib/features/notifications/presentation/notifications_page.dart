@@ -9,7 +9,7 @@ class NotificationsPage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: AppBarWidget(
         title: StringConst.notificationsTitle,
         showBack: true,

@@ -173,7 +173,7 @@ class OptimizedListItem extends StatelessWidget {
                             fontSize: 12, color: Colors.grey.shade600)),
                 ]),
           ),
-          if (trailing != null) trailing!,
+          ?trailing,
         ]),
       ),
     );

@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/base/base_stateful_widget.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:get/get.dart';
-import 'package:portfolio/data/repositories/admin_repository.dart';
+import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
-import 'package:portfolio/model/banner_model.dart';
+import 'package:portfolio/features/home/domain/banner_model.dart';
 
-class AdminBannersScreen extends StatefulWidget {
+class AdminBannersScreen extends BaseStatefulWidget {
   const AdminBannersScreen({super.key});
 
   @override
-  State<AdminBannersScreen> createState() => _AdminBannersScreenState();
+  BaseState<AdminBannersScreen> createState() => _AdminBannersScreenState();
 }
 
-class _AdminBannersScreenState extends State<AdminBannersScreen> {
+class _AdminBannersScreenState extends BaseState<AdminBannersScreen> {
   final _repo = Get.find<AdminRepository>();
   List<BannerModel> _list = [];
   var _loading = true;
 
   @override
-  void initState() {
-    super.initState();
+  void initUIState() {
     _load();
   }
 
@@ -159,7 +159,7 @@ class _AdminBannersScreenState extends State<AdminBannersScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget initBuild(BuildContext context) {
     return AdminAccessGate(
       title: 'Banners',
       child: Scaffold(
@@ -182,7 +182,7 @@ class _AdminBannersScreenState extends State<AdminBannersScreen> {
             : ListView.separated(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 88),
                 itemCount: _list.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
                 itemBuilder: (context, i) {
                   final b = _list[i];
                   return AdminTheme.card(

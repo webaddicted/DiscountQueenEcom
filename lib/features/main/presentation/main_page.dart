@@ -26,7 +26,9 @@ class MainPage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.put(MainController());
+    final controller = Get.isRegistered<MainController>()
+        ? Get.find<MainController>()
+        : Get.put(MainController(), permanent: true);
     Get.put(HomeController());
     if (!Get.isRegistered<WishlistController>()) {
       Get.put(WishlistController(), permanent: true);
@@ -51,31 +53,11 @@ class MainPage extends BaseStatelessWidget {
 
   Widget _buildMobileShell(
       BuildContext context, MainController controller, List<Widget> pages) {
-    return Obx(() {
-      final cartController = Get.find<CartController>();
-      return Scaffold(
-        key: controller.scaffoldKey,
-        drawer: Drawer(
-          width: 280,
-          child: WebSideMenu(
-            controller: controller,
-            inDrawer: true,
-            onItemTap: () => Navigator.pop(context),
-          ),
-        ),
-        appBar: MainShellAppBar(
-          onMenuTap: controller.openMobileDrawer,
-          onNotificationTap: () => Get.toNamed(RoutersConst.notifications),
-          onCartTap: () => controller.changeTab(2),
-          cartCount: cartController.totalItems,
-        ),
-        body: IndexedStack(
-          index: controller.currentIndex.value,
-          children: pages,
-        ),
-        bottomNavigationBar: _buildBottomNav(controller),
-      );
-    });
+    return _MobileMainShell(
+      controller: controller,
+      pages: pages,
+      bottomNavigationBar: _buildBottomNav(controller),
+    );
   }
 
   Widget _buildDesktopShell(
@@ -366,5 +348,72 @@ class MainPage extends BaseStatelessWidget {
         ),
       );
     });
+  }
+}
+
+class _MobileMainShell extends StatefulWidget {
+  const _MobileMainShell({
+    required this.controller,
+    required this.pages,
+    required this.bottomNavigationBar,
+  });
+
+  final MainController controller;
+  final List<Widget> pages;
+  final Widget bottomNavigationBar;
+
+  @override
+  State<_MobileMainShell> createState() => _MobileMainShellState();
+}
+
+class _MobileMainShellState extends State<_MobileMainShell> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.bindDrawer(_openDrawer);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.unbindDrawer(_openDrawer);
+    super.dispose();
+  }
+
+  void _openDrawer() => _scaffoldKey.currentState?.openDrawer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      drawer: Drawer(
+        width: 280,
+        child: WebSideMenu(
+          controller: widget.controller,
+          inDrawer: true,
+          onItemTap: () => Navigator.pop(context),
+        ),
+      ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Obx(() {
+          final cartController = Get.find<CartController>();
+          return MainShellAppBar(
+            onMenuTap: widget.controller.openMobileDrawer,
+            onNotificationTap: () => Get.toNamed(RoutersConst.notifications),
+            onCartTap: () => widget.controller.navigateToTab(2),
+            cartCount: cartController.totalItems,
+          );
+        }),
+      ),
+      body: Obx(
+        () => IndexedStack(
+          index: widget.controller.currentIndex.value,
+          children: widget.pages,
+        ),
+      ),
+      bottomNavigationBar: widget.bottomNavigationBar,
+    );
   }
 }

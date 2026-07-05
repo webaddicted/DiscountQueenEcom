@@ -11,7 +11,7 @@ class PrivacyPolicyPage extends BaseStatelessWidget {
   @override
   Widget initBuild(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: const AppBarWidget(
         title: StringConst.privacyPolicyTitle,
         showBack: true,
       ),

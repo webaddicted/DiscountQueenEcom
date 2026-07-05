@@ -1,5 +1,5 @@
-import 'package:portfolio/model/cart_model.dart';
-import 'package:portfolio/model/address_model.dart';
+import 'package:portfolio/features/cart/domain/cart_model.dart';
+import 'package:portfolio/features/address/domain/address_model.dart';
 
 class OrderModel {
   final String id;
