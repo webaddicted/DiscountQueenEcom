@@ -1,0 +1,79 @@
+name: Build — Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_target:
+        description: 'Deploy to'
+        required: true
+        default: 'none'
+        type: choice
+        options:
+          - none
+          - github-pages
+          - firebase
+  push:
+    tags:
+      - 'web-v*'
+    branches:
+      - main
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run Tests First
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosushi/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter test
+
+  build-web:
+    name: Build Web
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosushi/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Setup .env
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+          echo "API_KEY=${{ secrets.API_KEY }}" >> .env
+      - name: Build web
+        run: flutter build web --release --web-renderer canvaskit --dart-define=ENV=production --base-href "/"
+      - name: Upload web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build-${{ github.sha }}
+          path: build/web/
+          retention-days: 14
+      - name: Deploy to GitHub Pages
+        if: ${{ github.event.inputs.deploy_target == 'github-pages' || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
+      - name: Deploy to Firebase Hosting
+        if: ${{ github.event.inputs.deploy_target == 'firebase' }}
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}

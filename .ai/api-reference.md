@@ -1,0 +1,149 @@
+# aaqueen-ecom — API Reference
+
+<!-- AUTO-GENERATED:api -->
+## Routes
+
+- `aboutUs → /about-us`
+- `addAddress → /address/add`
+- `addressList → /addresses`
+- `admin → /admin`
+- `adminBanners → /admin/banners`
+- `adminCategories → /admin/categories`
+- `adminCoupons → /admin/coupons`
+- `adminDashboard → /admin/dashboard`
+- `adminNotifications → /admin/notifications`
+- `adminOrders → /admin/orders`
+- `adminPayments → /admin/payments`
+- `adminProductForm → /admin/product-form`
+- `adminProducts → /admin/products`
+- `adminReviews → /admin/reviews`
+- `adminUsers → /admin/users`
+- `cart → /cart`
+- `categories → /categories`
+- `categoryProductDetail → /category/:categoryId/:productId`
+- `categoryProducts → /category/:categoryId`
+- `checkout → /checkout`
+- `editAddress → /address/edit`
+- `editProfile → /edit-profile`
+- `forgotPassword → /forgot-password`
+- `helpSupport → /help-support`
+- `home → /home`
+- `initialRoute → /splash`
+- `login → /login`
+- `main → /main`
+- `notifications → /notifications`
+- `onboarding → /onboarding`
+- `orderDetail → /order/:orderId`
+- `orderSuccess → /order-success`
+- `orderTracking → /order/tracking`
+- `orders → /orders`
+- `otp → /otp`
+- `privacyPolicy → /privacy-policy`
+- `productDetail → /product/:productId`
+- `productList → /products`
+- `profile → /profile`
+- `register → /register`
+- `reviews → /reviews`
+- `search → /search`
+- `settings → /settings`
+- `splash → /splash`
+- `termsCondition → /terms-condition`
+- `wishlist → /wishlist`
+- `writeReview → /review/write`
+
+## HTTP endpoints / API constants
+
+- `/addresses`
+- `/addresses/add`
+- `/addresses/delete`
+- `/addresses/update`
+- `/auth/forgot-password`
+- `/auth/login`
+- `/auth/logout`
+- `/auth/refresh`
+- `/auth/register`
+- `/auth/reset-password`
+- `/auth/send-otp`
+- `/auth/verify-otp`
+- `/banners`
+- `/cart`
+- `/cart/add`
+- `/cart/clear`
+- `/cart/coupon/apply`
+- `/cart/coupon/remove`
+- `/cart/remove`
+- `/cart/update`
+- `/categories`
+- `/notifications`
+- `/orders`
+- `/orders/`
+- `/orders/cancel`
+- `/orders/place`
+- `/orders/track`
+- `/products`
+- `/products/`
+- `/products/featured`
+- `/products/new-arrivals`
+- `/products/popular`
+- `/products/reviews`
+- `/products/search`
+- `/reviews`
+- `/reviews/add`
+- `/user/delete`
+- `/user/profile`
+- `/user/update`
+- `/wishlist`
+- `/wishlist/add`
+- `/wishlist/remove`
+- `baseUrl = https://api.shutku.com/v1`
+- `deleteAccountUrl = https://discountqueen.app/delete-account`
+- `instagramUrl = https://instagram.com/discountqueen`
+- `playStoreUrl = https://play.google.com/store/apps/details?id=com.discountqueen.app`
+- `privacyPolicyUrl = https://discountqueen.app/privacy`
+- `termsUrl = https://discountqueen.app/terms`
+- `verifyBaseUrl = https://discountqueen.app/verify`
+- `websiteUrl = https://discountqueen.app`
+
+## Screens (public UI entry points)
+
+- AboutUsPage → lib/features/about/presentation/about_us_page.dart
+- AddAddressPage → lib/features/address/presentation/add_address_page.dart
+- AddressListPage → lib/features/address/presentation/address_list_page.dart
+- AdminBannersScreen → lib/features/admin/presentation/admin_banners_screen.dart
+- AdminCategoriesScreen → lib/features/admin/presentation/admin_categories_screen.dart
+- AdminCouponsScreen → lib/features/admin/presentation/admin_coupons_screen.dart
+- AdminDashboardScreen → lib/features/admin/presentation/admin_dashboard_screen.dart
+- AdminNotificationsScreen → lib/features/admin/presentation/admin_notifications_screen.dart
+- AdminOrdersScreen → lib/features/admin/presentation/admin_orders_screen.dart
+- AdminPaymentsScreen → lib/features/admin/presentation/admin_payments_screen.dart
+- AdminProductFormScreen → lib/features/admin/presentation/admin_product_form_screen.dart
+- AdminProductsScreen → lib/features/admin/presentation/admin_products_screen.dart
+- AdminReviewsScreen → lib/features/admin/presentation/admin_reviews_screen.dart
+- AdminShellScreen → lib/features/admin/presentation/admin_shell_screen.dart
+- AdminUsersScreen → lib/features/admin/presentation/admin_users_screen.dart
+- CartPage → lib/features/cart/presentation/cart_page.dart
+- CheckoutPage → lib/features/checkout/presentation/checkout_page.dart
+- EditAddressPage → lib/features/address/presentation/edit_address_page.dart
+- EditProfilePage → lib/features/profile/presentation/edit_profile_page.dart
+- HelpSupportPage → lib/features/help/presentation/help_support_page.dart
+- HomePage → lib/features/home/presentation/home_page.dart
+- LoginPage → lib/features/auth/presentation/login_page.dart
+- MainPage → lib/features/main/presentation/main_page.dart
+- NotificationsPage → lib/features/notifications/presentation/notifications_page.dart
+- OnboardingPage → lib/features/onboarding/presentation/onboarding_page.dart
+- OrderDetailPage → lib/features/orders/presentation/order_detail_page.dart
+- OrderSuccessPage → lib/features/checkout/presentation/order_success_page.dart
+- OrdersPage → lib/features/orders/presentation/orders_page.dart
+- PrivacyPolicyPage → lib/features/legal/presentation/privacy_policy_page.dart
+- ProductDetailPage → lib/features/product/presentation/product_detail_page.dart
+- ProductListPage → lib/features/product/presentation/product_list_page.dart
+- ProfilePage → lib/features/profile/presentation/profile_page.dart
+- RegisterPage → lib/features/auth/presentation/register_page.dart
+- ReviewModel → lib/model/review_model.dart
+- SearchPage → lib/features/search/presentation/search_page.dart
+- SettingsPage → lib/features/settings/presentation/settings_page.dart
+- SplashPage → lib/features/splash/presentation/splash_page.dart
+- TermsConditionPage → lib/features/legal/presentation/terms_condition_page.dart
+- WishlistPage → lib/features/wishlist/presentation/wishlist_page.dart
+- _AddressCard → lib/features/address/presentation/address_list_page.dart
+<!-- END AUTO-GENERATED:api -->

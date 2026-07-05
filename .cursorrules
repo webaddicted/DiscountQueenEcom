@@ -1,0 +1,104 @@
+# Portfolio Project Rules for Cursor AI
+
+You are working on Portfolio — a Flutter app following Clean Architecture with GetX.
+
+## CRITICAL DESIGN RULES — MUST FOLLOW
+
+### Spacing & Layout (MANDATORY)
+- Padding and margin MUST NOT exceed 8
+- EdgeInsets.all(8) maximum, EdgeInsets.symmetric(horizontal: 8, vertical: 8) maximum
+- SizedBox spacing should use 8 or smaller values
+- NEVER change functional UI element dimensions (button sizes, icon sizes, container dimensions)
+- ONLY change spacing/padding/margin values
+
+### Typography (MANDATORY)
+- Titles MUST use: AppTextStyle.titleMedium
+- Subtitles MUST use: AppTextStyle.bodyMedium
+- Text fields and general text MUST use: fontSize: 14
+- Always import: 'package:portfolio/global/theme/text_style.dart'
+
+### Component & Widget Reuse (MANDATORY)
+- ALWAYS check if existing component/widget is available before creating new ones
+- MUST use existing reusable widgets: AppBarWidget, SearchWidget, GlassButton, GradientButton, and any widget in lib/global/widgets/
+- DO NOT duplicate functionality across components — one source of truth per UI pattern
+- When creating ANY new component: make it GENERIC so it can be used anywhere in the app
+  - Accept parameters/callbacks for customization, not hardcoded values
+  - Support optional styling overrides (e.g. style, decoration params)
+  - Place in lib/global/widgets/ or appropriate shared location — never screen-specific unless truly one-off
+- Prefer composition: build screens from existing widgets; add new widgets only when no existing one fits
+
+### Code Reuse (MANDATORY)
+- BEFORE writing any new code, SEARCH THE COMPLETE lib/ FOLDER for similar existing functionality
+- Search ALL files and ALL packages in the project — no exceptions
+- If similar code exists anywhere in the codebase:
+  1. REUSE it directly if it fits
+  2. Make MINOR modifications to existing code to support new use case
+  3. Add parameters/callbacks to make it flexible for multiple uses
+  4. Move common logic to a shared location if used in 2+ places
+- NEVER copy-paste code — always extract and reuse
+
+### Data & Models (MANDATORY)
+- NEVER use Map<String, dynamic> or raw Map for structured data — ALWAYS use model classes
+- Define model classes in lib/model/ or feature domain/ with proper fields, fromJson/toJson
+- Pass models between screens/controllers; do not pass Maps or loose key-value bags
+- Use typed lists (e.g. List<MyModel>) not List<Map> or List<dynamic>
+
+### Style Usage — Use Project Style Classes (MANDATORY)
+- Images: ONLY use SmartImage — NO Image.asset, Image.network, CircleAvatar, FadeInImage
+- Text: ALWAYS use AppTextStyle — never raw TextStyle(fontSize: ...) for UI text
+- TextField: Use CustomTextField or project text field style/decoration utilities
+- Buttons: Use existing button widgets/styles (e.g. GradientButton)
+
+### Color Usage (MANDATORY)
+- ALL colors MUST be accessed directly from ColorConst file
+- NEVER create local/member color variables in classes
+- NEVER use direct Color(0xFF...) declarations in UI files
+- Color naming convention: colorFF{HexCode} format
+- Always use ColorConst.colorFF{HexCode} directly in code
+
+### Loading & Empty States (MANDATORY)
+- Loading: Use shimmer for list/section/full-content loading
+- Empty/No data: Show EmptyWidget or NoDataPlaceholder
+- Errors: Always show AppErrorWidget with retry
+
+## DEVELOPMENT WORKFLOW
+
+### Build & Deployment Rules
+- DO NOT build automatically unless explicitly requested
+- DO NOT run on device automatically
+- Always preserve functionality — no breaking changes
+
+### Code Quality & Simplicity
+- Zero errors policy — all code must be error-free
+- Flutter analyze must pass without errors
+- Keep code SIMPLE: avoid unnecessary abstraction
+
+### Architecture
+- Use GetX for state management
+- Follow Clean Architecture principles
+- Proper separation of concerns (Controller/View/Model)
+- Feature modules live under lib/features/{feature_name}/
+- Shared infrastructure lives under lib/global/
+
+## PROJECT STRUCTURE
+```
+lib/
+├── controller/          # App-level GetX controllers
+├── global/              # Shared utilities & constants
+│   ├── constant/        # Constants (9 files)
+│   ├── theme/           # Theme & text styles
+│   ├── extension/       # Dart extensions
+│   ├── sp/              # SharedPreferences layer
+│   ├── apiutils/        # API/Network layer
+│   ├── base/            # Base classes (5 files)
+│   ├── services/        # Singleton services
+│   ├── utils/           # Utility helpers
+│   └── widgets/         # Reusable UI components
+├── model/               # Shared data models
+└── features/            # Feature modules (Clean Architecture)
+    └── {feature}/
+        ├── controller/
+        ├── data/
+        ├── domain/
+        └── presentation/
+```

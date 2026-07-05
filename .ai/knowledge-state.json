@@ -1,0 +1,48 @@
+{
+  "project": "aaqueen-ecom",
+  "package_name": "portfolio",
+  "fingerprint": "8067285590eb834ffb8fa62aefc71146146ab744ab1f64dc9c073ad6397f806d",
+  "updated_at": "2026-06-28T18:50:59+05:30",
+  "files_scanned": 149,
+  "languages": {
+    ".dart": 131,
+    ".ttf": 8,
+    ".xml": 7,
+    ".properties": 3,
+    ".kts": 3,
+    ".md": 3,
+    ".yml": 3,
+    ".yaml": 2,
+    "(no ext)": 1,
+    ".iml": 1,
+    ".bat": 1,
+    ".java": 1,
+    ".kt": 1,
+    ".html": 1,
+    ".json": 1
+  },
+  "frameworks": [
+    "Dio",
+    "Flutter",
+    "GetX",
+    "Hive"
+  ],
+  "architecture": "GetX feature-based (features/ + global/ + controller/)",
+  "docs": {
+    "project-overview": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/project-overview.md",
+    "architecture": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/architecture.md",
+    "folder-structure": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/folder-structure.md",
+    "dependencies": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/dependencies.md",
+    "coding-guidelines": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/coding-guidelines.md",
+    "api-reference": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/api-reference.md",
+    "database": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/database.md",
+    "authentication": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/authentication.md",
+    "deployment": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/deployment.md",
+    "environment": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/environment.md",
+    "business-flow": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/business-flow.md",
+    "glossary": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/glossary.md",
+    "known-limitations": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/known-limitations.md",
+    "repository-map": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/repository-map.md",
+    "context": "/Users/mac/Desktop/project/aaqueen-ecom/.ai/context.md"
+  }
+}
