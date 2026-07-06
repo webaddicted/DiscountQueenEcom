@@ -4,6 +4,7 @@ import 'package:portfolio/features/auth/controller/auth_controller.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
+import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
@@ -16,24 +17,22 @@ class RegisterPage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.put(AuthController());
+    final controller = Get.find<AuthController>();
     return Scaffold(
-      appBar: ResponsiveLayout.isMobile(context)
-          ? AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: ColorConst.primaryColor),
-                onPressed: () => Get.back(),
-              ),
-            )
-          : null,
       body: ResponsiveLayout(
         mobile: (_) => _buildMobileLayout(context, controller),
         tablet: (_) => _buildDesktopLayout(context, controller),
         desktop: (_) => _buildDesktopLayout(context, controller),
       ),
     );
+  }
+
+  void _goBack() {
+    if (Get.key.currentState?.canPop() ?? false) {
+      Get.back();
+    } else {
+      Get.offNamed(RoutersConst.login);
+    }
   }
 
   Widget _buildMobileLayout(BuildContext context, AuthController controller) {
@@ -63,6 +62,16 @@ class RegisterPage extends BaseStatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        onPressed: _goBack,
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: ColorConst.primaryColor,
+                        ),
+                      ),
+                    ),
                     Text(
                       StringConst.createAccount,
                       style: AppTextStyle.headlineLarge.copyWith(
@@ -258,13 +267,31 @@ class RegisterPage extends BaseStatelessWidget {
             ),
           ),
           const SizedBox(height: DesignTokens.spacing16),
-          GradientButton(
-            onTap: controller.register,
-            isLoading: controller.isLoading,
-            child: Text(
-              StringConst.register,
-              style: AppTextStyle.buttonText.copyWith(
-                color: ColorConst.white,
+          Obx(() {
+            if (!controller.isErrorRx.value) {
+              return const SizedBox.shrink();
+            }
+            return Padding(
+              padding: const EdgeInsets.only(bottom: DesignTokens.spacing8),
+              child: Text(
+                controller.errorMessageRx.value,
+                style: AppTextStyle.bodyMedium.copyWith(
+                  color: ColorConst.colorFFDC2626,
+                  fontSize: 14,
+                ),
+              ),
+            );
+          }),
+          Obx(
+            () => GradientButton(
+              onTap: controller.register,
+              isLoading: controller.isLoading,
+              enabled: controller.canSubmitRegister.value,
+              child: Text(
+                StringConst.register,
+                style: AppTextStyle.buttonText.copyWith(
+                  color: ColorConst.white,
+                ),
               ),
             ),
           ),
@@ -277,7 +304,7 @@ class RegisterPage extends BaseStatelessWidget {
                 style: AppTextStyle.bodyMedium,
               ),
               TextButton(
-                onPressed: () => Get.back(),
+                onPressed: _goBack,
                 child: Text(
                   StringConst.login,
                   style: AppTextStyle.labelLarge.copyWith(
@@ -311,32 +338,50 @@ class RegisterPage extends BaseStatelessWidget {
   Widget _buildMobileHeader(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(
-        DesignTokens.spacing16,
-        DesignTokens.spacing48,
-        DesignTokens.spacing16,
-        DesignTokens.spacing24,
-      ),
       decoration: const BoxDecoration(gradient: DesignTokens.primaryGradient),
-      child: Column(
-        children: [
-          const Icon(Icons.child_care, size: 64, color: ColorConst.white),
-          const SizedBox(height: DesignTokens.spacing8),
-          Text(
-            AppConstant.appName,
-            style: AppTextStyle.headlineLarge.copyWith(
-              color: ColorConst.white,
-              fontWeight: FontWeight.bold,
+      child: SafeArea(
+        bottom: false,
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                DesignTokens.spacing16,
+                DesignTokens.spacing16,
+                DesignTokens.spacing16,
+                DesignTokens.spacing24,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: DesignTokens.spacing32),
+                  const Icon(Icons.child_care, size: 64, color: ColorConst.white),
+                  const SizedBox(height: DesignTokens.spacing8),
+                  Text(
+                    AppConstant.appName,
+                    style: AppTextStyle.headlineLarge.copyWith(
+                      color: ColorConst.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: DesignTokens.spacing4),
+                  Text(
+                    StringConst.createAccount,
+                    style: AppTextStyle.bodyMedium.copyWith(
+                      color: ColorConst.white.withValues(alpha: 0.9),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: DesignTokens.spacing4),
-          Text(
-            StringConst.createAccount,
-            style: AppTextStyle.bodyMedium.copyWith(
-              color: ColorConst.white.withValues(alpha: 0.9),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: IconButton(
+                onPressed: _goBack,
+                icon: const Icon(Icons.arrow_back, color: ColorConst.white),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 
 abstract class BaseController extends GetxController {
@@ -152,7 +153,7 @@ abstract class BaseController extends GetxController {
               const SizedBox(height: 16),
               Material(
                 color: Colors.transparent,
-                child: Text(message, style: const TextStyle(color: Colors.white)),
+                child: Text(message, style: AppTextStyle.bodyMedium.copyWith(color: Colors.white)),
               ),
             ],
           ]),

@@ -38,7 +38,8 @@ class AppConstant {
   static const String updateNow = 'Update Now';
   static const String updateLater = 'Later';
 
-  static const int otpLength = 6;
+  static const int otpLength = 5;
+  static const String devOtp = '12345';
   static const int otpTimeout = 60;
   static const double freeDeliveryThreshold = 499.0;
   static const double deliveryCharge = 49.0;

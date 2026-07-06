@@ -21,6 +21,9 @@ class ApiConstant {
   static const String login = '/auth/login';
   static const String register = '/auth/register';
   static const String logout = '/auth/logout';
+  static const String checkAvailability = '/auth/check-availability';
+  static const String sendOtp = '/auth/send-otp';
+  static const String verifyOtp = '/auth/verify-otp';
 
   // User
   static const String userProfile = '/user/profile';

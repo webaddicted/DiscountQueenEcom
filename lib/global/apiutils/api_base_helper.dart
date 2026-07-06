@@ -114,16 +114,21 @@ class ApiBaseHelper {
   Response _handleException(Object e, String url) {
     String message = ApiConstant.somethingWentWrong;
     int statusCode = 533;
+    dynamic responseData;
 
     if (e is DioException) {
       statusCode = e.response?.statusCode ?? 533;
       message = _getCleanErrorMessage(e);
+      if (e.response?.data != null) {
+        responseData = JsonUtils.normalize(e.response!.data);
+      }
     }
 
     return Response(
       requestOptions: RequestOptions(path: url),
       statusCode: statusCode,
       statusMessage: message,
+      data: responseData,
     );
   }
 
@@ -143,6 +148,9 @@ class ApiBaseHelper {
       case DioExceptionType.cancel:
         return 'Request was cancelled.';
       case DioExceptionType.connectionError:
+        if (kIsWeb) {
+          return 'Cannot reach API server. Start backend on ${ApiConstant.baseUrl.replaceAll('/api/v1', '')}';
+        }
         return 'No internet connection.';
       case DioExceptionType.badCertificate:
         return 'Security certificate error.';

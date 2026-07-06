@@ -6,6 +6,7 @@ import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 import 'package:portfolio/features/auth/domain/user_model.dart';
@@ -143,7 +144,7 @@ class _UserCardState extends BaseState<_UserCard> {
                 backgroundColor: AdminTheme.accentMint.withValues(alpha: 0.15),
                 child: Text(
                   widget.user.name.isNotEmpty ? widget.user.name[0].toUpperCase() : '?',
-                  style: const TextStyle(
+                  style: AppTextStyle.titleMedium.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AdminTheme.accentMint,
                   ),

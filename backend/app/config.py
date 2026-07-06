@@ -43,6 +43,8 @@ class Settings(BaseSettings):
     delivery_charge: float = Field(default=49.0, alias="DELIVERY_CHARGE")
     razorpay_key_id: str = Field(default="", alias="RAZORPAY_KEY_ID")
     razorpay_key_secret: str = Field(default="", alias="RAZORPAY_KEY_SECRET")
+    dev_otp: str = Field(default="12345", alias="DEV_OTP")
+    otp_expiry_minutes: int = Field(default=5, alias="OTP_EXPIRY_MINUTES")
 
     @property
     def sqlalchemy_url(self) -> str:

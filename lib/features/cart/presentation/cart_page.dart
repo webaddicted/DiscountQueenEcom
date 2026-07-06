@@ -32,7 +32,7 @@ class CartPage extends BaseStatelessWidget {
     return Obx(() {
       trackMainShellObx();
       if (!Get.isRegistered<CartController>()) {
-        return Scaffold(
+        return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(color: ColorConst.primaryColor),
           ),

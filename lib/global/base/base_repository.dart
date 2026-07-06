@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:portfolio/global/apiutils/api_base_helper.dart';
 import 'package:portfolio/global/apiutils/api_response.dart';
 import 'package:portfolio/global/utils/app_utils.dart';
-
 import 'package:portfolio/model/api_body.dart';
+import 'package:portfolio/model/api_envelope.dart';
 
 abstract class BaseRepository {
   ApiBaseHelper get api => apiHelper;
@@ -48,6 +48,43 @@ abstract class BaseRepository {
     Map<String, dynamic>? params,
   }) async {
     return _handleResponse(api.post(url, data: _encodeBody(data), params: params), parser);
+  }
+
+  /// Returns full API envelope `{ message, success, data }` with typed [data].
+  @protected
+  Future<ApiEnvelope<T>> postEnvelope<T>({
+    required String url,
+    required T Function(dynamic data) dataParser,
+    dynamic data,
+    Map<String, dynamic>? params,
+  }) {
+    return _toEnvelope(
+      api.post(url, data: _encodeBody(data), params: params),
+      dataParser,
+    );
+  }
+
+  /// Returns full API envelope `{ message, success, data }` with typed [data].
+  @protected
+  Future<ApiEnvelope<T>> getEnvelope<T>({
+    required String url,
+    required T Function(dynamic data) dataParser,
+    Map<String, dynamic>? params,
+  }) {
+    return _toEnvelope(api.get(url, params: params), dataParser);
+  }
+
+  /// Action endpoints that return envelope with empty `data: {}` on success.
+  @protected
+  Future<ApiEnvelope<dynamic>> postMessageEnvelope({
+    required String url,
+    dynamic data,
+    Map<String, dynamic>? params,
+  }) {
+    return _toEnvelope(
+      api.post(url, data: _encodeBody(data), params: params),
+      null,
+    );
   }
 
   @protected
@@ -137,10 +174,23 @@ abstract class BaseRepository {
       Future<Response> apiCall, T Function(dynamic data) parser) async {
     try {
       final response = await apiCall;
-      if (!_isSuccessStatus(response.statusCode)) {
-        return Result.failure(_extractEnvelopeMessage(response.data) ?? _getErrorMessage(response));
+      if (response.data is Map) {
+        final envelope = ApiEnvelope.parse<T>(response.data, parser);
+        if (envelope.isSuccess && envelope.data != null) {
+          return Result.success(envelope.data as T);
+        }
+        if (!envelope.isSuccess) {
+          return Result.failure(envelope.message);
+        }
       }
-      return _parseEnvelope(response.data, parser);
+      if (!_isSuccessStatus(response.statusCode)) {
+        return Result.failure(
+          _extractEnvelopeMessage(response.data) ??
+              response.statusMessage ??
+              _getErrorMessage(response),
+        );
+      }
+      return Result.failure('No data available');
     } catch (e) {
       return Result.failure(_handleException(e));
     }
@@ -165,40 +215,38 @@ abstract class BaseRepository {
     }
   }
 
-  Result<T> _parseEnvelope<T>(dynamic raw, T Function(dynamic data) parser) {
-    final envelope = _validateEnvelope(raw);
-    if (envelope.isFailure) return Result.failure(envelope.message);
+  Future<ApiEnvelope<T>> _toEnvelope<T>(
+    Future<Response> apiCall,
+    T Function(dynamic data)? dataParser,
+  ) async {
     try {
-      return Result.success(parser(envelope.data));
+      final response = await apiCall;
+
+      if (response.data is Map) {
+        final envelope = ApiEnvelope.parse<T>(response.data, dataParser);
+        if (envelope.isSuccess || envelope.message.isNotEmpty) {
+          return envelope;
+        }
+      }
+
+      final fallbackMessage = _extractEnvelopeMessage(response.data) ??
+          (response.statusMessage?.trim().isNotEmpty == true
+              ? response.statusMessage!.trim()
+              : null) ??
+          _getErrorMessage(response);
+
+      return ApiEnvelope.failure(fallbackMessage);
     } catch (e) {
-      return Result.failure('Failed to parse response data');
+      return ApiEnvelope.failure(_handleException(e));
     }
   }
 
   ({bool isFailure, String message, dynamic data}) _validateEnvelope(dynamic raw) {
-    if (raw is! Map) {
-      return (isFailure: true, message: 'Invalid response format', data: null);
+    final envelope = ApiEnvelope.parse<dynamic>(raw, null);
+    if (envelope.isFailure) {
+      return (isFailure: true, message: envelope.message, data: null);
     }
-    final map = Map<String, dynamic>.from(raw);
-    final message = (map['message'] as String?)?.trim() ?? '';
-    final success = map['success'] == true;
-    final hasDataKey = map.containsKey('data');
-    final data = hasDataKey ? map['data'] : null;
-
-    if (!success) {
-      return (
-        isFailure: true,
-        message: message.isNotEmpty ? message : 'Request failed',
-        data: null,
-      );
-    }
-    if (!hasDataKey || data == null) {
-      return (
-        isFailure: true,
-        message: message.isNotEmpty ? message : 'No data available',
-        data: null,
-      );
-    }
+    final data = envelope.data;
     if (data is! Map) {
       return (
         isFailure: true,
@@ -206,7 +254,11 @@ abstract class BaseRepository {
         data: null,
       );
     }
-    return (isFailure: false, message: message, data: Map<String, dynamic>.from(data));
+    return (
+      isFailure: false,
+      message: envelope.message,
+      data: Map<String, dynamic>.from(data),
+    );
   }
 
   List<dynamic>? _extractList(dynamic data) {

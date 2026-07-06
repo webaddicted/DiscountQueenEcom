@@ -43,7 +43,15 @@ class StringConst {
   static const String orContinueWith = 'Or continue with';
   static const String verifyOtp = 'Verify OTP';
   static const String resendOtp = 'Resend OTP';
-  static const String enterOtp = 'Enter the OTP sent to your phone';
+  static const String enterOtp = 'Enter OTP (use 12345 for testing)';
+  static const String loginSuccess = 'Login successful';
+  static const String otpSent = 'OTP generated. Please verify to continue.';
+  static const String verificationSuccess = 'Email verified. Please login.';
+  static const String otpVerificationSuccessHindi =
+      'बधाई हो! आपका खाता सत्यापित हो गया। कृपया लॉगिन करें।';
+  static const String emailAlreadyExists = 'This email is already registered';
+  static const String phoneAlreadyExists = 'This phone number is already registered';
+  static const String userAlreadyExists = 'User already exists';
 
   static const String email = 'Email';
   static const String password = 'Password';
@@ -196,6 +204,10 @@ class StringConst {
       'Something went wrong. Please try again later.';
   static const String noInternetConnection = 'No Internet Connection';
   static const String noDataFound = 'No Data Found';
+  static const String noDataSubtitle = 'Nothing to show right now. Pull to refresh or tap retry.';
+  static const String noInternetSubtitle =
+      'You are offline. Check your Wi‑Fi or mobile data and try again.';
+  static const String errorSubtitle = 'Something went wrong. Please try again in a moment.';
   static const String sessionExpired = 'Session expired. Please login again.';
 
   static const String fieldRequired = 'This field is required';

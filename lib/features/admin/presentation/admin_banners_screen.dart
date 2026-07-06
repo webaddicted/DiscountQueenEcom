@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 import 'package:portfolio/features/home/domain/banner_model.dart';
 
@@ -188,7 +189,7 @@ class _AdminBannersScreenState extends BaseState<AdminBannersScreen> {
                   return AdminTheme.card(
                     context: context,
                     child: ListTile(
-                      title: Text(b.title, style: const TextStyle(fontWeight: FontWeight.w700)),
+                      title: Text(b.title, style: AppTextStyle.titleMedium.copyWith(fontWeight: FontWeight.w700)),
                       subtitle: Text('Order ${b.sortOrder} · ${b.isActive ? "live" : "off"}'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,

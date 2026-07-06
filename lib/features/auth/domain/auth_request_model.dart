@@ -18,14 +18,12 @@ class RegisterRequest implements ApiBody {
   final String email;
   final String password;
   final String? phone;
-  final String? userId;
 
   const RegisterRequest({
     required this.name,
     required this.email,
     required this.password,
     this.phone,
-    this.userId,
   });
 
   @override
@@ -34,8 +32,42 @@ class RegisterRequest implements ApiBody {
         'email': email,
         'password': password,
         if (phone != null && phone!.isNotEmpty) 'phone': phone,
-        if (userId != null && userId!.isNotEmpty) 'user_id': userId,
       };
+}
+
+class CheckAvailabilityRequest implements ApiBody {
+  final String email;
+  final String? phone;
+
+  const CheckAvailabilityRequest({required this.email, this.phone});
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        if (phone != null && phone!.isNotEmpty) 'phone': phone,
+      };
+}
+
+class VerifyOtpRequest implements ApiBody {
+  final String email;
+  final String otp;
+
+  const VerifyOtpRequest({required this.email, required this.otp});
+
+  @override
+  Map<String, dynamic> toJson() => {
+        'email': email,
+        'otp': otp,
+      };
+}
+
+class ResendOtpRequest implements ApiBody {
+  final String email;
+
+  const ResendOtpRequest({required this.email});
+
+  @override
+  Map<String, dynamic> toJson() => {'email': email};
 }
 
 class ProfileUpdateRequest implements ApiBody {

@@ -14,23 +14,49 @@ class HomeController extends BaseController {
   final RxList<ProductModel> popularProducts = <ProductModel>[].obs;
   final RxList<ProductModel> newArrivals = <ProductModel>[].obs;
   final RxInt currentBannerIndex = 0.obs;
+  final RxBool isLoaded = false.obs;
   bool _loaded = false;
+
+  RxBool get isLoadedRx => isLoaded;
+
+  bool get hasAnyContent =>
+      banners.isNotEmpty ||
+      featuredProducts.isNotEmpty ||
+      popularProducts.isNotEmpty ||
+      newArrivals.isNotEmpty;
 
   Future<void> loadHomeData({bool force = false}) async {
     if (_loaded && !force) return;
-    await executeWithLoading(() async {
+    showLoading();
+    clearError();
+
+    try {
       final results = await Future.wait([
-        _catalog.getBanners(),
-        _catalog.getFeaturedProducts(),
-        _catalog.getPopularProducts(),
-        _catalog.getNewArrivals(),
+        _safeLoad(() => _catalog.getBanners()),
+        _safeLoad(() => _catalog.getFeaturedProducts()),
+        _safeLoad(() => _catalog.getPopularProducts()),
+        _safeLoad(() => _catalog.getNewArrivals()),
       ]);
+
       banners.assignAll(results[0] as List<BannerModel>);
       featuredProducts.assignAll(results[1] as List<ProductModel>);
       popularProducts.assignAll(results[2] as List<ProductModel>);
       newArrivals.assignAll(results[3] as List<ProductModel>);
       _loaded = true;
-    });
+      isLoaded.value = true;
+    } catch (e) {
+      setError(e.toString());
+    } finally {
+      hideLoading();
+    }
+  }
+
+  Future<List<T>> _safeLoad<T>(Future<List<T>> Function() loader) async {
+    try {
+      return await loader();
+    } catch (_) {
+      return <T>[];
+    }
   }
 
   /// Backward-compatible alias for pull-to-refresh on home.

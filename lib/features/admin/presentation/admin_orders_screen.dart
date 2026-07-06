@@ -5,6 +5,7 @@ import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 import 'package:portfolio/features/orders/domain/order_model.dart';
@@ -110,7 +111,8 @@ class _AdminOrdersScreenState extends BaseState<AdminOrdersScreen> {
                         child: ListTile(
                           title: Text(
                             _money.format(o.total),
-                            style: const TextStyle(fontWeight: FontWeight.w800),
+                            style: AppTextStyle.titleMedium.copyWith(
+                          fontWeight: FontWeight.w800),
                           ),
                           subtitle: Text(
                             '${o.status} · ${created != null ? _dt.format(created) : o.createdAt}\n'

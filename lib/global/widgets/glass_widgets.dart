@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:portfolio/global/constant/color_const.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 
 class GlassContainer extends StatelessWidget {
   final Widget child;
@@ -200,8 +201,7 @@ class InfoChip extends StatelessWidget {
         Icon(icon, size: 14, color: iconColor ?? Colors.white70),
         const SizedBox(width: 4),
         Text(text,
-            style: TextStyle(
-                fontSize: 12,
+            style: AppTextStyle.labelLarge.copyWith(
                 color: textColor ?? Colors.white70)),
       ]),
     );

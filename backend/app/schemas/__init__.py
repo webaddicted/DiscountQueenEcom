@@ -219,6 +219,30 @@ class AuthRegisterIn(CamelModel):
     user_id: UUID | None = None
 
 
+class AuthAvailabilityIn(CamelModel):
+    email: str
+    phone: str | None = None
+
+
+class AuthAvailabilityOut(CamelModel):
+    email_available: bool = True
+    phone_available: bool = True
+
+
+class AuthVerifyOtpIn(CamelModel):
+    email: str
+    otp: str
+
+
+class AuthResendOtpIn(CamelModel):
+    email: str
+
+
+class RegisterPendingOut(CamelModel):
+    email: str
+    message: str = ""
+
+
 class MessageOut(CamelModel):
     message: str
     success: bool = True

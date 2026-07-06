@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 import 'package:portfolio/features/product/domain/review_model.dart';
@@ -133,7 +134,7 @@ class _AdminReviewsScreenState extends BaseState<AdminReviewsScreen> {
                         child: ListTile(
                           title: Text(
                             '${r.rating.toStringAsFixed(0)}★ · ${r.userName}',
-                            style: const TextStyle(fontWeight: FontWeight.w700),
+                            style: AppTextStyle.titleMedium.copyWith(fontWeight: FontWeight.w700),
                           ),
                           subtitle: Text(
                             'Product: ${r.productId}\n${r.comment}',

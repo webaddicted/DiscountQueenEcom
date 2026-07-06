@@ -6,6 +6,7 @@ import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/utils/dialog_utils.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 import 'package:portfolio/features/product/domain/product_model.dart';
@@ -97,7 +98,7 @@ class _AdminProductsScreenState extends BaseState<AdminProductsScreen> {
                         p.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontWeight: FontWeight.w700),
+                        style: AppTextStyle.titleMedium.copyWith(fontWeight: FontWeight.w700),
                       ),
                       subtitle: Text(
                         '${_money.format(p.price)} · stock ${p.stockQty}',

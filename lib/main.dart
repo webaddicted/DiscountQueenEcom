@@ -19,6 +19,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await initSDK();
+  Get.put(ThemeController(), permanent: true);
   runApp(const MyApp());
 }
 
@@ -41,30 +42,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Get.put(ThemeController());
+    final themeController = Get.find<ThemeController>();
 
-    return Obx(() => GetMaterialApp(
+    return GetMaterialApp(
           title: AppConstant.appName,
           debugShowCheckedModeBanner: false,
           theme: lightThemeData(context),
           darkTheme: darkThemeData(context),
-          themeMode: themeController.isDark.value
+          themeMode: themeController.isDarkMode
               ? ThemeMode.dark
               : ThemeMode.light,
           initialBinding: InitialBinding(),
           initialRoute: RoutersConst.initialRoute,
           getPages: routes(),
           builder: (context, child) {
+            if (child == null) return const SizedBox.shrink();
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(
                 textScaler: TextScaler.linear(
-                  (MediaQuery.of(context).textScaler.scale(1.0))
+                  MediaQuery.of(context)
+                      .textScaler
+                      .scale(1.0)
                       .clamp(0.8, 1.2),
                 ),
               ),
-              child: child!,
+              child: child,
             );
           },
-        ));
+        );
   }
 }

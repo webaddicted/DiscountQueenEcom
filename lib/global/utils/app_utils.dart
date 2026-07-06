@@ -20,7 +20,7 @@ Future<void> launchURL(String url) async {
 }
 
 void shareText(String text, {String? subject}) =>
-    Share.share(text, subject: subject);
+    SharePlus.instance.share(ShareParams(text: text, subject: subject));
 
 Future<void> delay(int milliseconds) =>
     Future.delayed(Duration(milliseconds: milliseconds));

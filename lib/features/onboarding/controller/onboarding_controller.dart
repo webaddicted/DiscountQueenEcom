@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:portfolio/global/base/base_controller.dart';
+import 'package:portfolio/global/constant/assets_const.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
@@ -15,14 +16,17 @@ class OnboardingController extends BaseController {
     OnboardingItem(
       title: StringConst.onboardingTitle1,
       description: StringConst.onboardingDesc1,
+      image: AssetsConst.onboarding1,
     ),
     OnboardingItem(
       title: StringConst.onboardingTitle2,
       description: StringConst.onboardingDesc2,
+      image: AssetsConst.onboarding2,
     ),
     OnboardingItem(
       title: StringConst.onboardingTitle3,
       description: StringConst.onboardingDesc3,
+      image: AssetsConst.onboarding3,
     ),
   ];
 
@@ -55,9 +59,11 @@ class OnboardingController extends BaseController {
 class OnboardingItem {
   final String title;
   final String description;
+  final String image;
 
   const OnboardingItem({
     required this.title,
     required this.description,
+    required this.image,
   });
 }

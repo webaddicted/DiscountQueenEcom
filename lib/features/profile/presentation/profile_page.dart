@@ -23,7 +23,7 @@ class ProfilePage extends BaseStatelessWidget {
     return Obx(() {
       trackMainShellObx();
       if (!Get.isRegistered<ProfileController>()) {
-        return Scaffold(
+        return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(color: ColorConst.primaryColor),
           ),

@@ -6,6 +6,7 @@ import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/utils/snackbar_utils.dart';
 import 'package:portfolio/features/admin/domain/coupon_model.dart';
 
@@ -175,7 +176,8 @@ class _AdminCouponsScreenState extends BaseState<AdminCouponsScreen> {
                     child: ListTile(
                       title: Text(
                         c.code,
-                        style: const TextStyle(fontWeight: FontWeight.w800, letterSpacing: 1.2),
+                        style: AppTextStyle.titleMedium.copyWith(
+                            fontWeight: FontWeight.w800, letterSpacing: 1.2),
                       ),
                       subtitle: Text(
                         '${c.discountPercent}% off · max ${AppConstant.currency}${c.maxDiscount.toStringAsFixed(0)} · ${c.active ? "active" : "off"}',

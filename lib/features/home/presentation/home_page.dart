@@ -39,6 +39,9 @@ class HomePage extends BaseStatelessWidget {
           if (controller.isErrorRx.value) {
             return _buildErrorState(controller);
           }
+          if (controller.isLoadedRx.value && !controller.hasAnyContent) {
+            return _buildEmptyState(controller);
+          }
           return RefreshIndicator(
             onRefresh: controller.loadData,
             color: ColorConst.primaryColor,
@@ -64,58 +67,56 @@ class HomePage extends BaseStatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildHeroBanner(controller),
+          if (controller.banners.isNotEmpty) _buildHeroBanner(controller),
 
-          // Browse categories (loaded on Categories tab only)
           _buildWebColoredSection(
             color: ColorConst.white,
             child: _HomeCategoriesPrompt(onTap: controller.onViewAllCategories),
           ),
 
-          // Promo banners on light green
-          _buildWebColoredSection(
-            color: ColorConst.colorFFF0F7EE,
-            child: _buildPromoBanners(controller),
-          ),
-
-          // Featured products on cream
-          _buildWebColoredSection(
-            color: ColorConst.colorFFFBF7F0,
-            child: _buildProductGridSection(
-              controller,
-              StringConst.featuredProducts,
-              controller.featuredProducts,
-              controller.onViewAllFeatured,
-              cols,
+          if (controller.banners.length >= 2)
+            _buildWebColoredSection(
+              color: ColorConst.colorFFF0F7EE,
+              child: _buildPromoBanners(controller),
             ),
-          ),
 
-          // Discount banner (dark green)
-          _buildWebDiscountBanner(controller),
-
-          // Popular products on white
-          _buildWebColoredSection(
-            color: ColorConst.white,
-            child: _buildProductGridSection(
-              controller,
-              StringConst.popularProducts,
-              controller.popularProducts,
-              controller.onViewAllPopular,
-              cols,
+          if (controller.featuredProducts.isNotEmpty)
+            _buildWebColoredSection(
+              color: ColorConst.colorFFFBF7F0,
+              child: _buildProductGridSection(
+                controller,
+                StringConst.featuredProducts,
+                controller.featuredProducts,
+                controller.onViewAllFeatured,
+                cols,
+              ),
             ),
-          ),
 
-          // New arrivals on cream
-          _buildWebColoredSection(
-            color: ColorConst.colorFFFBF7F0,
-            child: _buildProductGridSection(
-              controller,
-              StringConst.newArrivals,
-              controller.newArrivals,
-              controller.onViewAllNewArrivals,
-              cols,
+          if (controller.banners.isNotEmpty) _buildWebDiscountBanner(controller),
+
+          if (controller.popularProducts.isNotEmpty)
+            _buildWebColoredSection(
+              color: ColorConst.white,
+              child: _buildProductGridSection(
+                controller,
+                StringConst.popularProducts,
+                controller.popularProducts,
+                controller.onViewAllPopular,
+                cols,
+              ),
             ),
-          ),
+
+          if (controller.newArrivals.isNotEmpty)
+            _buildWebColoredSection(
+              color: ColorConst.colorFFFBF7F0,
+              child: _buildProductGridSection(
+                controller,
+                StringConst.newArrivals,
+                controller.newArrivals,
+                controller.onViewAllNewArrivals,
+                cols,
+              ),
+            ),
         ],
       ),
     );
@@ -426,7 +427,7 @@ class HomePage extends BaseStatelessWidget {
                   mainAxisSpacing: DesignTokens.spacing8,
                 ),
                 itemCount: cols,
-                itemBuilder: (_, __) => const ShimmerBox(height: 200),
+                itemBuilder: (_, _) => const ShimmerBox(height: 200),
               );
             }
             return const SizedBox.shrink();
@@ -591,30 +592,38 @@ class HomePage extends BaseStatelessWidget {
         _buildSearchBar(controller),
         const SliverToBoxAdapter(
             child: SizedBox(height: DesignTokens.spacing8)),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: 160,
-            child: BannerSlider(
-              banners: controller.banners,
-              currentIndex: controller.currentBannerIndex,
-              height: 140,
+        if (controller.banners.isNotEmpty)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 160,
+              child: BannerSlider(
+                banners: controller.banners,
+                currentIndex: controller.currentBannerIndex,
+                height: 140,
+              ),
             ),
           ),
-        ),
-        const SliverToBoxAdapter(
-            child: SizedBox(height: DesignTokens.spacing12)),
+        if (controller.banners.isNotEmpty)
+          const SliverToBoxAdapter(
+              child: SizedBox(height: DesignTokens.spacing12)),
         SliverToBoxAdapter(
           child: _HomeCategoriesPrompt(onTap: controller.onViewAllCategories),
         ),
-        const SliverToBoxAdapter(
-            child: SizedBox(height: DesignTokens.spacing12)),
-        _buildMobileFeaturedSection(controller),
-        const SliverToBoxAdapter(
-            child: SizedBox(height: DesignTokens.spacing12)),
-        _buildMobilePopularSection(controller, cols),
-        const SliverToBoxAdapter(
-            child: SizedBox(height: DesignTokens.spacing12)),
-        _buildMobileNewArrivalsSection(controller),
+        if (controller.featuredProducts.isNotEmpty) ...[
+          const SliverToBoxAdapter(
+              child: SizedBox(height: DesignTokens.spacing12)),
+          _buildMobileFeaturedSection(controller),
+        ],
+        if (controller.popularProducts.isNotEmpty) ...[
+          const SliverToBoxAdapter(
+              child: SizedBox(height: DesignTokens.spacing12)),
+          _buildMobilePopularSection(controller, cols),
+        ],
+        if (controller.newArrivals.isNotEmpty) ...[
+          const SliverToBoxAdapter(
+              child: SizedBox(height: DesignTokens.spacing12)),
+          _buildMobileNewArrivalsSection(controller),
+        ],
         const SliverToBoxAdapter(
             child: SizedBox(height: DesignTokens.spacing16)),
       ],
@@ -674,7 +683,7 @@ class HomePage extends BaseStatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: DesignTokens.spacing8),
                     itemCount: 3,
-                    itemBuilder: (_, __) => const Padding(
+                    itemBuilder: (_, _) => const Padding(
                       padding: EdgeInsets.only(right: DesignTokens.spacing12),
                       child: ShimmerBox(width: 140, height: 220),
                     ),
@@ -687,7 +696,7 @@ class HomePage extends BaseStatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: DesignTokens.spacing8),
                 itemCount: products.length,
-                separatorBuilder: (_, __) =>
+                separatorBuilder: (_, _) =>
                     const SizedBox(width: DesignTokens.spacing12),
                 itemBuilder: (context, index) {
                   final product = products[index];
@@ -736,7 +745,7 @@ class HomePage extends BaseStatelessWidget {
                       mainAxisSpacing: DesignTokens.spacing8,
                     ),
                     itemCount: cols * 2,
-                    itemBuilder: (_, __) => const ShimmerBox(height: 180),
+                    itemBuilder: (_, _) => const ShimmerBox(height: 180),
                   );
                 }
                 return const SizedBox.shrink();
@@ -789,7 +798,7 @@ class HomePage extends BaseStatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: DesignTokens.spacing8),
                     itemCount: 3,
-                    itemBuilder: (_, __) => const Padding(
+                    itemBuilder: (_, _) => const Padding(
                       padding: EdgeInsets.only(right: DesignTokens.spacing12),
                       child: ShimmerBox(width: 240, height: 110),
                     ),
@@ -802,7 +811,7 @@ class HomePage extends BaseStatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: DesignTokens.spacing8),
                 itemCount: products.length,
-                separatorBuilder: (_, __) =>
+                separatorBuilder: (_, _) =>
                     const SizedBox(width: DesignTokens.spacing12),
                 itemBuilder: (context, index) {
                   final product = products[index];
@@ -841,9 +850,30 @@ class HomePage extends BaseStatelessWidget {
   }
 
   Widget _buildErrorState(HomeController controller) {
+    final message = controller.errorMessageRx.value;
+    final isOffline = message.toLowerCase().contains('internet') ||
+        message.toLowerCase().contains('connection');
+
+    if (isOffline) {
+      return NoInternetWidget(onRetry: controller.loadData);
+    }
+
     return EmptyWidget(
-      message: controller.errorMessageRx.value,
-      icon: Icons.error_outline,
+      type: AppStateType.error,
+      message: message,
+      action: GradientButton(
+        onTap: controller.loadData,
+        child: Text(
+          StringConst.retry,
+          style: AppTextStyle.buttonText.copyWith(color: ColorConst.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(HomeController controller) {
+    return EmptyWidget(
+      type: AppStateType.noData,
       action: GradientButton(
         onTap: controller.loadData,
         child: Text(

@@ -24,7 +24,7 @@ class WishlistPage extends BaseStatelessWidget {
     return Obx(() {
       trackMainShellObx();
       if (!Get.isRegistered<WishlistController>()) {
-        return Scaffold(
+        return const Scaffold(
           body: Center(
             child: CircularProgressIndicator(color: ColorConst.primaryColor),
           ),

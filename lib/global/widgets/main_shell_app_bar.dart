@@ -61,11 +61,10 @@ class MainShellAppBar extends StatelessWidget implements PreferredSizeWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SmartImage.rounded(
+                        SmartImage.circular(
                           source: AssetsConst.logoImg,
-                          width: 28,
-                          height: 28,
-                          borderRadius: 6,
+                          size: 40,
+                          fit: BoxFit.contain,
                         ),
                         const SizedBox(width: 8),
                         Flexible(
@@ -73,6 +72,7 @@ class MainShellAppBar extends StatelessWidget implements PreferredSizeWidget {
                             AppConstant.appName,
                             style: AppTextStyle.titleMedium.copyWith(
                               color: ColorConst.primaryColor,
+                              fontFamily: AssetsConst.fontPacifico,
                               fontWeight: FontWeight.w800,
                             ),
                             maxLines: 1,

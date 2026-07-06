@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
+import 'package:portfolio/features/auth/controller/auth_controller.dart';
 import 'package:portfolio/features/auth/data/auth_repository.dart';
-import 'package:portfolio/controller/theme_controller.dart';
 import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/cart/data/cart_repository.dart';
 import 'package:portfolio/features/home/data/catalog_repository.dart';
@@ -22,6 +22,14 @@ class InitialBinding implements Bindings {
     Get.put(NotificationRepository(), permanent: true);
     Get.put(AdminRepository(), permanent: true);
     Get.put(ConnectivityService(), permanent: true);
-    Get.lazyPut(() => ThemeController(), fenix: true);
+  }
+}
+
+class AuthBinding extends Bindings {
+  @override
+  void dependencies() {
+    if (!Get.isRegistered<AuthController>()) {
+      Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
+    }
   }
 }

@@ -9,6 +9,7 @@ import 'package:portfolio/features/main/controller/main_controller.dart';
 import 'package:portfolio/features/main/presentation/widgets/categories_tab.dart';
 import 'package:portfolio/features/main/presentation/widgets/web_side_menu.dart';
 import 'package:portfolio/global/base/base_stateless_widget.dart';
+import 'package:portfolio/global/constant/assets_const.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
@@ -18,6 +19,7 @@ import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/widgets/main_shell_app_bar.dart';
 import 'package:portfolio/global/utils/main_tab_obx.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
+import 'package:portfolio/global/widgets/smart_image.dart';
 
 class MainPage extends BaseStatelessWidget {
   const MainPage({super.key});
@@ -132,6 +134,12 @@ class MainPage extends BaseStatelessWidget {
                         padding: EdgeInsets.zero,
                         tooltip: StringConst.menu,
                       ),
+                      SmartImage.circular(
+                        source: AssetsConst.logoImg,
+                        size: 44,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(width: 8),
                       Text(
                         AppConstant.appName,
                         style: AppTextStyle.headlineSmall.copyWith(

@@ -32,15 +32,16 @@ def test_health_api_v1() -> None:
     assert _data(response)["status"] == "UP"
 
 
-def test_auth_login_stub() -> None:
+def test_auth_login_user_not_found() -> None:
     response = client.post(
         "/api/v1/auth/login",
-        json={"email": "test@example.com", "password": "secret"},
+        json={"email": "unknown-user@example.com", "password": "secret"},
     )
-    assert response.status_code == 200
+    assert response.status_code == 401
     body = response.json()
-    assert body["success"] is True
-    assert body["data"] is not None
+    assert body["success"] is False
+    assert body["data"] == {}
+    assert body["message"]
 
 
 def test_envelope_failure_on_missing_user_header() -> None:

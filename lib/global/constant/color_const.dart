@@ -4,10 +4,13 @@ class ColorConst {
   ColorConst._();
 
   // Brand
-  static const Color appColor = Color(0xFF2E7D32);
-  static const Color primaryColor = Color(0xFF2E7D32);
-  static const Color secondaryColor = Color(0xFF1B5E20);
-  static const Color accentColor = Color(0xFF66BB6A);
+  static const Color colorFFBE4D76 = Color(0xFFBE4D76);
+  static const Color colorFF9A3D5F = Color(0xFF9A3D5F);
+  static const Color colorFFD97A9A = Color(0xFFD97A9A);
+  static const Color appColor = colorFFBE4D76;
+  static const Color primaryColor = colorFFBE4D76;
+  static const Color secondaryColor = colorFF9A3D5F;
+  static const Color accentColor = colorFFD97A9A;
 
   // Base
   static const Color black = Colors.black;
@@ -113,7 +116,7 @@ class ColorConst {
 
   // Section Backgrounds
   static const Color colorFFFBF7F0 = Color(0xFFFBF7F0); // warm cream
-  static const Color colorFFF0F7EE = Color(0xFFF0F7EE); // light green tint
+  static const Color colorFFF0F7EE = Color(0xFFFCF0F4); // light brand tint
   static const Color colorFFFFF5ED = Color(0xFFFFF5ED); // peach tint
 
   // Material Design Colors

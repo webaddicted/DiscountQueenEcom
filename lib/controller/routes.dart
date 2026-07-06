@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:portfolio/controller/initial_binding.dart';
 import 'package:portfolio/features/about/presentation/about_us_page.dart';
 import 'package:portfolio/features/admin/presentation/admin_banners_screen.dart';
 import 'package:portfolio/features/admin/presentation/admin_categories_screen.dart';
@@ -17,6 +18,7 @@ import 'package:portfolio/features/address/presentation/add_address_page.dart';
 import 'package:portfolio/features/address/presentation/address_list_page.dart';
 import 'package:portfolio/features/address/presentation/edit_address_page.dart';
 import 'package:portfolio/features/auth/presentation/login_page.dart';
+import 'package:portfolio/features/auth/presentation/otp_page.dart';
 import 'package:portfolio/features/auth/presentation/register_page.dart';
 import 'package:portfolio/features/checkout/controller/checkout_controller.dart';
 import 'package:portfolio/features/checkout/presentation/checkout_page.dart';
@@ -50,8 +52,21 @@ List<GetPage> routes() => [
       GetPage(name: RoutersConst.splash, page: () => const SplashPage()),
       GetPage(
           name: RoutersConst.onboarding, page: () => const OnboardingPage()),
-      GetPage(name: RoutersConst.login, page: () => const LoginPage()),
-      GetPage(name: RoutersConst.register, page: () => const RegisterPage()),
+      GetPage(
+        name: RoutersConst.login,
+        page: () => const LoginPage(),
+        binding: AuthBinding(),
+      ),
+      GetPage(
+        name: RoutersConst.register,
+        page: () => const RegisterPage(),
+        binding: AuthBinding(),
+      ),
+      GetPage(
+        name: RoutersConst.otp,
+        page: () => const OtpPage(),
+        binding: AuthBinding(),
+      ),
 
       _mainPage(RoutersConst.main),
       _mainPage(RoutersConst.home),

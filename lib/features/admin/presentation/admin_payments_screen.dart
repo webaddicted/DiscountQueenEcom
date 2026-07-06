@@ -5,6 +5,7 @@ import 'package:portfolio/features/admin/data/admin_repository.dart';
 import 'package:portfolio/features/admin/widgets/admin_access_gate.dart';
 import 'package:portfolio/features/admin/widgets/admin_theme.dart';
 import 'package:portfolio/global/constant/app_constant.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/features/orders/domain/order_model.dart';
 import 'package:intl/intl.dart';
@@ -77,7 +78,7 @@ class _AdminPaymentsScreenState extends BaseState<AdminPaymentsScreen> {
                           ),
                           title: Text(
                             o.paymentRef.isNotEmpty ? o.paymentRef : '—',
-                            style: const TextStyle(fontWeight: FontWeight.w600),
+                            style: AppTextStyle.titleMedium.copyWith(fontWeight: FontWeight.w600),
                           ),
                           subtitle: Text(
                             '${_money.format(o.total)} · ${created != null ? _dt.format(created) : ""}\n'

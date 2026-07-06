@@ -17,7 +17,7 @@ class LoginPage extends BaseStatelessWidget {
 
   @override
   Widget initBuild(BuildContext context) {
-    final controller = Get.put(AuthController());
+    final controller = Get.find<AuthController>();
     return Scaffold(
       body: ResponsiveLayout(
         mobile: (_) => _buildMobileLayout(context, controller),
@@ -179,13 +179,31 @@ class LoginPage extends BaseStatelessWidget {
             ),
           ),
           const SizedBox(height: DesignTokens.spacing8),
-          GradientButton(
-            onTap: controller.login,
-            isLoading: controller.isLoading,
-            child: Text(
-              StringConst.login,
-              style: AppTextStyle.buttonText.copyWith(
-                color: ColorConst.white,
+          Obx(() {
+            if (!controller.isErrorRx.value) {
+              return const SizedBox.shrink();
+            }
+            return Padding(
+              padding: const EdgeInsets.only(bottom: DesignTokens.spacing8),
+              child: Text(
+                controller.errorMessageRx.value,
+                style: AppTextStyle.bodyMedium.copyWith(
+                  color: ColorConst.colorFFDC2626,
+                  fontSize: 14,
+                ),
+              ),
+            );
+          }),
+          Obx(
+            () => GradientButton(
+              onTap: controller.login,
+              isLoading: controller.isLoading,
+              enabled: controller.canSubmitLogin.value,
+              child: Text(
+                StringConst.login,
+                style: AppTextStyle.buttonText.copyWith(
+                  color: ColorConst.white,
+                ),
               ),
             ),
           ),

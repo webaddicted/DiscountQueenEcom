@@ -145,27 +145,32 @@ class CheckoutPage extends BaseStatelessWidget {
       children: [
         Text(StringConst.paymentMethod, style: AppTextStyle.titleMedium),
         const SizedBox(height: DesignTokens.spacing8),
-        Obx(() => Column(
-              children: [
-                _PaymentOption(
-                  label: StringConst.cashOnDelivery,
-                  value: 'cod',
-                  groupValue: controller.selectedPaymentMethod.value,
-                  onTap: () => controller.selectPaymentMethod('cod'),
-                ),
-                _PaymentOption(
-                  label: StringConst.onlinePayment,
-                  value: 'online',
-                  groupValue: controller.selectedPaymentMethod.value,
-                  onTap: () => controller.selectPaymentMethod('online'),
-                ),
-                _PaymentOption(
-                  label: StringConst.upi,
-                  value: 'upi',
-                  groupValue: controller.selectedPaymentMethod.value,
-                  onTap: () => controller.selectPaymentMethod('upi'),
-                ),
-              ],
+        Obx(() => RadioGroup<String>(
+              groupValue: controller.selectedPaymentMethod.value,
+              onChanged: (value) {
+                if (value != null) {
+                  controller.selectPaymentMethod(value);
+                }
+              },
+              child: Column(
+                children: [
+                  _PaymentOption(
+                    label: StringConst.cashOnDelivery,
+                    value: 'cod',
+                    onTap: () => controller.selectPaymentMethod('cod'),
+                  ),
+                  _PaymentOption(
+                    label: StringConst.onlinePayment,
+                    value: 'online',
+                    onTap: () => controller.selectPaymentMethod('online'),
+                  ),
+                  _PaymentOption(
+                    label: StringConst.upi,
+                    value: 'upi',
+                    onTap: () => controller.selectPaymentMethod('upi'),
+                  ),
+                ],
+              ),
             )),
       ],
     );
@@ -346,13 +351,11 @@ class _AddressCard extends StatelessWidget {
 class _PaymentOption extends StatelessWidget {
   final String label;
   final String value;
-  final String groupValue;
   final VoidCallback onTap;
 
   const _PaymentOption({
     required this.label,
     required this.value,
-    required this.groupValue,
     required this.onTap,
   });
 
@@ -360,11 +363,7 @@ class _PaymentOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(label, style: AppTextStyle.bodyMedium),
-      leading: Radio<String>(
-        value: value,
-        groupValue: groupValue,
-        onChanged: (_) => onTap(),
-      ),
+      leading: Radio<String>(value: value),
       onTap: onTap,
     );
   }

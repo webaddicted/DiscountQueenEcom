@@ -7,7 +7,7 @@ from uuid import UUID
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.db.models import EcomAddress, EcomUserProfile
+from app.db.models import EcomAddress, EcomAuthAccount, EcomUserProfile
 from app.schemas import AddressIn, AddressOut, ProfileOut, ProfileUpdateIn
 
 
@@ -29,13 +29,21 @@ class UserService:
         self.db.refresh(profile)
         return profile
 
-    def profile_out(self, user_id: UUID, email: str = "") -> ProfileOut:
+    def profile_out(self, user_id: UUID, email: str = "", phone: str = "") -> ProfileOut:
         p = self.get_or_create_profile(user_id, email=email)
+        if not email:
+            account = self.db.scalar(
+                select(EcomAuthAccount).where(EcomAuthAccount.user_id == user_id)
+            )
+            if account:
+                email = account.email
+                if not phone:
+                    phone = account.phone or ""
         return ProfileOut(
             id=p.user_id,
             name=p.name or "",
             email=email,
-            phone=p.phone or "",
+            phone=phone or p.phone or "",
             photo_url=p.photo_url or "",
             gender=p.gender or "",
             date_of_birth=p.date_of_birth.isoformat() if p.date_of_birth else "",

@@ -108,25 +108,46 @@ class WebSideMenu extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(8),
-            child: Row(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                SmartImage.rounded(
-                  source: AssetsConst.logoImg,
-                  width: 32,
-                  height: 32,
-                  borderRadius: 8,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    StringConst.appName,
-                    style: AppTextStyle.titleMedium.copyWith(
-                      color: ColorConst.primaryColor,
-                      fontWeight: FontWeight.w800,
+                Container(
+                  width: 90,
+                  height: 90,
+                  decoration: BoxDecoration(
+                    color: ColorConst.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: ColorConst.colorFFE5E7EB,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    boxShadow: [
+                      BoxShadow(
+                        color: ColorConst.colorFF000000.withValues(alpha: 0.08),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
+                  padding: const EdgeInsets.all(8),
+                  child: const ClipOval(
+                    child: SmartImage(
+                      source: AssetsConst.logoImg,
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  StringConst.appName,
+                  style: AppTextStyle.titleMedium.copyWith(
+                    color: ColorConst.primaryColor,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

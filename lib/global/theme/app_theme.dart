@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/constant/assets_const.dart';
 import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/theme/text_style.dart';
 
@@ -57,12 +58,12 @@ class DesignTokens {
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [Color(0xFF2E7D32), Color(0xFF1B5E20)],
+    colors: [ColorConst.primaryColor, ColorConst.secondaryColor],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
   static const LinearGradient secondaryGradient = LinearGradient(
-    colors: [Color(0xFF66BB6A), Color(0xFF43A047)],
+    colors: [ColorConst.accentColor, ColorConst.primaryColor],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
@@ -100,12 +101,13 @@ TextTheme _buildAppTextTheme() {
     labelLarge: AppTextStyle.labelLarge,
     labelMedium: AppTextStyle.labelMedium,
     labelSmall: AppTextStyle.labelSmall,
-  );
+  ).apply(fontFamily: AssetsConst.primaryFontNunito);
 }
 
 ThemeData lightThemeData(BuildContext context) {
   return ThemeData(
     useMaterial3: true,
+    fontFamily: AssetsConst.primaryFontNunito,
     brightness: Brightness.light,
     primaryColor: ColorConst.primaryColor,
     scaffoldBackgroundColor: LightColors.scaffoldBgColor,
@@ -195,7 +197,7 @@ ThemeData lightThemeData(BuildContext context) {
       labelStyle: AppTextStyle.labelLarge,
       unselectedLabelStyle: AppTextStyle.labelMedium,
       indicatorSize: TabBarIndicatorSize.tab,
-      indicator: UnderlineTabIndicator(
+      indicator: const UnderlineTabIndicator(
         borderSide: BorderSide(width: 2, color: ColorConst.primaryColor),
       ),
     ),
@@ -207,6 +209,7 @@ ThemeData lightThemeData(BuildContext context) {
 ThemeData darkThemeData(BuildContext context) {
   return ThemeData(
     useMaterial3: true,
+    fontFamily: AssetsConst.primaryFontNunito,
     brightness: Brightness.dark,
     primaryColor: ColorConst.primaryColor,
     scaffoldBackgroundColor: DarkColors.scaffoldBgColor,

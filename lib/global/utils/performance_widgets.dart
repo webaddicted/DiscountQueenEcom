@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:portfolio/global/theme/text_style.dart';
 
 class PerformanceWidgets {
   PerformanceWidgets._();
@@ -165,12 +166,12 @@ class OptimizedListItem extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(title,
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w600)),
+                      style: AppTextStyle.titleMedium.copyWith(
+                          fontWeight: FontWeight.w600)),
                   if (subtitle != null)
                     Text(subtitle!,
-                        style: TextStyle(
-                            fontSize: 12, color: Colors.grey.shade600)),
+                        style: AppTextStyle.bodySmall
+                            .copyWith(color: Colors.grey.shade600)),
                 ]),
           ),
           ?trailing,

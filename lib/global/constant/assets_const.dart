@@ -2,10 +2,13 @@ class AssetsConst {
   AssetsConst._();
 
   // Font Family
-  static const String primaryFont = 'Poppins';
+  static const String primaryFontNunito = 'Nunito';
+  static const String fontLobster = 'Lobster';
+  static const String fontPacifico = 'Pacifico';
 
   // Images
   static const String logoImg = 'assets/images/logo.png';
+  static const String logosImg = 'assets/images/logos.png';
   static const String noInternetImg = 'assets/images/no_internet.png';
   static const String emptyImg = 'assets/images/empty.png';
   static const String placeholderImg = 'assets/images/placeholder.png';
