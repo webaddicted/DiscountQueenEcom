@@ -10,6 +10,8 @@ class UserModel {
   final bool isAdmin;
   final bool isBlocked;
   final String? blockReason;
+  final String accessToken;
+  final String refreshToken;
 
   UserModel({
     required this.id,
@@ -23,6 +25,8 @@ class UserModel {
     this.isAdmin = false,
     this.isBlocked = false,
     this.blockReason,
+    this.accessToken = '',
+    this.refreshToken = '',
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -37,6 +41,8 @@ class UserModel {
         isAdmin: json['is_admin'] == true,
         isBlocked: json['is_blocked'] == true,
         blockReason: json['block_reason'] as String?,
+        accessToken: json['access_token']?.toString() ?? '',
+        refreshToken: json['refresh_token']?.toString() ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -51,6 +57,8 @@ class UserModel {
         'is_admin': isAdmin,
         'is_blocked': isBlocked,
         'block_reason': blockReason,
+        'access_token': accessToken,
+        'refresh_token': refreshToken,
       };
 
   String get initials {

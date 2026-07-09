@@ -1,6 +1,7 @@
 import 'package:portfolio/global/apiutils/api_result_ext.dart';
 import 'package:portfolio/global/base/base_repository.dart';
 import 'package:portfolio/global/constant/api_const.dart';
+import 'package:portfolio/global/services/supabase_service.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
 import 'package:portfolio/features/auth/domain/auth_request_model.dart';
 import 'package:portfolio/features/auth/domain/auth_response_model.dart';
@@ -131,6 +132,7 @@ class AuthRepository extends BaseRepository {
     if (SPManager.isLoggedIn()) {
       await postAction(url: ApiConstant.logout);
     }
+    await SupabaseService.signOut();
     await SPManager.clearLoginDetails();
   }
 
@@ -160,6 +162,17 @@ class AuthRepository extends BaseRepository {
   }
 
   Future<void> _persistSession(UserModel profile, String email) async {
+    if (profile.accessToken.isNotEmpty) {
+      await SPManager.setAccessToken(profile.accessToken);
+    }
+    if (profile.refreshToken.isNotEmpty) {
+      await SPManager.setRefreshToken(profile.refreshToken);
+      await SupabaseService.restoreSession(
+        accessToken: profile.accessToken,
+        refreshToken: profile.refreshToken,
+      );
+    }
+
     await SPManager.setUserId(profile.id);
     await SPManager.saveLoginDetails(
       userId: profile.id,

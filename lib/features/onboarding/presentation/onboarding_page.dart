@@ -14,50 +14,57 @@ class OnboardingPage extends BaseStatelessWidget {
   @override
   Widget initBuild(BuildContext context) {
     final controller = Get.put(OnboardingController());
+
     return Scaffold(
       backgroundColor: ColorConst.white,
       body: Column(
         children: [
           Expanded(
-            flex: 6,
             child: PageView.builder(
               controller: controller.pageController,
               onPageChanged: controller.onPageChanged,
               itemCount: OnboardingController.totalPages,
-              itemBuilder: (context, index) => const OnboardingCenterLogo(),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Center(
-                child: Obx(() {
-                  final item = controller.pages[controller.currentPage.value];
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        item.title,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.headlineLarge.copyWith(
-                          color: ColorConst.colorFF1F2937,
-                          fontWeight: FontWeight.w800,
+              itemBuilder: (context, index) {
+                final item = controller.pages[index];
+                return Column(
+                  children: [
+                    const Expanded(
+                      flex: 6,
+                      child: OnboardingCenterLogo(),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                item.title,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.headlineLarge.copyWith(
+                                  color: ColorConst.colorFF1F2937,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                item.description,
+                                textAlign: TextAlign.center,
+                                style: AppTextStyle.bodyMedium.copyWith(
+                                  color: ColorConst.colorFF6B7280,
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        item.description,
-                        textAlign: TextAlign.center,
-                        style: AppTextStyle.bodyMedium.copyWith(
-                          color: ColorConst.colorFF6B7280,
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
           SafeArea(

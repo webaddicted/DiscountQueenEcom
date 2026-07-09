@@ -7,8 +7,10 @@ import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/color_const.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/sp/sp_manager.dart';
+import 'package:portfolio/global/services/supabase_service.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
+import 'package:portfolio/global/widgets/app_logos_image.dart';
 
 class SplashPage extends BaseStatelessWidget {
   const SplashPage({super.key});
@@ -46,11 +48,7 @@ class SplashPage extends BaseStatelessWidget {
                       child: child,
                     );
                   },
-                  child: const Icon(
-                    Icons.child_care,
-                    size: 80,
-                    color: ColorConst.white,
-                  ),
+                  child: const AppLogosImage(size: 80),
                 ),
                 const SizedBox(height: DesignTokens.spacing16),
                 TweenAnimationBuilder<double>(
@@ -108,7 +106,18 @@ class SplashPage extends BaseStatelessWidget {
   }
 
   void _scheduleNavigation() {
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () async {
+      if (SPManager.isLoggedIn()) {
+        final accessToken = SPManager.getAccessToken();
+        final refreshToken = SPManager.getRefreshToken();
+        if (accessToken.isNotEmpty && refreshToken.isNotEmpty) {
+          await SupabaseService.restoreSession(
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          );
+        }
+      }
+
       if (SPManager.isOnboardingShown()) {
         if (SPManager.isLoggedIn()) {
           Get.offAllNamed(RoutersConst.home);

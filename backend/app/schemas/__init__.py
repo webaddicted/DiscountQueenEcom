@@ -94,6 +94,8 @@ class ProfileOut(CamelModel):
     is_admin: bool = False
     is_blocked: bool = False
     created_at: str = ""
+    access_token: str = ""
+    refresh_token: str = ""
 
 
 class ProfileUpdateIn(CamelModel):

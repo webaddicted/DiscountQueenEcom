@@ -12,6 +12,7 @@ import 'package:portfolio/global/constant/app_constant.dart';
 import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/services/analytics_service.dart';
 import 'package:portfolio/global/services/hive_service.dart';
+import 'package:portfolio/global/services/supabase_service.dart';
 import 'package:portfolio/global/sp/sp_helper.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 
@@ -31,6 +32,7 @@ Future<void> initSDK() async {
   }
 
   await SPHelper.init();
+  await SupabaseService.initialize();
   await HiveService().init();
   await AnalyticsService().initialize();
 

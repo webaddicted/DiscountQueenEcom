@@ -80,6 +80,7 @@ class AppTextStyle {
         height: 1.4,
       );
 
+
   // Body Styles
   static TextStyle get bodyLarge => _base.copyWith(
         fontSize: fontSize14,

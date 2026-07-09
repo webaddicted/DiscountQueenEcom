@@ -45,6 +45,9 @@ class Settings(BaseSettings):
     razorpay_key_secret: str = Field(default="", alias="RAZORPAY_KEY_SECRET")
     dev_otp: str = Field(default="12345", alias="DEV_OTP")
     otp_expiry_minutes: int = Field(default=5, alias="OTP_EXPIRY_MINUTES")
+    supabase_url: str = Field(default="", alias="SUPABASE_URL")
+    supabase_anon_key: str = Field(default="", alias="SUPABASE_ANON_KEY")
+    supabase_jwt_secret: str = Field(default="", alias="SUPABASE_JWT_SECRET")
 
     @property
     def sqlalchemy_url(self) -> str:

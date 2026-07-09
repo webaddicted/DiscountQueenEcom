@@ -8,6 +8,7 @@ import 'package:portfolio/global/constant/routers_const.dart';
 import 'package:portfolio/global/constant/string_const.dart';
 import 'package:portfolio/global/theme/app_theme.dart';
 import 'package:portfolio/global/theme/text_style.dart';
+import 'package:portfolio/global/widgets/app_logos_image.dart';
 import 'package:portfolio/global/widgets/custom_text_field.dart';
 import 'package:portfolio/global/widgets/gradient_button.dart';
 import 'package:portfolio/global/widgets/responsive_layout.dart';
@@ -88,7 +89,7 @@ class LoginPage extends BaseStatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.child_care, size: 96, color: ColorConst.white),
+              const AppLogosImage(size: 96),
               const SizedBox(height: DesignTokens.spacing16),
               Text(
                 AppConstant.appName,
@@ -259,7 +260,7 @@ class LoginPage extends BaseStatelessWidget {
       decoration: const BoxDecoration(gradient: DesignTokens.primaryGradient),
       child: Column(
         children: [
-          const Icon(Icons.child_care, size: 64, color: ColorConst.white),
+          const AppLogosImage(size: 120),
           const SizedBox(height: DesignTokens.spacing8),
           Text(
             AppConstant.appName,

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from uuid import UUID
 
 from sqlalchemy import select
@@ -9,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from app.db.models import EcomAddress, EcomAuthAccount, EcomUserProfile
 from app.schemas import AddressIn, AddressOut, ProfileOut, ProfileUpdateIn
+from app.services.supabase_auth_service import SupabaseAuthUser
 
 
 class UserService:
@@ -21,10 +23,60 @@ class UserService:
             return profile
         profile = EcomUserProfile(
             user_id=user_id,
-            name=name or email.split("@")[0],
+            name=name or (email.split("@")[0] if email else ""),
             referral_code=f"REF{str(user_id)[:8].upper()}",
         )
         self.db.add(profile)
+        self.db.commit()
+        self.db.refresh(profile)
+        return profile
+
+    def sync_from_supabase_user(
+        self,
+        auth_user: SupabaseAuthUser,
+        *,
+        name: str = "",
+        phone: str | None = None,
+    ) -> EcomUserProfile:
+        """Upsert ecom_user_profiles from Supabase auth user data."""
+        metadata = auth_user.user_metadata or {}
+        resolved_name = (
+            name.strip()
+            or str(metadata.get("name") or metadata.get("full_name") or "").strip()
+            or (auth_user.email.split("@")[0] if auth_user.email else "")
+        )
+        resolved_phone = (phone or auth_user.phone or str(metadata.get("phone") or "")).strip() or None
+        photo_url = str(metadata.get("avatar_url") or metadata.get("photo_url") or "").strip() or None
+        gender = str(metadata.get("gender") or "").strip() or None
+
+        profile = self.db.scalar(
+            select(EcomUserProfile).where(EcomUserProfile.user_id == auth_user.id)
+        )
+        if profile is None:
+            profile = EcomUserProfile(
+                user_id=auth_user.id,
+                name=resolved_name,
+                phone=resolved_phone,
+                photo_url=photo_url,
+                gender=gender,
+                referral_code=f"REF{str(auth_user.id)[:8].upper()}",
+                is_email_verified=auth_user.email_confirmed_at is not None,
+                last_login_at=datetime.now(timezone.utc),
+            )
+            self.db.add(profile)
+        else:
+            if resolved_name:
+                profile.name = resolved_name
+            if resolved_phone:
+                profile.phone = resolved_phone
+            if photo_url:
+                profile.photo_url = photo_url
+            if gender:
+                profile.gender = gender
+            if auth_user.email_confirmed_at:
+                profile.is_email_verified = True
+            profile.last_login_at = datetime.now(timezone.utc)
+
         self.db.commit()
         self.db.refresh(profile)
         return profile
