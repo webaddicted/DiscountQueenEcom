@@ -51,3 +51,4 @@ app.*.map.json
 
 # AI agent docs - local only
 .ai/
+.output
